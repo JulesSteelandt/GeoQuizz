@@ -11,6 +11,15 @@ class SsProfile
     {
         $user = User::find($id);
         return new UserDTO($user->prenom, $user->nom);
+    }
+
+    public function setProfile(int $id, string $prenom, string $nom)
+    {
+        try {
+            User::where('id', $id)->update(['prenom' => $prenom, 'nom' => $nom]);
+        } catch (\Error $e){
+            return false;
+        }
 
     }
 }
