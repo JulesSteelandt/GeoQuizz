@@ -2,13 +2,14 @@
 declare(strict_types=1);
 
 use geoquizz\service\app\actions\GetProfilAction;
+use geoquizz\service\app\actions\SetProfilAction;
 
 return function( \Slim\App $app):void {
 
     $app->get('/profil[/]', GetProfilAction::class)
         ->setName('getprofil');
 
-    $app->put('/profil[/]', )
+    $app->put('/profil[/]', SetProfilAction::class)
         ->setName('setprofil');
 
     $app->get('/serie[/]', )
