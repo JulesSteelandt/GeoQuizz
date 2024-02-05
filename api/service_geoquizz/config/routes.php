@@ -1,21 +1,24 @@
 <?php
 declare(strict_types=1);
 
-use pizzashop\cat\app\actions\GetProduitByCategorieAction;
-use pizzashop\cat\app\actions\GetProduitByIdAction;
-use pizzashop\cat\app\actions\GetProduitsAction;
+use geoquizz\service\app\actions\GetProfil;
 
 return function( \Slim\App $app):void {
 
-    $app->get('/produits[/]', GetProduitsAction::class)
-        ->setName('list_produits');
+    $app->get('/profil[/]', GetProfil::class)
+        ->setName('getprofil');
 
-    $app->get('/produits/{id_produit}[/]', GetProduitByIdAction::class)
-        ->setName('produit');
+    $app->put('/profil[/]', )
+        ->setName('setprofil');
 
-    $app->get('/categories/{id_categorie}/produits[/]', GetProduitByCategorieAction::class)
-        ->setName('cat_produits');
+    $app->get('/serie[/]', )
+        ->setName('getserie');
 
+    $app->get('/serie/{id_serie}[/]', )
+        ->setName('getidserie');
+
+    $app->get('/historique[/]', )
+        ->setName('historique');
 
     $app->options('/{routes:.+}', function ($request, $response, $args) {
         return $response; // Renvoie une réponse HTTP vide
