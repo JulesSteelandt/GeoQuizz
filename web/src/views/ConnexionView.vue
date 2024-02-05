@@ -5,7 +5,6 @@ export default {
 </script>
 
 <template>
-  <p>toto</p>
   <div class="flex flex-col items-center border-solid border-2 pt-2.5 pb-2.5">
     <div>
       <p>Votre e-mail :</p>
