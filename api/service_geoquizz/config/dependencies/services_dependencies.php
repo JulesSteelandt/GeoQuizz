@@ -2,12 +2,16 @@
 
 
 use \geoquizz\service\domain\services\SsProfile;
+use geoquizz\service\domain\services\SsSerie;
 use Psr\Container\ContainerInterface;
 
 return [
 
-    'geoquizz.service' => function (ContainerInterface $c) {
-        return new SsProfile();//pas de logger pour l'instant
+    'profile.service' => function (ContainerInterface $c) {
+        return new SsProfile();
+    },
+    'serie.service' => function (ContainerInterface $c) {
+        return new SsSerie();
     },
 
 ];

@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 use geoquizz\service\app\actions\GetProfilAction;
 use geoquizz\service\app\actions\SetProfilAction;
+use geoquizz\service\app\actions\GetSerieAction;
+
 
 return function( \Slim\App $app):void {
 
@@ -12,7 +14,7 @@ return function( \Slim\App $app):void {
     $app->put('/profil[/]', SetProfilAction::class)
         ->setName('setprofil');
 
-    $app->get('/serie[/]', )
+    $app->get('/serie[/]', GetSerieAction::class)
         ->setName('getserie');
 
     $app->get('/serie/{id_serie}[/]', )
