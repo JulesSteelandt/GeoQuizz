@@ -7,7 +7,7 @@ use geoquizz\service\domain\services\SsSerie;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class GetSerieAction extends AbstractAction
+class GetSerieByIdAction extends AbstractAction
 {
     private SsSerie $serieService;
 
@@ -17,8 +17,8 @@ class GetSerieAction extends AbstractAction
     }
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $series = $this->serieService->getSerie();
-        $response->getBody()->write($series);
+        $serie = $this->serieService->getSerieById($args['id_serie']);
+        $response->getBody()->write($serie->toJSON());
 
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }

@@ -11,6 +11,16 @@ class SsSerie
     public function getSerie()
     {
         $series = SerieDTO::all();
+        $tab = [];
+        foreach ($series as $s){
+            $tab[] = new SerieDTO($s->id, $s->nom);
+        }
+        return $tab;
+    }
+
+    public function getSerieById(int $id)
+    {
+        $series = SerieDTO::find($id);
         return new SerieDTO($series->id, $series->nom);
     }
 }
