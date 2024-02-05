@@ -7,8 +7,8 @@ import {RouterLink, RouterView} from 'vue-router'
     <nav class="flex flex-col items-center">
       <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
         <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/map">MapTest</RouterLink>
+      </div>
+      <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
         <RouterLink to="/guess">Guess</RouterLink>
       </div>
       <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
