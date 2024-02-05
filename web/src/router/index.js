@@ -4,6 +4,8 @@ import MapView from '@/views/MapView.vue'
 import Page404 from '@/views/Page_404.vue'
 import ConnexionView from "@/views/ConnexionView.vue";
 import InscriptionView from "@/views/InscriptionView.vue";
+import Map from '@/components/Map.vue'
+import Page404 from '@/views/Page_404.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,11 +24,10 @@ const router = createRouter({
       path: '/inscription',
       name: 'inscription',
       component: InscriptionView
-    },
     {
       path: '/map',
       name: 'map',
-      component: MapView
+      component: Map
     },
     {
       path: '/:pathMatch(.*)',
