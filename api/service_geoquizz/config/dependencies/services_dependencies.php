@@ -1,13 +1,13 @@
 <?php
 
 
-use pizzashop\cat\domain\service\ServiceCatalogue;
+use \geoquizz\service\domain\services\SsProfile;
 use Psr\Container\ContainerInterface;
 
 return [
 
-    'catalogue.service' => function (ContainerInterface $c) {
-        return new ServiceCatalogue();//pas de logger pour l'instant
+    'geoquizz.service' => function (ContainerInterface $c) {
+        return new SsProfile();//pas de logger pour l'instant
     },
 
 ];
