@@ -102,7 +102,8 @@ services:
     ports:
       - '35206:80'
     volumes:
-      - ../api/service_geoquizz:/var/www/html
+      - ../api/service_geoquizz:/var/www
+      - ../api/service_geoquizz/public:/var/www/html
     working_dir: /var/www
     networks:
       - geoquizz.net

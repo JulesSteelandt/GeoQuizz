@@ -22,12 +22,12 @@ class GetHistoryAction extends AbstractAction
             $header = $request->getHeader('Authorization')[0];
             $token = str_replace('Bearer ', '', $header);
 
-            //Faire appel ici pour récupérer l'id du gadjo
-            $id = "";
+            //Todo Faire appel ici pour récupérer l'id du gadjo
+            $id = 1;
 
             $history = $this->partieService->getHistory($id);
 
-            $response->getBody()->write($history);
+            $response->getBody()->write(json_encode($history));
         }
 
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');

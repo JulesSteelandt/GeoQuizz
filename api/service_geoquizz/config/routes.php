@@ -10,12 +10,6 @@ use geoquizz\service\app\actions\GetSerieByIdAction;
 
 return function( \Slim\App $app):void {
 
-    $app->get('/profil[/]', GetProfilAction::class)
-        ->setName('getprofil');
-
-    $app->put('/profil[/]', SetProfilAction::class)
-        ->setName('setprofil');
-
     $app->get('/serie[/]', GetSerieAction::class)
         ->setName('getserie');
 

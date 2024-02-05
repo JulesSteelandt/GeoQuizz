@@ -19,7 +19,7 @@ class SsSerie
 
     public function getSerieById(int $id)
     {
-        $series = SerieDTO::find($id);
+        $series = Serie::find($id);
         return new SerieDTO($series->id, $series->nom);
     }
 }

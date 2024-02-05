@@ -10,14 +10,6 @@ use Psr\Container\ContainerInterface;
 
 return[
 
-    GetProfilAction::class => function (ContainerInterface $c){
-        return new GetProfilAction($c->get('profile.service'));
-    },
-
-    SetProfilAction::class => function (ContainerInterface $c){
-        return new SetProfilAction($c->get('profile.service'));
-    },
-
     GetSerieAction::class => function (ContainerInterface $c){
         return new GetSerieAction($c->get('serie.service'));
     },
