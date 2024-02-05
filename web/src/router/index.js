@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
+import MapView from '@/views/MapView.vue'
 import ConnexionView from "@/views/ConnexionView.vue";
 import InscriptionView from "@/views/InscriptionView.vue";
 import Map from '@/components/Map.vue'
