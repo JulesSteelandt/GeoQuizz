@@ -9,7 +9,7 @@ export default {
         colors: {
             geoBlue: '#3B82F6',
             geoGreen: '#22C55E',
-            grayBackground: '#f5f5f5',
+            grayBackground: '#efefef',
             white: '#FFFFFF'
         }
     },
