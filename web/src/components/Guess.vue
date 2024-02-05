@@ -1,6 +1,7 @@
 <script>
 import  'leaflet/dist/leaflet.css';
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
+
 export default {
   components: {
     LMap,
@@ -11,7 +12,7 @@ export default {
     return {
       image : "",
       timerCount: 60,
-      timerEnable: false,
+      timerEnable: true,
       validate: false,
       osmURL: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       center: [48.69, 6.18],
@@ -87,41 +88,41 @@ export default {
 </script>
 
 <template>
-  <div class="flex">
-    <div>
-      <img :src="imageTest" alt="imageTest"  >
+<section class="h-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+  <div class="flex flex-wrap" >
+    <div class="w-full md:w-1/2 border border-gray-400 rounded-lg">
+      <img :src="imageTest" alt="imageTest" >
     </div>
-    <div class="flex flex-col">
-      <div class="mapbox">
-        <l-map
-            ref="map"
-            class="map"
-            v-model:zoom="zoom"
-            v-model:center="center"
-            :max-zoom="maxZoom"
-            :min-zoom="minZoom"
-            :zoom-control="false"
-            :use-global-leaflet="false"
-            @click="placeMarker($event)"
-        >
-          <l-tile-layer :url="osmURL"></l-tile-layer>
+    <div class="w-full md:w-1/2 flex justify-center items-center">
+      <div class="w-full max-w-md">
+        <div class="mapbox border border-gray-400 rounded-lg shadow-lg">
+          <l-map
+              ref="map"
+              class="map"
+              v-model:zoom="zoom"
+              v-model:center="center"
+              :max-zoom="maxZoom"
+              :min-zoom="minZoom"
+              :zoom-control="false"
+              :use-global-leaflet="false"
+              @click="placeMarker($event)"
+          >
+            <l-tile-layer :url="osmURL"></l-tile-layer>
 
-          <!--marqueur placé par l'utilisateur-->
-          <l-marker v-if="userMarkerCoords" :lat-lng="userMarkerCoords"/>
-
-
-        </l-map>
+            <!--marqueur placé par l'utilisateur-->
+            <l-marker v-if="userMarkerCoords" :lat-lng="userMarkerCoords"/>
+          </l-map>
+        </div>
+        <div class="bg-blue-600 text-white rounded-b-lg mt-4">
+          <label class="m-8 text-xl ">Temps Restant : <span class="font-semibold">{{ timerCount }}</span></label>
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full m-8" @click="valider" v-if="!validate">Valider</button>
+        </div>
+      </div>
     </div>
-    <div class="flex">
-      <label class="m-8" >Temps Restant : {{ this.timerCount }}</label>
-     <!-- <button class="m-8" @click="play" >Start</button> -->
-      <button class="m-8" @click="valider" v-if="!validate"
-      >Valider</button>
-    </div>
-    </div>
-
   </div>
+</section>
 </template>
+
 
 <style scoped>
 .mapbox {
