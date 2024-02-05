@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import Map from '@/components/Map.vue'
+import MapTest from '@/components/MapTest.vue'
 import Page404 from '@/views/Page_404.vue'
+import Guess from "@/components/Guess.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,7 +23,13 @@ const router = createRouter({
     {
       path: '/map',
       name: 'map',
-      component: Map
+      component: MapTest
+    },
+    {
+      path: '/guess',
+      name: 'guess',
+      component: Guess
+
     },
     {
       path: '/:pathMatch(.*)',
