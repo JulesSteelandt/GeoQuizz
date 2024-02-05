@@ -6,12 +6,6 @@ export default {
     ],
     theme: {
         extend: {},
-        colors: {
-            geoBlue: '#3B82F6',
-            geoGreen: '#22C55E',
-            grayBackground: '#efefef',
-            white: '#FFFFFF'
-        }
     },
     plugins: [],
 }
