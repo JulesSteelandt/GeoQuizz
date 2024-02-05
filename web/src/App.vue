@@ -1,23 +1,24 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 </script>
 
 <template>
-  <header>
-
-    <div class="wrapper">
-      <nav>
+  <header class="border-r-2 w-2/12 bg-geoBlue bg-opacity-10">
+    <nav class="flex flex-col items-center">
+      <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
         <RouterLink to="/">Home</RouterLink>
+      </div>
+      <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
         <RouterLink to="/map">Map</RouterLink>
+      </div>
+      <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
         <RouterLink to="/inscription">Inscription</RouterLink>
+      </div>
+      <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
         <RouterLink to="/connexion">Connexion</RouterLink>
-      </nav>
-    </div>
+      </div>
+    </nav>
   </header>
 
-  <RouterView />
+  <RouterView/>
 </template>
-
-<style scoped>
-
-</style>

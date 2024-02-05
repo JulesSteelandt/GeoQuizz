@@ -5,7 +5,7 @@ export default {
 </script>
 
 <template>
-  <div class="flex flex-col items-center border-2 pt-2.5 pb-2.5">
+  <div class="flex flex-col justify-center border-2 p-2.5 m-auto">
     <div>
       <p>Votre e-mail :</p>
       <input class="w-60 mb-2.5" type="text" placeholder="Votre e-mail ...">
