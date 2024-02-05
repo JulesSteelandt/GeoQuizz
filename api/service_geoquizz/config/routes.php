@@ -1,11 +1,11 @@
 <?php
 declare(strict_types=1);
 
-use geoquizz\service\app\actions\GetProfil;
+use geoquizz\service\app\actions\GetProfilAction;
 
 return function( \Slim\App $app):void {
 
-    $app->get('/profil[/]', GetProfil::class)
+    $app->get('/profil[/]', GetProfilAction::class)
         ->setName('getprofil');
 
     $app->put('/profil[/]', )
