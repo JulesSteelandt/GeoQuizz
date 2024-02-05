@@ -3,14 +3,13 @@
 namespace geoquizz\service\domain\services;
 
 use geoquizz\service\domain\DTO\SerieDTO;
-use geoquizz\service\domain\DTO\UserDTO;
-use geoquizz\service\domain\entities\User;
+use geoquizz\service\domain\entities\Serie;
 
 class SsSerie
 {
     public function getSerie()
     {
-        $series = SerieDTO::all();
+        $series = Serie::all();
         $tab = [];
         foreach ($series as $s){
             $tab[] = new SerieDTO($s->id, $s->nom);
