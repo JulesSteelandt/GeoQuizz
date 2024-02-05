@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
-import MapView from '@/views/MapView.vue'
+import Map from '@/components/Map.vue'
 import Page404 from '@/views/Page_404.vue'
 
 const router = createRouter({
@@ -22,7 +22,7 @@ const router = createRouter({
     {
       path: '/map',
       name: 'map',
-      component: MapView
+      component: Map
     },
     {
       path: '/:pathMatch(.*)',
