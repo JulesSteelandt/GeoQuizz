@@ -6,7 +6,7 @@ use geoquizz\service\domain\services\SsProfile;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class GetProfil extends AbstractAction
+class GetProfilAction extends AbstractAction
 {
     private SsProfile $profileService;
 
