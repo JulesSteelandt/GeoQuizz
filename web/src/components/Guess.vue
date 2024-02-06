@@ -33,13 +33,16 @@ export default {
       //message en fonction de la distance
       distanceMessage: "",
 
-      //tableau pour le calcul des scores
+      //objet pour le calcul des scores
       donneesScores: null,
+      numeroTour: 1,
+      donneesSent: false,
 
 
 
 
       //Jeu de données de test en attendant de récupérer les données de l'API
+      serie_id: 28,
       imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
       //Lieu à deviner
       LieuReponse: "Place Stanislas, Nancy, France",
@@ -63,8 +66,7 @@ export default {
           setTimeout(() => {
               this.timerCount--;
           }, 1000);
-        }
-        if (value === 0) {
+        } else if (value === 0) {
           this.valider();
         }
 
@@ -74,13 +76,6 @@ export default {
 
   },
     methods: {
-      /**
-       * Méthode qui démarre le chronomètre
-       * @returns {void}
-       */
-      play() {
-        this.timerEnable = true;
-      },
 
       /**
        * Méthode qui stop le chronomètre et permet de valider la position choisie par l'utilisateur
@@ -92,11 +87,35 @@ export default {
         this.userFinalGuess = this.userMarkerCoords;
         this.calculerDistance();
         this.donneesScores = {
+          serie_id: this.serie_id,
           temps: 60 - this.timerCount,
-          distance: this.distance
+          distance: this.distance,
+          tours: this.numeroTour
         };
+        this.envoyerScores();
+      },
+
+      /**
+       * Méthode qui permet d'envoyer les données de scores à l'API au format JSON
+       * @returns {void}
+       */
+      envoyerScores() {
+        fetch('routeApiIci', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.donneesScores)
+        })
+        .then(response => response.json())
+        .then(data => {
+        })
+        .catch((error) => {
+        })
+            .finally(() => this.donneesSent = true);
 
       },
+
 
       /**
        * Méthode qui permet de calculer la distance en metre entre le point de l'utilisateur et le point de la réponse
@@ -127,9 +146,11 @@ export default {
         this.userMarkerCoords = null;
         this.userFinalGuess = null;
         this.distance = null;
+        this.numeroTour++;
         //Remet la carte dans la config intiale
         //valeurs temporaires
         this.center = [48.69, 6.18];
+        this.donneesSent = false;
 
 
       },
@@ -191,7 +212,8 @@ export default {
         <div class="bg-blue-600 text-white rounded-b-lg py-4 ">
           <label class="m-8 text-xl w-1/2 font-mono ">Temps Restant : <span class="font-semibold">{{ timerCount }}</span></label>
           <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full " @click="valider" v-if="!validate">Valider</button>
-          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full " @click="nextStep" v-else>Suivant</button>
+          <label class="m-8  text-xl font-semibold py-2 " v-if="validate && !donneesSent">Chargement</label>
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full " @click="nextStep" v-if="donneesSent">Suivant</button>
         </div>
       </div>
     </div>
