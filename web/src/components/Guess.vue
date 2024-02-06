@@ -1,12 +1,13 @@
 <script>
 import  'leaflet/dist/leaflet.css';
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet';
+import { getDistance } from "geolib";
 
 export default {
   components: {
     LMap,
     LTileLayer,
-    LMarker
+    LMarker,
   },
   data() {
     return {
@@ -26,6 +27,8 @@ export default {
       userMarkerCoords: null,
       //coordonnées du Guess final
       userFinalGuess: null,
+      //distance entre le marqueur de l'utilisateur et le marqueur de la réponse
+      distance: null,
 
 
 
@@ -60,7 +63,7 @@ export default {
         }
 
       },
-      immediate: true // This ensures the watcher is triggered upon creation
+      immediate: true
     }
 
   },
@@ -81,10 +84,24 @@ export default {
         this.timerEnable = false;
         this.validate = true;
         this.userFinalGuess = this.userMarkerCoords;
+        this.calculerDistance();
+      },
+
+      /**
+       * Méthode qui permet de calculer la distance en metre entre le point de l'utilisateur et le point de la réponse
+       * avec la librairie geolib
+       *
+       */
+      calculerDistance() {
+        this.distance = getDistance(
+            { latitude: this.userFinalGuess[0], longitude: this.userFinalGuess[1] },
+            { latitude: this.reponseMarker[0], longitude: this.reponseMarker[1] }
+        );
+
       },
 
 
-        /**
+      /**
        * Méthode qui place le marqueur sur la carte à l'endroit où l'utilisateur a cliqué
        * @param event
        * @returns {void}
@@ -106,6 +123,7 @@ export default {
       <div v-if="validate" class="w-full rounded-b-lg h-max bg-blue-600 py-8 flex justify-center text-xl">
         <label class="text-white ">
           Réponse : <label class="font-bold">{{ LieuReponse }}</label>
+          Distance : <label class="font-bold">{{ distance }} m</label>
         </label>
       </div>
     </div>
