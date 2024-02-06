@@ -13,7 +13,7 @@ export default {
 
 
   /**
-   * Vérifie si la route actuelle est la page d'accueil
+   * Vérifie si la route actuelle est la page d'accueil ou non
    * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
    */
   setup() {
