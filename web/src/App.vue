@@ -54,8 +54,8 @@ export default {
           </RouterLink>
         </div>
         <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/map">
-            <button class="h-full w-full">Map</button>
+          <RouterLink to="/guess">
+            <button class="h-full w-full">Jouer</button>
           </RouterLink>
         </div>
         <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
@@ -77,7 +77,7 @@ export default {
   <playGeoQuizz v-if="isHomeRoute"/>
   <div class ="flex justify-center" v-if="isHomeRoute">
     <!-- Bouton à droite -->
-    <RouterLink to="/map">
+    <RouterLink to="/guess">
       <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
         Lancer le Quiz !
       </button>
