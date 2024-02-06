@@ -19,12 +19,13 @@ class SsPartie
         return $tab;
     }
 
-    public function createParty($serie_id, $user_id)
+    public function createParty($serie_id, $user_email, $user_username)
     {
         $game_id = Uuid::uuid4();
         $partieCache = new Partie_cache();
         $partieCache->id = $game_id;
-        $partieCache->user_id = $user_id;
+        $partieCache->user_email = $user_email;
+        $partieCache->user_username = $user_username;
         $partieCache->serie_id = $serie_id;
         $partieCache->tours = 0;
         $partieCache->distance = 0;
@@ -60,7 +61,8 @@ class SsPartie
             //Todo Ajout
             $newRecord = new Partie_cache();
             $newRecord->id = $game_id;
-            $newRecord->user_id = $lastRecord->user_id;
+            $newRecord->user_mail = $lastRecord->user_mail;
+            $newRecord->user_username = $lastRecord->user_username;
             $newRecord->serie_id = $lastRecord->serie_id;
             $newRecord->tours = $nbRecord;
             $newRecord->distance = $distance;
@@ -94,7 +96,8 @@ class SsPartie
             }
 
             $finalRecord = new Partie();
-            $finalRecord->user_id = $lastRecord->user_id;
+            $finalRecord->user_mail = $lastRecord->user_mail;
+            $finalRecord->user_username = $lastRecord->user_username;
             $finalRecord->score = $TOTAL_T;
             $finalRecord->difficulte = 1;
             $finalRecord->serie_id = $lastRecord->serie_id;
@@ -106,7 +109,8 @@ class SsPartie
             //Todo la game continue
             $newRecord = new Partie_cache();
             $newRecord->id = $game_id;
-            $newRecord->user_id = $lastRecord->user_id;
+            $newRecord->user_mail = $lastRecord->user_mail;
+            $newRecord->user_username = $lastRecord->user_username;
             $newRecord->serie_id = $lastRecord->serie_id;
             $newRecord->tours = $nbRecord;
             $newRecord->distance = $distance;
