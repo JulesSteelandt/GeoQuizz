@@ -28,7 +28,7 @@ export default {
 
 <template>
   <header>
-  <div class="header flex flex-row flex-wrap justify-between p-1">
+  <div class="header flex flex-row flex-wrap justify-between p-1 mb-2">
     <div class="headerLogoText flex flex-row flex-wrap">
     <!-- Logo à gauche -->
       <img class="w-28" src="@/components/icons/globe.png" alt="logo">
@@ -53,7 +53,8 @@ export default {
             <button class="h-full w-full">Home</button>
           </RouterLink>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl mr-3 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80">          <RouterLink to="/map">
+        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl mr-3 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80">
+          <RouterLink to="/map">
             <button class="h-full w-full">Map</button>
           </RouterLink>
         </div>
@@ -88,7 +89,7 @@ export default {
 
   <RouterView />
 
-  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between" >
+  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between h-min-15" >
     <p>GeoQuizz - 2024</p>
     <p>Copyrigth IUT-Charlemagne</p>
   </footer>
