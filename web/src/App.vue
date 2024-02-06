@@ -54,7 +54,7 @@ export default {
           </RouterLink>
         </div>
         <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/guess">
+          <RouterLink to="/selectgame">
             <button class="h-full w-full">Jouer</button>
           </RouterLink>
         </div>
