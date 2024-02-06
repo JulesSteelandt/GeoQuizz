@@ -1,41 +1,33 @@
-CREATE TABLE "user" (
-                        id SERIAL PRIMARY KEY,
-                        prenom VARCHAR(255),
-                        nom VARCHAR(255)
-);
+-- Adminer 4.8.1 PostgreSQL 15.4 (Debian 15.4-1.pgdg120+1) dump
 
-CREATE TABLE serie (
-                       id SERIAL PRIMARY KEY,
-                       nom VARCHAR(255)
-);
+DROP TABLE IF EXISTS "partie";
+DROP SEQUENCE IF EXISTS partie_id_seq;
+CREATE SEQUENCE partie_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
-CREATE TABLE localisation (
-                              id SERIAL PRIMARY KEY,
-                              localisation_id INT,
-                              serie_id INT,
-                              FOREIGN KEY (serie_id) REFERENCES serie(id)
-);
+CREATE TABLE "public"."partie" (
+                                   "id" integer DEFAULT nextval('partie_id_seq') NOT NULL,
+                                   "user_email" character(255) NOT NULL,
+                                   "score" integer NOT NULL,
+                                   "difficulte" integer NOT NULL,
+                                   "serie_id" integer NOT NULL,
+                                   "user_username" character(255) NOT NULL,
+                                   CONSTRAINT "partie_pkey" PRIMARY KEY ("id")
+) WITH (oids = false);
 
-CREATE TABLE partie (
-                        id SERIAL PRIMARY KEY,
-                        user_id INT,
-                        score INT,
-                        difficulte INT,
-                        serie_id INT,
-                        FOREIGN KEY (serie_id) REFERENCES serie(id)
-);
 
-INSERT INTO serie (nom) VALUES
-                            ('Serie A'),
-                            ('Serie B'),
-                            ('Serie C');
+DROP TABLE IF EXISTS "partie_cache";
+DROP SEQUENCE IF EXISTS partie_cache_id_seq;
+CREATE SEQUENCE partie_cache_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
-INSERT INTO localisation (localisation_id, serie_id) VALUES
-                                                         (100, 1),
-                                                         (200, 2),
-                                                         (300, 3);
+CREATE TABLE "public"."partie_cache" (
+                                         "id" character(255) DEFAULT 'nextval(''partie_cache_id_seq'')' NOT NULL,
+                                         "user_email" character(255) NOT NULL,
+                                         "serie_id" integer NOT NULL,
+                                         "temps" integer NOT NULL,
+                                         "distance" integer NOT NULL,
+                                         "user_username" character(255) NOT NULL,
+                                         "tours" integer NOT NULL
+) WITH (oids = false);
 
-INSERT INTO partie (user_id, score, difficulte, serie_id) VALUES
-                                                              (1, 100, 3, 1),
-                                                              (2, 150, 4, 2),
-                                                              (3, 120, 2, 3);
+
+-- 2024-02-06 15:20:38.36416+00
