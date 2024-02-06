@@ -58,15 +58,20 @@ export default {
             <button class="h-full w-full">Jouer</button>
           </RouterLink>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
-          <RouterLink to="/inscription">
-            <button class="h-full w-full">Inscription</button>
-          </RouterLink>
+
+        <div class="notConnected flex flex-row items-center">
+          <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
+            <RouterLink to="/inscription">
+              <button class="h-full w-full">Inscription</button>
+            </RouterLink>
+          </div>
+          <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
+            <RouterLink to="/connexion">
+              <button class="h-full w-full">Connexion</button>
+            </RouterLink>
+          </div>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
-          <RouterLink to="/connexion">
-            <button class="h-full w-full">Connexion</button>
-          </RouterLink>
+        <div class="connected flex flex-row items-center">
         </div>
       </div>
     </div>
