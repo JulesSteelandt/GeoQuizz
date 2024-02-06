@@ -95,6 +95,7 @@ export default {
           temps: 60 - this.timerCount,
           distance: this.distance
         };
+        console.log(this.donneesScores);
       },
 
       /**
@@ -111,7 +112,7 @@ export default {
         this.distanceMessage = this.distance + " m";
         }else {
           this.distanceMessage = "Vous n'avez pas pointé de lieu sur la carte";
-          this.distance= 0;
+          this.distance= -1;
         }
       },
 
