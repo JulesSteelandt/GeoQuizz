@@ -20,8 +20,16 @@ export default {
     const route = useRoute();
     const isHomeRoute = computed(() => route.path === '/');
 
-    return {isHomeRoute};
-  },
+    /**
+     * Vérifie si la route actuelle est la page d'accueil
+     * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
+     */
+    setup() {
+      const route = useRoute();
+      const isHomeRoute = computed(() => route.path === '/');
+
+      return { isHomeRoute };
+    },
 
 };
 </script>
@@ -48,9 +56,9 @@ export default {
       </div>
       -->
 
+
       <header-content/>
     </header>
-
     <div class="flex flex-col justify-center w-full">
       <playGeoQuizz/>
       <div class="flex justify-center">
@@ -62,6 +70,7 @@ export default {
         </RouterLink>
 
       </div>
+
 
       <RouterView/>
 
@@ -97,4 +106,5 @@ export default {
       </footer>
     </div>
   </div>
+
 </template>
