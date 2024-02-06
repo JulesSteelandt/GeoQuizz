@@ -58,8 +58,7 @@ export default {
           }, 1000);
         }
         if (value === 0) {
-          this.timerEnable = false;
-          this.validate = true;
+          this.valider();
         }
 
       },
@@ -93,11 +92,15 @@ export default {
        *
        */
       calculerDistance() {
+        if(this.userFinalGuess !== null){
         this.distance = getDistance(
             { latitude: this.userFinalGuess[0], longitude: this.userFinalGuess[1] },
             { latitude: this.reponseMarker[0], longitude: this.reponseMarker[1] }
-        );
-
+        ) + " m";
+        }else {
+          this.distance = "Vous n'avez pas pointé de lieu sur la carte";
+        }
+        console.log(this.userFinalGuess);
       },
 
 
@@ -125,7 +128,7 @@ export default {
           Réponse : <label class="font-bold">{{ LieuReponse }}</label>
         </label>
         <label class="text-white ml-2 ">
-        Distance : <label class="font-bold">{{ distance }} m</label>
+        Distance : <label class="font-bold">{{ distance }}</label>
         </label>
       </div>
     </div>
