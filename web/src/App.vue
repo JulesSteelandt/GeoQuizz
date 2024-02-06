@@ -14,7 +14,7 @@ export default {
 
     /**
      * Vérifie si la route actuelle est la page d'accueil
-     * @returns boolean - true si la route actuelle est la page d'accueil, false sinon
+     * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
      */
     setup() {
       const route = useRoute();
@@ -91,6 +91,6 @@ export default {
 
   <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between" >
     <p>GeoQuizz - 2024</p>
-    <p>Copyrigth IUT-Charlemagne</p>
+    <p>Copyrigtht IUT-Charlemagne</p>
   </footer>
 </template>
