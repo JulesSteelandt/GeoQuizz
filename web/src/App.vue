@@ -77,9 +77,9 @@ export default {
     <playGeoQuizz v-if="isHomeRoute"/>
     <div class ="flex justify-center" v-if="isHomeRoute">
       <!-- Bouton à droite -->
-      <RouterLink to="/guess">
+      <RouterLink to="/selectgame">
         <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
-          Lancer le Quiz !
+          Lancer un Quiz !
         </button>
       </RouterLink>
 
