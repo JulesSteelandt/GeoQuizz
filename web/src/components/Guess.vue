@@ -120,10 +120,12 @@ export default {
   <div class="flex flex-wrap" >
     <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
       <img :src="imageTest" alt="imageTest">
-      <div v-if="validate" class="w-full rounded-b-lg h-max bg-blue-600 py-8 flex justify-center text-xl">
-        <label class="text-white ">
+      <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
+        <label class="text-white ml-2 ">
           Réponse : <label class="font-bold">{{ LieuReponse }}</label>
-          Distance : <label class="font-bold">{{ distance }} m</label>
+        </label>
+        <label class="text-white ml-2 ">
+        Distance : <label class="font-bold">{{ distance }} m</label>
         </label>
       </div>
     </div>
