@@ -95,6 +95,7 @@ export default {
           temps: 60 - this.timerCount,
           distance: this.distance
         };
+
       },
 
       /**
@@ -126,6 +127,9 @@ export default {
         this.userMarkerCoords = null;
         this.userFinalGuess = null;
         this.distance = null;
+        //Remet la carte dans la config intiale
+        //valeurs temporaires
+        this.center = [48.69, 6.18];
 
 
       },
