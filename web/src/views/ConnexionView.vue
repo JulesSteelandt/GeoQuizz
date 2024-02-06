@@ -2,7 +2,8 @@
 export default {
   data() {
     return {
-      isConnecte: true,
+      isConnected: true,
+      showError: false,
     };
   },
   methods:{
@@ -30,12 +31,14 @@ export default {
           console.log('Réponse du serveur:', data);
           // Authentification réussie
           console.log('Connexion réussie');
-          this.isConnect = true;
+          this.isConnected = true;
+          this.showError = false;
         } else {
           // Authentification échouée
           console.error('Échec de la connexion');
           console.log("Authentification a échoué, le nom utilisateur ou le mot de passe sont erronés");
-          this.isConnect = false;
+          this.isConnected = false;
+          this.showError = true;
         }
       } catch (error) {
         console.error('Erreur lors de la connexion:', error);
