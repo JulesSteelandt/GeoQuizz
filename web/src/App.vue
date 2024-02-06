@@ -1,27 +1,27 @@
 <script>
-import { computed } from 'vue';
-import { useRoute, RouterView, RouterLink } from 'vue-router';
+import {computed} from 'vue';
+import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
+import HeaderContent from "@/components/HeaderContent.vue";
 
 export default {
-  components: {PlayGeoQuizz},
+  components: {HeaderContent, PlayGeoQuizz},
   data() {
     return {
       isHomeRoute: true,
     };
   },
 
+  /**
+   * Vérifie si la route actuelle est la page d'accueil
+   * @returns boolean - true si la route actuelle est la page d'accueil, false sinon
+   */
+  setup() {
+    const route = useRoute();
+    const isHomeRoute = computed(() => route.path === '/');
 
-    /**
-     * Vérifie si la route actuelle est la page d'accueil
-     * @returns boolean - true si la route actuelle est la page d'accueil, false sinon
-     */
-    setup() {
-      const route = useRoute();
-      const isHomeRoute = computed(() => route.path === '/');
-
-      return { isHomeRoute };
-    },
+    return {isHomeRoute};
+  },
 
 };
 </script>
@@ -71,23 +71,24 @@ export default {
     </div>
   </div>
 
-  <div class="wrapper">
+    <div v-else class="flex flex-row">
+      <header class="bg-gray-700 h-screen w-1/5 flex flex-col items-center">
+        <header-content/>
+      </header>
 
-  </div>
-  </header>
+    <div class="flex flex-col justify-center w-full">
+      <playGeoQuizz v-if="isHomeRoute"/>
+      <div class="flex justify-center" v-if="isHomeRoute">
+        <!-- Bouton à droite -->
+        <RouterLink to="/map">
+          <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
+            Lancer le Quiz !
+          </button>
+        </RouterLink>
 
-  <playGeoQuizz v-if="isHomeRoute"/>
-  <div class ="flex justify-center" v-if="isHomeRoute">
-    <!-- Bouton à droite -->
-    <RouterLink to="/map">
-      <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
-        Lancer le Quiz !
-      </button>
-    </RouterLink>
+      </div>
 
-  </div>
-
-  <RouterView />
+      <RouterView/>
 
   <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between h-min-15" >
     <p>GeoQuizz - 2024</p>
