@@ -5,19 +5,19 @@ export default {
 </script>
 
 <template>
-  <div class="border-2">
-    <div id="email">
-      <p>E-mail :</p>
-      <input type="text" placeholder="Votre e-mail ...">
+  <div class="bg-white flex flex-col justify-center border-2 p-2.5 m-auto">
+    <div>
+      <p>Votre e-mail :</p>
+      <input class="w-60 mb-2.5" type="text" placeholder="Votre e-mail ...">
     </div>
-    <div id="mdp">
+    <div>
       <p>Mot de passe :</p>
-      <input type="text" placeholder="Votre mot de passe ...">
+      <input class="w-60 mb-2.5" type="text" placeholder="Votre mot de passe ...">
     </div>
-    <div id="mdp_confirm">
+    <div>
       <p>Confirmation du mot de passe :</p>
-      <input type="text" placeholder="Votre mot de passe ...">
+      <input class="w-60 mb-2.5" type="text" placeholder="Votre mot de passe ...">
     </div>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Je m'inscris</button>
+    <button class="bg-blue-400 text-white hover:opacity-70 font-bold py-2 px-4 rounded">Je m'inscris</button>
   </div>
 </template>
