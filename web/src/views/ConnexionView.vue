@@ -1,4 +1,5 @@
 <script>
+
 export default {
   data() {
     return {
@@ -40,17 +41,6 @@ export default {
             'Authorization': 'Basic ' + btoa(email + ':' + password)
 
           },
-
-          /**
-           * Fonction pour réinitialiser les champs d'entrée avant de quitter le composant
-           * @returns {void} - Réinitialise les champs d'entrée
-           */
-          beforeUnmount() {
-            // Réinitialiser les champs d'entrée avant de quitter le composant
-            this.email = '';
-            this.password = '';
-          }
-
         });
 
         // Vérifier la réponse du serveur
@@ -61,6 +51,7 @@ export default {
           console.log('Connexion réussie');
           this.isConnected = true;
           this.showError = false;
+
         } else {
           // Authentification échouée
           console.error('Échec de la connexion');
@@ -72,9 +63,19 @@ export default {
       } catch (error) {
         console.error('Erreur lors de la connexion:', error);
       }
+    },
+    /**
+     * Réinitialiser les champs d'entrée avant de quitter le composant
+     * @returns {void} - Réinitialise les champs d'entrée
+     */
+    resetFields() {
+      this.email = '';
+      this.password = '';
     }
-  }
+
+  },
 }
+
 </script>
 
 
