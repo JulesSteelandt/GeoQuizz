@@ -10,10 +10,10 @@ import {RouterLink, RouterView} from 'vue-router'
           <button class="h-full w-full">Home</button>
         </RouterLink>
       </div>
-      <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
+      <div class="hover:bg-white hover:text-blue-900 p-2">
         <RouterLink to="/guess">Guess</RouterLink>
       </div>
-      <div class="w-full hover:bg-geoGreen hover:bg-opacity-20 p-2">
+      <div class="hover:bg-white hover:text-blue-900 p-2">
         <RouterLink to="/map">Map</RouterLink>
       </div>
       <div class="hover:bg-white hover:text-blue-900 p-2">

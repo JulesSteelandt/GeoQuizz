@@ -27,8 +27,14 @@ export default {
       //coordonnées du Guess final
       userFinalGuess: null,
 
+
+
       //Jeu de données de test en attendant de récupérer les données de l'API
       imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
+      //Lieu à deviner
+      LieuReponse: "Place Stanislas, Nancy, France",
+      //marker de la réponse
+      reponseMarker: [48.693522435993316, 6.183261126061553]
     }
   },
   watch: {
@@ -47,6 +53,10 @@ export default {
           setTimeout(() => {
               this.timerCount--;
           }, 1000);
+        }
+        if (value === 0) {
+          this.timerEnable = false;
+          this.validate = true;
         }
 
       },
@@ -80,6 +90,7 @@ export default {
        * @returns {void}
        */
       placeMarker(event) {
+        if(this.validate) return;
         this.userMarkerCoords = [event.latlng.lat, event.latlng.lng];
       }
     }
@@ -88,12 +99,17 @@ export default {
 </script>
 
 <template>
-<section class="h-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+<section class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
   <div class="flex flex-wrap" >
-    <div class="w-full md:w-1/2 border border-gray-400 rounded-lg">
-      <img :src="imageTest" alt="imageTest" >
+    <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
+      <img :src="imageTest" alt="imageTest">
+      <div v-if="validate" class="w-full rounded-b-lg h-max bg-blue-600 py-8 flex justify-center text-xl">
+        <label class="text-white ">
+          Réponse : <label class="font-bold">{{ LieuReponse }}</label>
+        </label>
+      </div>
     </div>
-    <div class="w-full md:w-1/2 flex justify-center items-center">
+    <div class="w-full md:w-2/5 flex justify-center items-center">
       <div class="w-full max-w-md">
         <div class="mapbox border border-gray-400 rounded-lg shadow-lg">
           <l-map
@@ -111,11 +127,16 @@ export default {
 
             <!--marqueur placé par l'utilisateur-->
             <l-marker v-if="userMarkerCoords" :lat-lng="userMarkerCoords"/>
+
+            <!--marqueur de la réponse-->
+            <l-marker  v-if="validate" :lat-lng="reponseMarker"/>
+
+
           </l-map>
         </div>
-        <div class="bg-blue-600 text-white rounded-b-lg mt-4">
-          <label class="m-8 text-xl ">Temps Restant : <span class="font-semibold">{{ timerCount }}</span></label>
-          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full m-8" @click="valider" v-if="!validate">Valider</button>
+        <div class="bg-blue-600 text-white rounded-b-lg py-4 ">
+          <label class="m-8 text-xl w-1/2 font-mono ">Temps Restant : <span class="font-semibold">{{ timerCount }}</span></label>
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full " @click="valider" v-if="!validate">Valider</button>
         </div>
       </div>
     </div>
@@ -127,8 +148,11 @@ export default {
 <style scoped>
 .mapbox {
   position: relative;
-  width: 500px;
-  height: 500px;
+  width: auto;
+  height: calc(100vh / 2.5);
+  min-width: 200px;
+  min-height: 200px;
+
 }
 .map {
   position: absolute;
