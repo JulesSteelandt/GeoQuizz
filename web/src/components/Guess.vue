@@ -30,6 +30,13 @@ export default {
       //distance entre le marqueur de l'utilisateur et le marqueur de la réponse
       distance: null,
 
+      //message en fonction de la distance
+      distanceMessage: "",
+
+      //tableau pour le calcul des scores
+      donneesScores: null,
+
+
 
 
       //Jeu de données de test en attendant de récupérer les données de l'API
@@ -84,6 +91,10 @@ export default {
         this.validate = true;
         this.userFinalGuess = this.userMarkerCoords;
         this.calculerDistance();
+        this.donneesScores = {
+          temps: 60 - this.timerCount,
+          distance: this.distance
+        };
       },
 
       /**
@@ -96,11 +107,27 @@ export default {
         this.distance = getDistance(
             { latitude: this.userFinalGuess[0], longitude: this.userFinalGuess[1] },
             { latitude: this.reponseMarker[0], longitude: this.reponseMarker[1] }
-        ) + " m";
+        );
+        this.distanceMessage = this.distance + " m";
         }else {
-          this.distance = "Vous n'avez pas pointé de lieu sur la carte";
+          this.distanceMessage = "Vous n'avez pas pointé de lieu sur la carte";
+          this.distance= 0;
         }
-        console.log(this.userFinalGuess);
+      },
+
+      /**
+       * Méthode qui permet de passer à l'étape suivante
+       * @returns {void}
+       */
+      nextStep() {
+        this.timerCount = 60;
+        this.timerEnable = true;
+        this.validate = false;
+        this.userMarkerCoords = null;
+        this.userFinalGuess = null;
+        this.distance = null;
+
+
       },
 
 
@@ -128,7 +155,7 @@ export default {
           Réponse : <label class="font-bold">{{ LieuReponse }}</label>
         </label>
         <label class="text-white ml-2 ">
-        Distance : <label class="font-bold">{{ distance }}</label>
+        Distance : <label class="font-bold">{{ distanceMessage }}</label>
         </label>
       </div>
     </div>
@@ -160,6 +187,7 @@ export default {
         <div class="bg-blue-600 text-white rounded-b-lg py-4 ">
           <label class="m-8 text-xl w-1/2 font-mono ">Temps Restant : <span class="font-semibold">{{ timerCount }}</span></label>
           <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full " @click="valider" v-if="!validate">Valider</button>
+          <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full " @click="nextStep" v-else>Suivant</button>
         </div>
       </div>
     </div>
