@@ -11,4 +11,9 @@ class Serie extends Model
     protected $primaryKey = 'id';
     public $timestamps = false;
 
+    public function localisation()
+    {
+        return $this->hasMany(Localisation::class, "serie_id", "id");
+    }
+
 }

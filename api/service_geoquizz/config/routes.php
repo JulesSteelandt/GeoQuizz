@@ -6,6 +6,9 @@ use geoquizz\service\app\actions\GetProfilAction;
 use geoquizz\service\app\actions\SetProfilAction;
 use geoquizz\service\app\actions\GetSerieAction;
 use geoquizz\service\app\actions\GetSerieByIdAction;
+use geoquizz\service\app\actions\PostTourPartie;
+use geoquizz\service\app\middlewares\checkToken;
+use geoquizz\service\app\actions\PostCreatePartie;
 
 
 return function( \Slim\App $app):void {
@@ -18,6 +21,9 @@ return function( \Slim\App $app):void {
 
     $app->get('/historique[/]', GetHistoryAction::class)
         ->setName('historique');
+
+    $app->post("/games/create",PostCreatePartie::class)
+        ->addMiddleware(new checkToken());
 
     $app->options('/{routes:.+}', function ($request, $response, $args) {
         return $response; // Renvoie une réponse HTTP vide
