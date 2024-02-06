@@ -29,7 +29,9 @@ export default {
         <img class="w-full h-48 object-cover object-center" src="https://via.placeholder.com/350x200" alt="Image de la série">
         <div class="p-4">
           <h3 class="text-gray-900 font-semibold text-lg">Aléatoire</h3>
+          <router-link to="/guess">
           <button class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Choisir</button>
+          </router-link>
         </div>
       </div>
     </div>
@@ -40,7 +42,9 @@ export default {
         <img class="w-full h-48 object-cover object-center" :src="item.img" alt="Image de la série">
         <div class="p-4">
           <h3 class="text-gray-900 font-semibold text-lg">{{ item.nom }}</h3>
+          <router-link to="/guess">
           <button class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Choisir</button>
+          </router-link>
         </div>
       </div>
     </div>
