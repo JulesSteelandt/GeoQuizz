@@ -14,7 +14,7 @@ export default {
 
     /**
      * Vérifie si la route actuelle est la page d'accueil
-     * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
+     * @returns boolean - true si la route actuelle est la page d'accueil, false sinon
      */
     setup() {
       const route = useRoute();
@@ -48,13 +48,12 @@ export default {
       </div>
     </div>
       <div class="flex flex-row items-center" >
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
+        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl mr-3 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80">
           <RouterLink to="/">
             <button class="h-full w-full">Home</button>
           </RouterLink>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/map">
+        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl mr-3 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80">          <RouterLink to="/map">
             <button class="h-full w-full">Map</button>
           </RouterLink>
         </div>
@@ -74,6 +73,8 @@ export default {
   <div class="wrapper">
 
   </div>
+  </header>
+
   <playGeoQuizz v-if="isHomeRoute"/>
   <div class ="flex justify-center" v-if="isHomeRoute">
     <!-- Bouton à droite -->
@@ -85,12 +86,10 @@ export default {
 
   </div>
 
-  </header>
-
   <RouterView />
 
   <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between" >
     <p>GeoQuizz - 2024</p>
-    <p>Copyrigtht IUT-Charlemagne</p>
+    <p>Copyrigth IUT-Charlemagne</p>
   </footer>
 </template>
