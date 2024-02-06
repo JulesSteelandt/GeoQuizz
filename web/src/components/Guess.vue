@@ -95,7 +95,6 @@ export default {
           temps: 60 - this.timerCount,
           distance: this.distance
         };
-        console.log(this.donneesScores);
       },
 
       /**
