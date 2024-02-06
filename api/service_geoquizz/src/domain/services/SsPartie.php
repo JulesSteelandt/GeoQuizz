@@ -5,6 +5,7 @@ namespace geoquizz\service\domain\services;
 use geoquizz\service\domain\DTO\PartieDTO;
 use geoquizz\service\domain\entities\Partie;
 use geoquizz\service\domain\entities\Partie_cache;
+use GuzzleHttp\Client;
 use Ramsey\Uuid\Uuid;
 
 class SsPartie
@@ -47,7 +48,8 @@ class SsPartie
     {
         $record = Partie_cache::where("id", $game_id)->get();
         $nbRecord = $record->count();
-        $lastRecord = $nbRecord[$nbRecord];
+        var_dump($nbRecord);
+        $lastRecord = Partie_cache::where("id", $game_id)->latest("tours")->first();
 
         if ($nbRecord == 0) {
             throw new \Exception("Partie non existante");
@@ -61,7 +63,7 @@ class SsPartie
             //Todo Ajout
             $newRecord = new Partie_cache();
             $newRecord->id = $game_id;
-            $newRecord->user_mail = $lastRecord->user_mail;
+            $newRecord->user_email = $lastRecord->user_email;
             $newRecord->user_username = $lastRecord->user_username;
             $newRecord->serie_id = $lastRecord->serie_id;
             $newRecord->tours = $nbRecord;
@@ -83,6 +85,10 @@ class SsPartie
                     $SCORE_S = 1;
                 }
 
+                if ($r->tours == 0){
+                    $SCORE_S = 0;
+                }
+
                 //calcul de la hess selon l'énoncé avec une norme T dans le sujet
                 if ($r->temps < 5) {
                     $SCORE_S = $SCORE_S * 4;
@@ -96,12 +102,14 @@ class SsPartie
             }
 
             $finalRecord = new Partie();
-            $finalRecord->user_mail = $lastRecord->user_mail;
+            $finalRecord->user_email = $lastRecord->user_email;
             $finalRecord->user_username = $lastRecord->user_username;
             $finalRecord->score = $TOTAL_T;
             $finalRecord->difficulte = 1;
             $finalRecord->serie_id = $lastRecord->serie_id;
             $finalRecord->save();
+
+            $res=Partie_cache::where('id',$game_id)->delete();
             return true;
         }
 
@@ -109,7 +117,7 @@ class SsPartie
             //Todo la game continue
             $newRecord = new Partie_cache();
             $newRecord->id = $game_id;
-            $newRecord->user_mail = $lastRecord->user_mail;
+            $newRecord->user_email = $lastRecord->user_email;
             $newRecord->user_username = $lastRecord->user_username;
             $newRecord->serie_id = $lastRecord->serie_id;
             $newRecord->tours = $nbRecord;

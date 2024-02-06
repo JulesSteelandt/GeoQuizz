@@ -25,6 +25,9 @@ return function( \Slim\App $app):void {
     $app->post("/games/create",PostCreatePartie::class)
         ->addMiddleware(new checkToken());
 
+    $app->post("/games/play",PostTourPartie::class)
+        ->addMiddleware(new checkToken());
+
     $app->options('/{routes:.+}', function ($request, $response, $args) {
         return $response; // Renvoie une réponse HTTP vide
     });

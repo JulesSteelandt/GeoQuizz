@@ -4,6 +4,8 @@ namespace geoquizz\service\app\actions;
 
 use geoquizz\service\domain\services\SsPartie;
 use geoquizz\service\domain\services\SsProfile;
+use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
@@ -16,10 +18,15 @@ class GetHistoryAction extends AbstractAction
         $this->partieService = $s;
     }
 
+    /**
+     * @throws GuzzleException
+     */
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $encodeTokenRes = $request->getAttribute("tokenValidationResult");
-        $tokenRes = json_decode($encodeTokenRes, true);
+        $client = new Client();
+        $headers = $request->getHeaders();
+        $encodeTokenRes = $client->request('GET', "http://auth_php/users/validate", ['headers' => $headers]);
+        $tokenRes = json_decode($encodeTokenRes->getBody(), true);
         $id = $tokenRes['email'];
 
         $history = $this->partieService->getHistory($id);
