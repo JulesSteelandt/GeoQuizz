@@ -1,4 +1,6 @@
 <script >
+import {SERIES} from "@/apiLiens.js";
+
 export default {
   name: 'SelectGameMenu',
   data() {
@@ -12,6 +14,7 @@ export default {
         {id: 4, nom: "Lyon", img: "https://via.placeholder.com/350x200" },
         {id: 5, nom: "Marseille", img: "https://via.placeholder.com/350x200" },
       ],
+      url : SERIES
     }
   },
   methods: {
