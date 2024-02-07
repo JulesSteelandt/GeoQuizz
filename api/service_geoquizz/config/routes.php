@@ -22,10 +22,15 @@ return function( \Slim\App $app):void {
     $app->get('/historique[/]', GetHistoryAction::class)
         ->setName('historique');
 
+    $app->get("/games[/]",PostTourPartie::class);
+
     $app->post("/games/create",PostCreatePartie::class)
         ->addMiddleware(new CheckToken());
 
     $app->post("/games/play",PostTourPartie::class)
+        ->addMiddleware(new CheckToken());
+
+    $app->post("/games/recreate/{id_partie}[/]",PostTourPartie::class)
         ->addMiddleware(new CheckToken());
 
     $app->options('/{routes:.+}', function ($request, $response, $args) {

@@ -48,11 +48,20 @@ class SsSerie
             $host = gethostbyname("directus");
 
             foreach ($tableau_id as $tdi){
-                $encodeResDeux = $encodeRes = $this->client->get('/items/localisation/'.$tdi);
+                $encodeResDeux = $this->client->get('/items/localisation/'.$tdi);
                 $resDeux = json_decode($encodeResDeux->getBody(), true);
 
-                $tab[] = new LocalisationDTO($resDeux['data']['id'], "http://$host:8055/assets/".$resDeux['data']['photo'], $resDeux['data']['coordonnee']['coordinates']);
+                $tab[] = new LocalisationDTO($resDeux['data']['id'], $resDeux['data']['lieu'], "http://$host:8055/assets/".$resDeux['data']['photo'], $resDeux['data']['coordonnee']['coordinates']);
             }
         return $tab;
+    }
+
+    public function getLocalisationById($id)
+    {
+        $encodeRes = $this->client->get('/items/localisation/'.$id);
+        $res = json_decode($encodeRes->getBody(), true);
+        $data = $res['data'];
+        $host = gethostbyname("directus");
+        return new LocalisationDTO($data['id'], $data['lieu'], "http://$host:8055/assets/".$data['photo'], $data['coordonnee']['coordinates']);
     }
 }
