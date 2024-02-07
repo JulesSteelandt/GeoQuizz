@@ -1,6 +1,6 @@
 <script>
-import { computed } from 'vue';
-import { useRoute, RouterView, RouterLink } from 'vue-router';
+import {computed} from 'vue';
+import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
 
 export default {
@@ -13,25 +13,28 @@ export default {
 
 
   /**
-   * Vérifie si la route actuelle est la page d'accueil
+   * Vérifie si la route actuelle est la page d'accueil ou non
    * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
    */
   setup() {
     const route = useRoute();
     const isHomeRoute = computed(() => route.path === '/');
 
-    return { isHomeRoute };
+    return {isHomeRoute};
   },
 
 };
 </script>
 
 <template>
-  <header>
-    <div class="header flex flex-row flex-wrap justify-between p-1">
-      <div class="headerLogoText flex flex-row flex-wrap">
+  <header class="bg-gray-700">
+    <div class="header flex flex-wrap p-1 m-2 lg:flex-row lg:justify-between max-lg:flex-col max-lg:items-center">
+      <div class="headerLogoText flex flex-row flex-wrap max-lg:mb-8 max-lg:mr-20">
         <!-- Logo à gauche -->
+
+        <router-link to="/" class="logo">
         <img class="w-28" src="@/components/icons/globe.png" alt="logo">
+        </router-link>
 
         <!-- Textes à gauche -->
         <div class="flex-col ml-4 w-20">
@@ -47,49 +50,57 @@ export default {
           </div>
         </div>
       </div>
-      <div class="flex flex-row items-center" >
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
+      <div class="flex flex-row items-center">
+        <div
+            class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
           <RouterLink to="/">
-            <button class="h-full w-full">Home</button>
+            <button class="h-full w-full max-sm:text-base">Home</button>
           </RouterLink>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
+        <div
+            class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
           <RouterLink to="/guess">
-            <button class="h-full w-full">Jouer</button>
+            <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
+
           </RouterLink>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/inscription">
-            <button class="h-full w-full">Inscription</button>
-          </RouterLink>
+
+        <div class="notConnected flex flex-row items-center">
+          <div
+              class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
+            <RouterLink to="/inscription">
+              <button class="h-full w-full max-sm:text-base">Inscription</button>
+            </RouterLink>
+          </div>
+          <div
+              class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
+            <RouterLink to="/connexion">
+              <button class="h-full w-full max-sm:text-base">Connexion</button>
+            </RouterLink>
+          </div>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/connexion">
-            <button class="h-full w-full">Connexion</button>
-          </RouterLink>
+        <div class="connected flex flex-row items-center">
         </div>
       </div>
     </div>
-
-    <div class="wrapper">
-
-    </div>
-    <playGeoQuizz v-if="isHomeRoute"/>
-    <div class ="flex justify-center" v-if="isHomeRoute">
-      <!-- Bouton à droite -->
-      <RouterLink to="/guess">
-        <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
-          Lancer le Quiz !
-        </button>
-      </RouterLink>
-
-    </div>
-
   </header>
 
-  <RouterView />
+  <playGeoQuizz v-if="isHomeRoute"/>
+  <div class="flex justify-center" v-if="isHomeRoute">
+    <!-- Bouton à droite -->
+    <RouterLink to="/guess">
+      <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
+        Lancer le Quiz !
+      </button>
+    </RouterLink>
 
-  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between" >
+  </div>
+
+
+
+  <RouterView/>
+
+  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between">
     <p>GeoQuizz - 2024</p>
     <p>Copyrigtht IUT-Charlemagne</p>
   </footer>
