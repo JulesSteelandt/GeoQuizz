@@ -12,6 +12,7 @@ export default {
   },
 
 
+
   /**
    * Vérifie si la route actuelle est la page d'accueil ou non
    * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
@@ -31,7 +32,9 @@ export default {
     <div class="header flex flex-row flex-wrap justify-between p-1 m-2">
       <div class="headerLogoText flex flex-row flex-wrap">
         <!-- Logo à gauche -->
+        <router-link to="/" class="logo">
         <img class="w-28" src="@/components/icons/globe.png" alt="logo">
+        </router-link>
 
         <!-- Textes à gauche -->
         <div class="flex-col ml-4 w-20">
