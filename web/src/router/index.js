@@ -6,6 +6,7 @@ import InscriptionView from "@/views/InscriptionView.vue";
 import Page404 from '@/views/Page_404.vue'
 import Guess from "@/components/Guess.vue";
 import SelectGameMenu from "@/components/SelectGameMenu.vue";
+import monCompteView from "@/views/monCompteView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,13 @@ const router = createRouter({
       component: Guess
 
     },
+
+    {
+      path: '/monCompte',
+      name: 'monCompte',
+      component: monCompteView
+    },
+
     {
       path: '/:pathMatch(.*)',
       name: 'page404',

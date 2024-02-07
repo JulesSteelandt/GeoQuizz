@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie';
 import togglePassword from '@/components/togglePasseword.vue';
 
+
 export default {
   components: {
     togglePassword
