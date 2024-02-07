@@ -10,9 +10,10 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class MethodLocalAction extends AbstractAction {
 
-    private Client $client;
 
-    public function __construct(Client $c) {
+    private ClientApi $client;
+
+    public function __construct(ClientApi $c) {
         $this->client = $c;
     }
 
@@ -25,6 +26,7 @@ class MethodLocalAction extends AbstractAction {
         ]);
         $json = json_decode($data->getBody()->getContents(),true);
         $response->getBody()->write(json_encode($json,JSON_PRETTY_PRINT));
+
         return $response->withHeader('Content-Type', 'application/json');
     }
 
