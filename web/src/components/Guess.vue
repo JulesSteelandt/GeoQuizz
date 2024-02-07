@@ -39,6 +39,9 @@ export default {
       donneesSent: false,
 
 
+      //id_série récupérer grâce à l'url
+      idSerie: this.getIdSerie(),
+
 
 
       //Jeu de données de test en attendant de récupérer les données de l'API
@@ -76,6 +79,18 @@ export default {
 
   },
     methods: {
+
+
+      /**
+       * Méthode qui permet de récupérer l'id de la série dans l'url
+       * @returns {string} - l'id de la série ou "aleatoire" si serie choisie aléatoirement
+       */
+      getIdSerie() {
+        let url = window.location.href;
+        let id = url.substring(url.lastIndexOf('/') + 1);
+        console.log(id);
+        return id;
+      },
 
       /**
        * Méthode qui stop le chronomètre et permet de valider la position choisie par l'utilisateur
