@@ -59,7 +59,7 @@ export default {
         </div>
         <div
             class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
-          <RouterLink to="/guess">
+          <RouterLink to="/selectgame">
             <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
 
           </RouterLink>
@@ -88,7 +88,7 @@ export default {
   <playGeoQuizz v-if="isHomeRoute"/>
   <div class="flex justify-center" v-if="isHomeRoute">
     <!-- Bouton à droite -->
-    <RouterLink to="/guess">
+    <RouterLink to="/selectgame">
       <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
         Lancer le Quiz !
       </button>
