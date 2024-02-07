@@ -5,7 +5,7 @@ export default {
   name: 'SelectGameMenu',
   data() {
     return {
-      init:  this.init(),
+      initialisation:  this.init(),
 
       series: [],
       /**series: [
