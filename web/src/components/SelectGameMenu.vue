@@ -5,8 +5,10 @@ export default {
   name: 'SelectGameMenu',
   data() {
     return {
-      init: false, // this.init(),
-      series: [
+      init:  this.init(),
+
+      series: [],
+      /**series: [
           //ex : {id: 2, nom: "Nancy", img: "https://via.placeholder.com/350x200" },
           //données d'exemple à remplacer par les données de l'API
        {id: 1, nom: "Nancy", img: "https://via.placeholder.com/350x200"  },
@@ -15,6 +17,7 @@ export default {
         {id: 4, nom: "Lyon", img: "https://via.placeholder.com/350x200" },
         {id: 5, nom: "Marseille", img: "https://via.placeholder.com/350x200" },
     ],
+    **/
       chargement: false,
       erreur: false,
 
@@ -22,25 +25,86 @@ export default {
     }
   },
   methods: {
-  fetchSeries() {
-    this.chargement = true;
-    let seriesFetch = []
-    fetch(SERIES)
-        .then(response => response.json())
-        .then((data) => {
-          data.forEach((serie) => {
-            seriesFetch.push({id: serie.id, nom: serie.nom});
+    //Méthode qui permet de récupérer les données des séries depuis l'API sachant que les données sont au format JSON dans l'api
+    fetchSeries() {
+      this.chargement = true;
+      let seriesFetch = [];
+      fetch(SERIES)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erreur de chargement des données');
+            }
+            // Parse la réponse JSON
+            return response.json();
+          })
+          .then(data => {
+            // Vérifie si la clé "data" existe dans la réponse JSON
+            if (data && data.data) {
+              // Itère sur les données pour créer un objet pour chaque série
+              data.data.forEach(serie => {
+                seriesFetch.push({
+                  id: serie.id,
+                  nom: serie.nom,
+                  img: "https://via.placeholder.com/350x200" // this.fetchImage(serie.photo)
+                });
+              });
 
-            //serie.img = SERIES_IMAGE + serie.id;
+            } else {
+              throw new Error('Les données reçues ne sont pas au format attendu.');
+            }
+            // Réinitialise la variable de chargement
+            this.chargement = false;
+          })
+          .catch(error => {
+            console.error('Erreur lors du chargement des séries:', error);
+            // Réinitialise la variable de chargement en cas d'erreur
+            this.chargement = false;
+          })
+          .finally(() => {
+            // Assigne les données récupérées à la variable series
+            this.series = seriesFetch;
+          });
+    },
+
+    /**
+     * methode qui permet de fetch une image à partir de l'API à partir de l'id de l'image
+     * @param idImg
+     * @returns string - url de l'image
+     */
+    fetchImage(idImg) {
+let url = "";
+      fetch(SERIES_IMAGE + idImg)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Erreur de chargement des données');
+            }
+            // Parse la réponse JSON
+            return response.json();
+          })
+          .then(data => {
+            // Vérifie si la clé "data" existe dans la réponse JSON
+            if (data && data.data) {
+              // Itère sur les données pour créer un objet pour chaque série
+              url = data.data.url;
+            } else {
+              throw new Error('Les données reçues ne sont pas au format attendu.');
+            }
+          })
+          .catch(error => {
+            console.error('Erreur lors du chargement des séries:', error);
+          })
+          .finally(() => {
+            return url;
           });
 
-        })
-        .finally(() => {
-          this.chargement = false;
-          this.series = seriesFetch;
-        })
+    },
 
-  },
+
+
+    /**
+     * Méthode qui initialise le composant
+     * @return {boolean}
+     */
   init() {
     this.fetchSeries();
     return true;
@@ -52,9 +116,10 @@ export default {
 </script>
 
 <template>
-  <section class="h-full w-full min-h-screen  flex flex-wrap justify-center pt-6">
+  <section class="h-full w-full min-h-screen pt-6">
+    <div v-if="this.series.length > 0 "  class="flex flex-wrap justify-center">
     <!-- Carte "Random" pour avoir un choix aléatoire -->
-    <div class="max-w-xs mx-4 mb-4" v-if="series.length > 0">
+    <div  class="max-w-xs mx-4 mb-4">
       <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <img class="w-full h-48 object-cover object-center" src="https://via.placeholder.com/350x200" alt="Image de la série">
         <div class="p-4">
@@ -67,7 +132,7 @@ export default {
     </div>
 
     <!-- Cartes pour chaque jeu -->
-    <div v-for="(item, index) in series" :key="item.id" class="max-w-xs mx-4 mb-4" v-if="index % 5 !== 0">
+    <div  v-for="(item, index) in series" :key="item.id" class="max-w-xs mx-4 mb-4" v-if="index % 5 !== 0">
       <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <img class="w-full h-48 object-cover object-center" :src="item.img" alt="Image de la série">
         <div class="p-4">
@@ -77,6 +142,9 @@ export default {
           </router-link>
         </div>
       </div>
+    </div>
+
+
     </div>
   </section>
 </template>
