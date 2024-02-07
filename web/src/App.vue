@@ -28,7 +28,7 @@ export default {
 
 <template>
   <header>
-    <div class="header flex flex-row flex-wrap justify-between p-1">
+    <div class="header flex flex-row flex-wrap justify-between p-1 m-2">
       <div class="headerLogoText flex flex-row flex-wrap">
         <!-- Logo à gauche -->
         <img class="w-28" src="@/components/icons/globe.png" alt="logo">
@@ -48,25 +48,30 @@ export default {
         </div>
       </div>
       <div class="flex flex-row items-center" >
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
+        <div class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
           <RouterLink to="/">
             <button class="h-full w-full">Home</button>
           </RouterLink>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/selectgame">
+        <div class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
+          <RouterLink to="/guess">
             <button class="h-full w-full">Jouer</button>
           </RouterLink>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/inscription">
-            <button class="h-full w-full">Inscription</button>
-          </RouterLink>
+
+        <div class="notConnected flex flex-row items-center">
+          <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
+            <RouterLink to="/inscription">
+              <button class="h-full w-full">Inscription</button>
+            </RouterLink>
+          </div>
+          <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3">
+            <RouterLink to="/connexion">
+              <button class="h-full w-full">Connexion</button>
+            </RouterLink>
+          </div>
         </div>
-        <div class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl hover:bg-stone-400 hover:text-gray-700 mr-3">
-          <RouterLink to="/connexion">
-            <button class="h-full w-full">Connexion</button>
-          </RouterLink>
+        <div class="connected flex flex-row items-center">
         </div>
       </div>
     </div>
@@ -77,9 +82,9 @@ export default {
     <playGeoQuizz v-if="isHomeRoute"/>
     <div class ="flex justify-center" v-if="isHomeRoute">
       <!-- Bouton à droite -->
-      <RouterLink to="/selectgame">
+      <RouterLink to="/guess">
         <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
-          Lancer un Quiz !
+          Lancer le Quiz !
         </button>
       </RouterLink>
 
