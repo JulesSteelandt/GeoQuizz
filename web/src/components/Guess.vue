@@ -17,6 +17,8 @@ export default {
       validate: false,
       osmURL: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       center: [48.69, 6.18],
+      //centre de la carte initial
+      initCenter: [48.69, 6.18],
       //niveau de zoom initial
       zoom: 13,
       //niveau de zoom maximal et minimal
@@ -101,6 +103,7 @@ export default {
         this.validate = true;
         this.userFinalGuess = this.userMarkerCoords;
         this.calculerDistance();
+        this.replaceMapView();
         this.donneesScores = {
           serie_id: this.serie_id,
           temps: 60 - this.timerCount,
@@ -165,8 +168,19 @@ export default {
       //Remet la carte dans la config intiale
       //valeurs temporaires
       this.center = [48.69, 6.18];
+      this.zoom = 13;
       this.donneesSent = false;
 
+
+    },
+
+    /**
+    * Methode qui permet de replacer la map.
+     * @returns {void}
+     */
+    replaceMapView() {
+      this.zoom = 13;
+      this.center = this.initCenter;
 
     },
 
