@@ -31,7 +31,10 @@ export default {
     <div class="header flex flex-wrap p-1 m-2 lg:flex-row lg:justify-between max-lg:flex-col max-lg:items-center">
       <div class="headerLogoText flex flex-row flex-wrap max-lg:mb-8 max-lg:mr-20">
         <!-- Logo à gauche -->
+
+        <router-link to="/" class="logo">
         <img class="w-28" src="@/components/icons/globe.png" alt="logo">
+        </router-link>
 
         <!-- Textes à gauche -->
         <div class="flex-col ml-4 w-20">
