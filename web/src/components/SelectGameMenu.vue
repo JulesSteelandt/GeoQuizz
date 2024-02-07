@@ -111,9 +111,11 @@ let url = "";
   <section class="h-full w-full min-h-screen pt-6">
     <div v-if="this.series.length > 0 "  class="flex flex-wrap justify-center">
     <!-- Carte "Random" pour avoir un choix aléatoire -->
-    <div  class="max-w-xs mx-4 mb-4">
+    <div  class="max-w-xs mx-4 mb-4 w-[350px]">
       <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img class="w-full h-48 object-cover object-center" src="https://via.placeholder.com/350x200" alt="Image de la série">
+        <div class="bg-gray-300 flex justify-center items-center">
+          <img class=" h-48 object-cover object-center" src="@/components/icons/Aleatoire.png" alt="Image de la série">
+        </div>
         <div class="p-4">
           <h3 class="text-gray-900 font-semibold text-lg">Aléatoire</h3>
           <router-link to="/play/aleatoire">
@@ -124,7 +126,7 @@ let url = "";
     </div>
 
     <!-- Cartes pour chaque jeu -->
-    <div  v-for="(item, index) in series" :key="item.id" class="max-w-xs mx-4 mb-4" v-if="index % 5 !== 0">
+    <div  v-for="(item, index) in series" :key="item.id" class="max-w-xs mx-4 mb-4 w-[350px]" v-if="index % 5 !== 0">
       <div class="bg-white shadow-lg rounded-lg overflow-hidden">
         <img class="w-full h-48 object-cover object-center" :src="item.img" alt="Image de la série">
         <div class="p-4">
