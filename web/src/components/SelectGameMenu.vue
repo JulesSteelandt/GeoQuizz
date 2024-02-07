@@ -1,16 +1,16 @@
-<script >
+<script>
 import {SERIES, SERIES_IMAGE} from "@/apiLiens.js";
 
 export default {
   name: 'SelectGameMenu',
   data() {
     return {
-      initialisation:  this.init(),
+      initialisation: this.init(),
       series: [],
+      imageUrl: "",
       chargement: false,
       erreur: false,
-
-
+      imageChargee: true
     }
   },
   methods: {
@@ -38,7 +38,7 @@ export default {
                 seriesFetch.push({
                   id: serie.id,
                   nom: serie.nom,
-                  img: "https://via.placeholder.com/350x200" // this.fetchImage(serie.photo)
+                  img: this.fetchImage(serie.photo)
                 });
               });
 
@@ -63,50 +63,41 @@ export default {
      * @returns string - url de l'image
      */
     fetchImage(idImg) {
-let url = "";
+      let url = "";
       fetch(SERIES_IMAGE + idImg)
           .then(response => {
             if (!response.ok) {
               throw new Error('Erreur de chargement des données');
+              this.erreur = true;
             }
             // Parse la réponse JSON
             return response.json();
           })
           .then(data => {
-            // Vérifie si la clé "data" existe dans la réponse JSON
-            if (data && data.data) {
-              // Itère sur les données pour créer un objet pour chaque série
-              url = data.data.url;
-            } else {
-              throw new Error('Les données reçues ne sont pas au format attendu.');
-            }
+            console.log(data);
           })
           .catch(error => {
-            console.error('Erreur lors du chargement des séries:', error);
-          })
-          .finally(() => {
-            return url;
+            this.imageChargee = false;
           });
 
     },
-
 
 
     /**
      * Méthode qui initialise le composant
      * @return {boolean}
      */
-  init() {
-    this.fetchSeries();
-    return true;
-  },
+    init() {
+      this.fetchSeries();
+      return true;
+    },
 
     /**
      * Méthode qui permet de récupérer un choix aléatoire
      * @returns {number}
      */
     aleatoire() {
-      return (Math.floor(Math.random() * this.series.length))+1;
+      return (Math.floor(Math.random() * this.series.length)) + 1;
     },
 
   }
@@ -117,34 +108,42 @@ let url = "";
 
 <template>
   <section class="h-full w-full min-h-screen pt-6">
-    <div v-if="this.series.length > 0 "  class="flex flex-wrap justify-center">
-    <!-- Carte "Random" pour avoir un choix aléatoire -->
-    <div  class="max-w-xs mx-4 mb-4 w-[350px]">
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <div class="bg-gray-300 flex justify-center items-center">
-          <img class=" h-48 object-cover object-center" src="@/components/icons/Aleatoire.png" alt="Image de la série">
-        </div>
-        <div class="p-4">
-          <h3 class="text-gray-900 font-semibold text-lg">Aléatoire</h3>
-          <router-link :to="/play/+ this.aleatoire()">
-          <button class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Choisir</button>
-          </router-link>
+    <div v-if="this.series.length > 0 " class="flex flex-wrap justify-center">
+      <!-- Carte "Random" pour avoir un choix aléatoire -->
+      <div class="max-w-xs mx-4 mb-4 w-[350px]">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <div class="bg-gray-300 flex justify-center items-center">
+            <img class=" h-48 object-cover object-center" src="@/components/icons/Aleatoire.png"
+                 alt="Image de la série">
+          </div>
+          <div class="p-4">
+            <h3 class="text-gray-900 font-semibold text-lg">Aléatoire</h3>
+            <router-link :to="/play/+ this.aleatoire()">
+              <button
+                  class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                Choisir
+              </button>
+            </router-link>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Cartes pour chaque jeu -->
-    <div  v-for="(item, index) in series" :key="item.id" class="max-w-xs mx-4 mb-4 w-[350px]" v-if="index % 5 !== 0">
-      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-        <img class="w-full h-48 object-cover object-center" :src="item.img" alt="Image de la série">
-        <div class="p-4">
-          <h3 class="text-gray-900 font-semibold text-lg">{{ item.nom }}</h3>
-          <router-link :to="/play/ + item.id" >
-          <button class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Choisir</button>
-          </router-link>
+      <!-- Cartes pour chaque jeu -->
+      <div v-for="(item, index) in series" :key="item.id" class="max-w-xs mx-4 mb-4 w-[350px]" v-if="index % 5 !== 0">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+          <img v-if="imageChargee" class="w-full h-48 object-cover object-center" :src="item.img" alt="Image de la série">
+          <img v-else class="w-full h-48 object-cover object-center" src="../assets/image_not_found.png" alt="Image de la série">
+          <div class="p-4">
+            <h3 class="text-gray-900 font-semibold text-lg">{{ item.nom }}</h3>
+            <router-link :to="/play/ + item.id">
+              <button
+                  class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                Choisir
+              </button>
+            </router-link>
+          </div>
         </div>
       </div>
-    </div>
     </div>
 
     <div v-if="!this.chargement && this.series.length === 0 && !this.erreur">
@@ -154,7 +153,7 @@ let url = "";
     </div>
 
     <div class="flex justify-center  px-4 py-20 w-full"
-     v-if="!this.chargement && this.erreur">
+         v-if="!this.chargement && this.erreur">
       <label class=" text-red-500 font-bold text-2xl ">
         Erreur lors du chargement des données !
       </label>
