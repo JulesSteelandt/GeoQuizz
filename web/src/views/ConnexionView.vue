@@ -83,11 +83,11 @@ export default {
   <div class="bg-gray-700 flex flex-col justify-center p-8 rounded-2xl m-auto">
     <div>
       <p class="text-white">Votre e-mail :</p>
-      <input ref="emailInput" class="w-60 mb-2.5 p-1 rounded-lg" type="text" placeholder="Votre e-mail ...">
+      <input ref="emailInput" class="w-60 mb-2.5 p-1 border-4" type="text" placeholder="Votre e-mail ...">
     </div>
     <div>
       <p class="text-white">Mot de passe :</p>
-      <input ref="passwordInput" class="w-60 mb-2.5 p-1 rounded-lg" type="password" placeholder="Votre mot de passe ..." @keyup.enter="login">
+      <input ref="passwordInput" class="w-60 mb-2.5 p-1 border-4" type="password" placeholder="Votre mot de passe ..." @keyup.enter="login">
       <button @click="togglePasswordVisibility" class="flex items-start ml-52 focus:outline-none">
         <img v-if="!showPassword" src="@/components/icons/invisible.png" alt="Masquer mot de passe" class="h-5 w-5 bg-transparent">
         <img v-else src="@/components/icons/visible.png" alt="Afficher mot de passe" class="h-5 w-5 bg-transparent">
