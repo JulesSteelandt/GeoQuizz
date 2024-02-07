@@ -30,7 +30,7 @@ export default {
       const email = this.$refs.emailInput.value;
       const password = this.$refs.passwordInput.value;
 
-      //const credentials = btoa(`${email}:${password}`);
+      // const credentials = btoa(`${email}:${password}`);
 
       // Envoyer les données d'identification au serveur pour authentification
       try {
