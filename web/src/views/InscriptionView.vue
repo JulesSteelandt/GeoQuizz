@@ -9,16 +9,32 @@ export default {
     }
   },
   methods: {
+    /**
+     * Méthode qui vérifie le format de l'email saisi par l'utilisateur
+     * @param email email saisi par l'utilisateur
+     * @return {boolean} vrai si email correspond au format tout en étant non null, faux sinon
+     */
     verifEmail(email) {
       if (email !== null) {
         return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
       }
     },
+
+    /**
+     * Méthode qui vérifie la cohérence entre les deux mots de passes saisis par l'utilisateur
+     * @param pwd1 mot de passe saisi par l'utilisateur
+     * @param pwd2 vérification du premier mot de passe
+     * @return {boolean} vrai si les deux mots de passe correspondent et sont non null, faux sinon
+     */
     verifMdp(pwd1, pwd2) {
       if ((pwd1 !== null) && (pwd2 !== null)) {
         return pwd1 === pwd2;
       }
     },
+
+    /**
+     * Méthode qui permet à l'utilisateur de finaliser son inscription qui son email a été vérifié et que ses mots de passe sont cohérents
+     */
     finirInscription() {
       if (this.verifEmail(this.email) && this.verifMdp(this.pwd, this.pwdverif)) {
         this.inscriptionDone = true;
@@ -47,7 +63,8 @@ export default {
       <input v-model="pwdverif" class="w-60 mb-2.5 p-1 border-4" type="password"
              :class="{'border-red-700': verifMdp(this.pwd, this.pwdverif) === false}"
              placeholder="Votre mot de passe ...">
-      <p v-if="verifMdp(this.pwd, this.pwdverif) === false" class="text-red-700 font-bold">Mots de passe incompatibles</p>
+      <p v-if="verifMdp(this.pwd, this.pwdverif) === false" class="text-red-700 font-bold">Mots de passe
+        incompatibles</p>
     </div>
     <button @click="finirInscription" class="bg-blue-400 text-white hover:opacity-70 font-bold py-2 px-4 rounded">Je
       m'inscris

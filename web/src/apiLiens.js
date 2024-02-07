@@ -1,7 +1,7 @@
 
 //concernant les séries
 export const GLOBAL = ""
-export const SERIES = "http://docketu.iutnc.univ-lorraine.fr:35210/items/serie"
+export const SERIES = "http://docketu.iutnc.univ-lorraine.fr:35200/items/serie"
 export const SERIES_IMAGE = "items/serie/image/" // + id de l'image
 
 
