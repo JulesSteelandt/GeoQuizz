@@ -1,6 +1,6 @@
 <?php
 
-namespace geoquizz\gate\client;
+namespace geoquizz\service\client;
 
 
 use GuzzleHttp\Client;
@@ -53,15 +53,17 @@ class ClientApi
     }
 
 
-    public function post($url, $data = [], $headers = [], $form = [])
+    public function post($url, $data = [], $headers = [])
     {
         try {
+            // Créez un tableau d'options pour la requête POST
             $options = [
-                'form_params' => $data,
-                'headers' => $headers,
+                'json' => $data,
+                'headers' => $headers, // Ajoutez les en-têtes reçus de l'API 1
             ];
 
             $response = $this->client->post($url, $options);
+
 
             return $response->getBody()->getContents();
 
@@ -71,7 +73,7 @@ class ClientApi
                 $statusCode = $response->getStatusCode();
                 return $response->getBody()->getContents();
             } else {
-                echo "Erreur de communication : " . $e->getMessage();
+                return "Erreur de communication : " . $e->getMessage();
             }
         }
     }
