@@ -6,7 +6,6 @@ export default {
   data() {
     return {
       initialisation:  this.init(),
-
       series: [],
       chargement: false,
       erreur: false,
@@ -100,7 +99,16 @@ let url = "";
   init() {
     this.fetchSeries();
     return true;
-  }
+  },
+
+    /**
+     * Méthode qui permet de récupérer un choix aléatoire
+     * @returns {number}
+     */
+    aleatoire() {
+      return (Math.floor(Math.random() * this.series.length))+1;
+    },
+
   }
 
 }
@@ -118,7 +126,7 @@ let url = "";
         </div>
         <div class="p-4">
           <h3 class="text-gray-900 font-semibold text-lg">Aléatoire</h3>
-          <router-link to="/play/aleatoire">
+          <router-link :to="/play/+ this.aleatoire()">
           <button class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">Choisir</button>
           </router-link>
         </div>
