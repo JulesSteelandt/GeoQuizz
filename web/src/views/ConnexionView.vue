@@ -1,4 +1,6 @@
 <script>
+import Cookies from 'js-cookie';
+
 export default {
   data() {
     return {
@@ -44,17 +46,27 @@ export default {
             'Authorization': 'Basic ' + btoa(`${email}:${password}`),
           },
         });
-
+        const responseData = await response.json();
         if (response.status !== 200) {
           this.showError = true;
         }else {
-          const responseData = await response.json();
 
           if (responseData && responseData.message === "401 Authentification failed") {
             console.error('Échec de la connexion');
             this.isConnected = false;
             this.showError = true;
           } else {
+
+            const accessToken = responseData.access_token;
+            if (!accessToken) {
+              console.error('Erreur lors de la récupération de l\'access token');
+              this.showError = true;
+              return;
+            }
+
+            Cookies.set('accessToken', accessToken, { expires: 1 }); // 1 jour de durée d'expiration
+
+
             this.isConnected = true;
             this.showError = false;
             this.resetFields();
