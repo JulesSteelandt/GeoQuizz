@@ -39,6 +39,11 @@ export default {
       donneesSent: false,
 
 
+      //id_série récupérer grâce à l'url
+      idSerie: this.getIdSerie(),
+
+
+
       //Jeu de données de test en attendant de récupérer les données de l'API
       serie_id: 28,
       imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
@@ -75,23 +80,35 @@ export default {
   },
   methods: {
 
-    /**
-     * Méthode qui stop le chronomètre et permet de valider la position choisie par l'utilisateur
-     * @returns {void}
-     */
-    valider() {
-      this.timerEnable = false;
-      this.validate = true;
-      this.userFinalGuess = this.userMarkerCoords;
-      this.calculerDistance();
-      this.donneesScores = {
-        serie_id: this.serie_id,
-        temps: 60 - this.timerCount,
-        distance: this.distance,
-        tours: this.numeroTour
-      };
-      this.envoyerScores();
-    },
+
+      /**
+       * Méthode qui permet de récupérer l'id de la série dans l'url
+       * @returns {string} - l'id de la série ou "aleatoire" si serie choisie aléatoirement
+       */
+      getIdSerie() {
+        let url = window.location.href;
+        let id = url.substring(url.lastIndexOf('/') + 1);
+        console.log(id);
+        return id;
+      },
+
+      /**
+       * Méthode qui stop le chronomètre et permet de valider la position choisie par l'utilisateur
+       * @returns {void}
+       */
+      valider() {
+        this.timerEnable = false;
+        this.validate = true;
+        this.userFinalGuess = this.userMarkerCoords;
+        this.calculerDistance();
+        this.donneesScores = {
+          serie_id: this.serie_id,
+          temps: 60 - this.timerCount,
+          distance: this.distance,
+          tours: this.numeroTour
+        };
+        this.envoyerScores();
+      },
 
     /**
      * Méthode qui permet d'envoyer les données de scores à l'API au format JSON
