@@ -60,9 +60,7 @@ class SsPartie
         $tours = 0;
         foreach ($localisation as $l){
             $tours += 1;
-            $schemaRecordId = Uuid::uuid4();
             $schemaRecord = new Partie_schema();
-            $schemaRecord->id = $schemaRecordId;
             $schemaRecord->partie_id = $game_id;
             $schemaRecord->tours = $tours;
             $schemaRecord->localisation_id = $l->id;
