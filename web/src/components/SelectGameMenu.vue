@@ -8,16 +8,6 @@ export default {
       initialisation:  this.init(),
 
       series: [],
-      /**series: [
-          //ex : {id: 2, nom: "Nancy", img: "https://via.placeholder.com/350x200" },
-          //données d'exemple à remplacer par les données de l'API
-       {id: 1, nom: "Nancy", img: "https://via.placeholder.com/350x200"  },
-        {id: 2, nom: "Metz", img: "https://via.placeholder.com/350x200"  },
-       {id: 3, nom: "Paris", img: "https://via.placeholder.com/350x200" },
-        {id: 4, nom: "Lyon", img: "https://via.placeholder.com/350x200" },
-        {id: 5, nom: "Marseille", img: "https://via.placeholder.com/350x200" },
-    ],
-    **/
       chargement: false,
       erreur: false,
 
@@ -25,7 +15,10 @@ export default {
     }
   },
   methods: {
-    //Méthode qui permet de récupérer les données des séries depuis l'API sachant que les données sont au format JSON dans l'api
+    /**
+     * Méthode qui permet de récupérer les données des séries depuis l'API
+     * @returns {void}
+     */
     fetchSeries() {
       this.chargement = true;
       let seriesFetch = [];
@@ -33,6 +26,7 @@ export default {
           .then(response => {
             if (!response.ok) {
               throw new Error('Erreur de chargement des données');
+              this.erreur = true;
             }
             // Parse la réponse JSON
             return response.json();
@@ -52,17 +46,15 @@ export default {
             } else {
               throw new Error('Les données reçues ne sont pas au format attendu.');
             }
-            // Réinitialise la variable de chargement
-            this.chargement = false;
           })
           .catch(error => {
             console.error('Erreur lors du chargement des séries:', error);
-            // Réinitialise la variable de chargement en cas d'erreur
-            this.chargement = false;
+            this.erreur = true;
           })
           .finally(() => {
             // Assigne les données récupérées à la variable series
             this.series = seriesFetch;
+            this.chargement = false;
           });
     },
 
@@ -143,9 +135,21 @@ let url = "";
         </div>
       </div>
     </div>
-
-
     </div>
+
+    <div v-if="!this.chargement && this.series.length === 0 && !this.erreur">
+      <label class="">
+        Aucune série n'est présente pour le moment !
+      </label>
+    </div>
+
+    <div class="flex justify-center  px-4 py-20 w-full"
+     v-if="!this.chargement && this.erreur">
+      <label class=" text-red-500 font-bold text-2xl ">
+        Erreur lors du chargement des données !
+      </label>
+    </div>
+
   </section>
 </template>
 
