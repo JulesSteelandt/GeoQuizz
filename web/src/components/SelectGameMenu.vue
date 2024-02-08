@@ -7,10 +7,10 @@ export default {
     return {
       initialisation: this.init(),
       series: [],
+      difficulteSerie: [],
       imageUrl: "",
       chargement: false,
       erreur: false,
-      imageChargee: true
     }
   },
   methods: {
@@ -38,7 +38,11 @@ export default {
                 seriesFetch.push({
                   id: serie.id,
                   nom: serie.nom,
-                  img: this.fetchImage(serie.photo)
+                  img: this.returnImgSrc(serie.photo),
+                });
+                this.difficulteSerie.push({
+                  id: serie.id,
+                  difficulty: ""
                 });
               });
 
@@ -58,28 +62,18 @@ export default {
     },
 
     /**
-     * methode qui permet de fetch une image à partir de l'API à partir de l'id de l'image
+     * methode qui permet de retourner l'url de l'image à partir de son ID
      * @param idImg
      * @returns string - url de l'image
      */
-    fetchImage(idImg) {
-      let url = "";
-      fetch(SERIES_IMAGE + idImg)
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Erreur de chargement des données');
-              this.erreur = true;
-            }
-            // Parse la réponse JSON
-            return response.json();
-          })
-          .then(data => {
-            console.log(data);
-          })
-          .catch(error => {
-            this.imageChargee = false;
-          });
+    returnImgSrc(idImg) {
+      try {
+        console.log(SERIES + idImg);
+        return SERIES_IMAGE + idImg;
 
+      } catch (e) {
+
+      }
     },
 
 
@@ -124,6 +118,7 @@ export default {
                 Choisir
               </button>
             </router-link>
+
           </div>
         </div>
       </div>
@@ -131,17 +126,22 @@ export default {
       <!-- Cartes pour chaque jeu -->
       <div v-for="(item, index) in series" :key="item.id" class="max-w-xs mx-4 mb-4 w-[350px]" v-if="index % 5 !== 0">
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-          <img v-if="imageChargee" class="w-full h-48 object-cover object-center" :src="item.img" alt="Image de la série">
-          <img v-else class="w-full h-48 object-cover object-center" src="../assets/image_not_found.png" alt="Image de la série">
+          <img class="w-full h-48 object-cover object-center" :src="item.img"
+               alt="Image de la série">
           <div class="p-4">
             <h3 class="text-gray-900 font-semibold text-lg">{{ item.nom }}</h3>
-            <router-link :to="/play/ + item.id">
+            <router-link :to="/play/ + item.id + '/' + this.difficulteSerie[index].difficulty">
               <button
                   class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
                 Choisir
               </button>
             </router-link>
           </div>
+          <select v-model="difficulteSerie[index].difficulty" name="difficulty">
+            <option value="easy" class="bg-green-500">Easy</option>
+            <option value="medium" class="bg-orange-500">Medium</option>
+            <option value="hard" class="bg-red-500">Hard</option>
+          </select>
         </div>
       </div>
     </div>
