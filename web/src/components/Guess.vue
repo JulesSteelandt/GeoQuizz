@@ -161,7 +161,7 @@ export default {
       this.calculerDistance();
       this.replaceMapView();
       this.donneesScores = {
-        "serie_id": this.serie_id,
+        "game_id": this.game_id,
         "distance": this.distance,
         "temps": 60 - this.timerCount,
       };
@@ -174,20 +174,27 @@ export default {
      */
     envoyerScores() {
       fetch(SCORE_PLAY, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.token
-        },
-      //C4ETS ICI QU4IL FAUT CHANGER LLLL
-        body: JSON.stringify(this.donneesScores)
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + this.token
+            },
+            body: JSON.stringify({
+              "game_id": this.donneesScores.game_id,
+              "distance": this.donneesScores.distance,
+              "temps": this.donneesScores.temps
+            }
+        )
       })
           .then(response => response.json())
           .then(data => {
           })
           .catch((error) => {
+            console.error('Error:', error);
+            console.log(response)
           })
           .finally(() => this.donneesSent = true);
+          console.log(this.game_id);
 
     },
 
