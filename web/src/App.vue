@@ -83,36 +83,34 @@ export default {
       </div>
       <div class="flex flex-row items-center">
         <div
-            class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
+            class="max-sm:text-base text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
           <RouterLink to="/">
             <button class="h-full w-full max-sm:text-base">Home</button>
           </RouterLink>
         </div>
-        <div class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
+        <div class="max-sm:text-base text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
             <RouterLink to="/selectgame">
               <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
 
             </RouterLink>
         </div>
 
-        <div class="notConnected flex flex-row items-center">
-
-          <div class="notConnected flex flex-row items-center">
+          <div class="notConnected flex flex-row items-center sm:flex-row">
             <!-- Boutons de connexion et inscription -->
             <div v-if="!state.isConnected">
               <RouterLink to="/inscription">
-                <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Inscription</button>
+                <button class="max-sm:text-base text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Inscription</button>
               </RouterLink>
               <RouterLink to="/connexion">
-                <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Connexion</button>
+                <button class=" max-sm:text-base text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Connexion</button>
               </RouterLink>
             </div>
 
             <!-- Bouton de déconnexion -->
             <div v-else class="connected flex flex-row items-center">
-              <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105" @click="logout">Déconnexion</button>
+              <button class="max-sm:text-base sm:text-sm text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105" @click="logout">Déconnexion</button>
               <RouterLink to="/monCompte">
-                <img class="h-12 w-12 hover:transition duration-300 ease-in-out transform hover:scale-110" src="@/components/icons/user.png" alt="logoUser">
+                <img class="max-sm:h-10 max-sm:w-10 h-12 w-12 min-w-10 hover:transition duration-300 ease-in-out transform hover:scale-110" src="@/components/icons/user.png" alt="logoUser">
               </RouterLink>
 
             </div>
@@ -121,7 +119,7 @@ export default {
           </div>
         </div>
       </div>
-    </div>
+
   </header>
 
   <playGeoQuizz v-if="isHomeRoute"/>
@@ -136,7 +134,7 @@ export default {
   </div>
   <RouterView/>
 
-  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between fixed bottom-0 w-full">
+  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between">
     <p>GeoQuizz - 2024</p>
     <p>Copyright IUT-Charlemagne</p>
   </footer>
