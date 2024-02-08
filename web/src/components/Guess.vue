@@ -86,11 +86,12 @@ export default {
     fetchGame() {
       this.getIdSerie();
       if(this.checkAuthStatus()){
+      //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
         fetch(CREATE_GAME, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + Cookies.get('accessToken')
+            'Authorization': 'Bearer ' + this.token
           },
           body: JSON.stringify({
             "serie_id": this.serie_id
@@ -111,6 +112,7 @@ export default {
 
 
 
+
             })
             .catch((error) => {
               //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
@@ -125,12 +127,13 @@ export default {
      * @returns {boolean} - true si l'utilisateur est connecté, false sinon
      */
     checkAuthStatus() {
-      let token = Cookies.get('accessToken');
+      const token = Cookies.get('accessToken');
       if (token === undefined || token === null) {
         this.$router.push('/connexion');
         return false;
       } else {
         this.token = token
+        console.log(this.token);
         return true;
       }
     },
@@ -160,12 +163,16 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
+      console.log(this.donneesScores.game_id);
+      console.log(this.donneesScores.distance);
+      console.log(this.donneesScores.temps);
+
 
       fetch(SCORE_PLAY, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + Cookies.get('accessToken')
+              'Authorization': 'Bearer ' + this.token
             },
             body: JSON.stringify({
               "game_id": this.donneesScores.game_id,
@@ -178,8 +185,10 @@ export default {
           .then(data => {
           })
           .catch((error) => {
+            console.error('Error:', error);
           })
           .finally(() => this.donneesSent = true);
+          console.log(this.game_id);
 
     },
 
@@ -228,6 +237,7 @@ export default {
       else{
         this.finDePartie = true;
       }
+      console.log(this.numeroTour);
       console.log(this.finDePartie);
 
 
@@ -277,9 +287,9 @@ export default {
 
   <section v-else
       class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap  px-2">
       <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
-        <img :src="image" alt="image du lieu">
+        <img class="rounded-lg" :src="image" alt="image du lieu">
         <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
           <label class="text-white ml-2 ">
             Réponse : <label class="font-bold">{{ LieuReponse }}</label>
