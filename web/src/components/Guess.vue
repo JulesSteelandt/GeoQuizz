@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
 import Cookies from "js-cookie";
-import {CREATE_GAME} from "@/apiLiens.js";
+import {CREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
 
 export default {
   components: {
@@ -14,12 +14,12 @@ export default {
   data() {
     return {
       timerCount: 60,
-      timerEnable: true,
+      timerEnable: false,
       validate: false,
       osmURL: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      center: [48.69, 6.18],
+      center: null,
       //centre de la carte initial
-      initCenter: [48.69, 6.18],
+      initCenter: null,
       //niveau de zoom initial
       zoom: 13,
       //niveau de zoom maximal et minimal
@@ -38,7 +38,7 @@ export default {
 
       //objet pour le calcul des scores
       donneesScores: null,
-      numeroTour: 1,
+      numeroTour: 0,
       donneesSent: false,
 
 
@@ -51,6 +51,9 @@ export default {
       reponseMarker: null,
       LieuReponse: null,
       image: "",
+
+      //booléen pour afficher la fin de la partie
+      finDePartie: false,
 
 
 
@@ -108,11 +111,13 @@ export default {
             .then(data => {
               this.game_id = data.game_id;
               this.localisations = data.localisations;
-
+              this.initCenter = [data.startmap[1], data.startmap[0]];
+              this.center = this.initCenter;
               this.reponseMarker =[this.localisations[0].coordinate[1], this.localisations[0].coordinate[0]];
-              //this.LieuReponse = this.localisations[0].name;
+              this.LieuReponse = this.localisations[0].nom;
               this.image = this.localisations[0].url;
               this.initialisation = true;
+              this.timerEnable = true;
 
 
 
@@ -156,10 +161,9 @@ export default {
       this.calculerDistance();
       this.replaceMapView();
       this.donneesScores = {
-        serie_id: this.serie_id,
-        temps: 60 - this.timerCount,
-        distance: this.distance,
-        tours: this.numeroTour
+        "serie_id": this.serie_id,
+        "distance": this.distance,
+        "temps": 60 - this.timerCount,
       };
       this.envoyerScores();
     },
@@ -169,11 +173,13 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
-      fetch('routeApiIci', {
+      fetch(SCORE_PLAY, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + this.token
         },
+      //C4ETS ICI QU4IL FAUT CHANGER LLLL
         body: JSON.stringify(this.donneesScores)
       })
           .then(response => response.json())
@@ -209,18 +215,29 @@ export default {
      * @returns {void}
      */
     nextStep() {
-      this.timerCount = 60;
-      this.timerEnable = true;
-      this.validate = false;
-      this.userMarkerCoords = null;
-      this.userFinalGuess = null;
-      this.distance = null;
-      this.numeroTour++;
-      //Remet la carte dans la config intiale
-      //valeurs temporaires
-      this.center = [48.69, 6.18];
-      this.zoom = 13;
-      this.donneesSent = false;
+      if(this.numeroTour < this.localisations.length - 1) {
+        this.timerCount = 60;
+        this.timerEnable = true;
+        this.validate = false;
+        this.userMarkerCoords = null;
+        this.userFinalGuess = null;
+        this.distance = null;
+
+        //Remet la carte dans la config intiale
+        this.center = this.initCenter;
+        this.zoom = 13;
+        this.donneesSent = false;
+        //préparation des données pour la prochaine étape
+        this.numeroTour++;
+        this.reponseMarker = [this.localisations[this.numeroTour].coordinate[1], this.localisations[this.numeroTour].coordinate[0]];
+        this.LieuReponse = this.localisations[this.numeroTour].nom;
+        this.image = this.localisations[this.numeroTour].url;
+      }
+      else{
+        this.finDePartie = true;
+      }
+      console.log(this.numeroTour);
+      console.log(this.finDePartie);
 
 
     },
