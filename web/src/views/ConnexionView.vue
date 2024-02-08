@@ -12,7 +12,7 @@ export default {
 
   data() {
     return {
-
+      isConnected: false,
       showError: false,
       showPassword: false,
       email: '',
@@ -69,7 +69,7 @@ export default {
             Cookies.set('accessToken', accessToken, { expires: expiresIn });
 
             this.isConnected = true;
-            checkAuthStatus();
+            // Appeler checkAuthStatus de App.vue
             this.showError = false;
             this.resetFields();
           }
@@ -89,8 +89,8 @@ export default {
     },
 
     /**
-     * Méthode qui permet de basculer entre l'affichage du mot de passe en clair et masqué
-     * @returns {void}
+     * Permet de basculer entre l'affichage du mot de passe en clair et masqué
+     * @returns {void} - return true si le passeport est valide, false sinon
      */
     togglePassword() {
       this.showPassword = !this.showPassword;

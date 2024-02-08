@@ -38,7 +38,7 @@ const router = createRouter({
     },
 
     {
-      path: '/play/:id',
+      path: '/play/:difficulte/:id',
       name: 'play',
       component: Guess
 
