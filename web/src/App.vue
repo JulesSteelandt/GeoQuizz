@@ -1,7 +1,8 @@
 <script>
-import {computed} from 'vue';
+import {computed, reactive, watch} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
+import Cookies from "js-cookie";
 
 export default {
   components: {PlayGeoQuizz},
@@ -20,14 +21,14 @@ export default {
     checkAuthStatus() {
       const token = Cookies.get('accessToken');
 
-        if (token === undefined) {
-          // Si le token est expiré, déconnecter l'utilisateur et supprimer le cookie
-          this.isConnected = false;
-          Cookies.remove('accessToken');
-          return;
-        }
-        this.isConnected = true;
+      if (token === undefined) {
+        // Si le token est expiré, déconnecter l'utilisateur et supprimer le cookie
+        this.isConnected = false;
+        Cookies.remove('accessToken');
+        return;
       }
+      this.isConnected = true;
+    }
   },
 
 
@@ -85,7 +86,7 @@ export default {
         <!-- Logo à gauche -->
 
         <router-link to="/" class="logo">
-        <img class="w-28" src="@/components/icons/globe.png" alt="logo">
+          <img class="w-28" src="@/components/icons/globe.png" alt="logo">
         </router-link>
 
         <!-- Textes à gauche -->
@@ -110,10 +111,10 @@ export default {
           </RouterLink>
         </div>
         <div class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
-            <RouterLink to="/selectgame">
-              <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
+          <RouterLink to="/selectgame">
+            <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
 
-            </RouterLink>
+          </RouterLink>
         </div>
 
         <div class="notConnected flex flex-row items-center">
@@ -138,7 +139,8 @@ export default {
 
             </div>
           </div>
-              <div class="connected flex flex-row items-center">
+          <div class="connected flex flex-row items-center">
+          </div>
         </div>
       </div>
     </div>
