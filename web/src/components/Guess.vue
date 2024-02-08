@@ -55,16 +55,6 @@ export default {
       //booléen pour afficher la fin de la partie
       finDePartie: false,
 
-
-
-      /**
-      //Jeu de données de test en attendant de récupérer les données de l'API
-      imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
-      //Lieu à deviner
-      LieuReponse: "Place Stanislas, Nancy, France",
-      //marker de la réponse
-      reponseMarker: [48.693522435993316, 6.183261126061553]
-      **/
     }
   },
 
