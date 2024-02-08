@@ -8,6 +8,7 @@ export default {
       initialisation: this.init(),
       series: [],
       difficulteSerie: [],
+      difficulteRandom: "easy",
       imageUrl: "",
       chargement: false,
       erreur: false,
@@ -109,14 +110,23 @@ export default {
             <img class=" h-48 object-cover object-center" src="@/components/icons/Aleatoire.png"
                  alt="Image de la série">
           </div>
-          <div class="p-4">
-            <h3 class="text-gray-900 font-semibold text-lg">Aléatoire</h3>
-            <router-link :to="/play/+ this.aleatoire()">
-              <button
-                  class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                Choisir
-              </button>
-            </router-link>
+          <div class="p-4 flex flex-row justify-between items-center">
+            <div>
+              <h3 class="text-gray-900 font-semibold text-lg">Aléatoire</h3>
+              <router-link :to="/play/ + this.difficulteRandom + '/' + this.aleatoire()">
+                <button
+                    class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                  Choisir
+                </button>
+              </router-link>
+            </div>
+            <select
+                class="h-12 w-28 bg-gray-200 border-2 border-gray-700 text-gray-700 font-bold align-middle text-center"
+                v-model="difficulteRandom" name="difficulty">
+              <option value="easy" class="bg-green-500 text-white text-bold">Easy</option>
+              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Medium</option>
+              <option value="hard" class="bg-red-500 text-white text-bold">Hard</option>
+            </select>
 
           </div>
         </div>
