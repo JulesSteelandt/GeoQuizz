@@ -1,6 +1,6 @@
 <script>
 import Cookies from 'js-cookie';
-import {SERIES, SERIES_IMAGE, SIGNIN} from "@/apiLiens.js";
+import { SIGNIN } from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
 
 
@@ -47,11 +47,12 @@ export default {
         const responseData = await response.json();
         if (response.status !== 200) {
           this.showError = true;
-        }else {
+        } else {
 
           if (responseData && responseData.message === "401 Authentification failed") {
             console.error('Échec de la connexion');
             this.isConnected = false;
+            console.log("connexion false 1")
             this.showError = true;
           } else {
             // Récupérer l'expiration du cookie de la réponse si elle est disponible
@@ -67,19 +68,19 @@ export default {
             Cookies.set('accessToken', accessToken, { expires: expiresIn });
 
             this.isConnected = true;
+            // Appeler checkAuthStatus de App.vue
             this.showError = false;
             this.resetFields();
           }
 
         }
-      }catch (error) {
+      } catch (error) {
         console.error('Erreur lors de la connexion:', error);
       }
     },
-
     /**
-     * Permet de réinitialiser les champs email et password
-     * @returns {void}
+     * Méthode qui permet de réinitialiser les champs email et mot de passe
+     * return {void}
      */
     resetFields() {
       this.email = '';
@@ -87,17 +88,17 @@ export default {
     },
 
     /**
-     * Permet de basculer entre l'affichage du mot de passe en clair et masqué
-     * @returns {void} - return true si le passeport est valide, false sinon
+     * Méthode qui permet de basculer entre l'affichage du mot de passe en clair et masqué
+     * @returns {void}
      */
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
 
     /**
-     * Permet de vérifier si l'email est valide
-     * @param {string} email - email à vérifier
-     * @returns {boolean} - return true si l'email est valide, false sinon
+     * Méthode qui vérifie le format de l'email saisi par l'utilisateur
+     * @param email email saisi par l'utilisateur
+     * @return {boolean} vrai si email correspond au format tout en étant non null, faux sinon
      */
     verifEmail(email) {
       if (this.emailTouched && email.trim() !== '') {
@@ -114,6 +115,9 @@ export default {
 
 <template>
   <div class="bg-gray-700 flex flex-col justify-center p-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] rounded-xl m-auto mb-8 mt-8">
+    <div v-if="isConnected" class="flex flex-col items-center rounded-2xl mb-3">
+      <p class="text-green-400 text-xl font-bold ">Connexion réussie</p>
+    </div>
     <div>
       <p class="text-white mb-1">Votre e-mail :</p>
       <input v-model="email" class="w-60 mb-2.5 p-1 rounded-lg border-4" type="text" placeholder="Votre e-mail ..."
