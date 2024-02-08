@@ -173,6 +173,11 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
+      console.log(this.donneesScores.game_id);
+      console.log(this.donneesScores.distance);
+      console.log(this.donneesScores.temps);
+
+
       fetch(SCORE_PLAY, {
             method: 'POST',
             headers: {
@@ -191,7 +196,6 @@ export default {
           })
           .catch((error) => {
             console.error('Error:', error);
-            console.log(response)
           })
           .finally(() => this.donneesSent = true);
           console.log(this.game_id);
