@@ -1,6 +1,6 @@
 <script>
 import Cookies from 'js-cookie';
-import {SERIES, SERIES_IMAGE, SIGNIN} from "@/apiLiens.js";
+import { SIGNIN } from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
 
 
@@ -22,10 +22,7 @@ export default {
     };
   },
   methods: {
-    /**
-     * Permet de se connecter à l'application fetch l'api d'autehntification
-     * @returns {void} - return true si connecté et false sinon
-     */
+
     async login() {
       const email = this.email;
       const password = this.password;
@@ -47,16 +44,15 @@ export default {
         const responseData = await response.json();
         if (response.status !== 200) {
           this.showError = true;
-        }else {
+        } else {
 
           if (responseData && responseData.message === "401 Authentification failed") {
             console.error('Échec de la connexion');
             this.isConnected = false;
+            console.log("connexion false 1")
             this.showError = true;
           } else {
-            // Récupérer l'expiration du cookie de la réponse si elle est disponible
-            const expiresIn = (((responseData.expiration)/3600)/24);//expire au bout de 12h
-            //const expiresIn = (((60)/3600)/24); //expire au bout de 2 min
+            const expiresIn = (((responseData.expiration) / 3600) / 24);//expire au bout de 12h
 
             const accessToken = responseData.access_token;
             if (!accessToken) {
@@ -67,38 +63,26 @@ export default {
             Cookies.set('accessToken', accessToken, { expires: expiresIn });
 
             this.isConnected = true;
+            // Appeler checkAuthStatus de App.vue
             this.showError = false;
             this.resetFields();
           }
 
         }
-      }catch (error) {
+      } catch (error) {
         console.error('Erreur lors de la connexion:', error);
       }
     },
 
-    /**
-     * Permet de réinitialiser les champs email et password
-     * @returns {void}
-     */
     resetFields() {
       this.email = '';
       this.password = '';
     },
 
-    /**
-     * Permet de basculer entre l'affichage du mot de passe en clair et masqué
-     * @returns {void} - return true si le passeport est valide, false sinon
-     */
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
 
-    /**
-     * Permet de vérifier si l'email est valide
-     * @param {string} email - email à vérifier
-     * @returns {boolean} - return true si l'email est valide, false sinon
-     */
     verifEmail(email) {
       if (this.emailTouched && email.trim() !== '') {
         const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -114,6 +98,9 @@ export default {
 
 <template>
   <div class="bg-gray-700 flex flex-col justify-center p-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] rounded-xl m-auto mb-8 mt-8">
+    <div v-if="isConnected" class="flex flex-col items-center rounded-2xl mb-3">
+      <p class="text-green-400 text-xl font-bold ">Connexion réussie</p>
+    </div>
     <div>
       <p class="text-white mb-1">Votre e-mail :</p>
       <input v-model="email" class="w-60 mb-2.5 p-1 rounded-lg border-4" type="text" placeholder="Votre e-mail ..."
@@ -140,9 +127,7 @@ export default {
     <p class="text-red-700 text-xl font-bold ">La connexion a échoué, le nom d'utilisateur</p>
     <p class="text-red-700 text-xl font-bold ">ou le mot de passe sont erronés</p>
   </div>
-  <div v-else-if="isConnected" class="flex flex-col items-center p-8 rounded-2xl m-auto">
-    <p class="text-green-600 text-xl font-bold ">Connexion réussie</p>
-  </div>
+
   <div v-else-if="!isConnected && !isFill" class="flex flex-col items-center p-8 rounded-2xl m-auto">
     <p class="text-gray-400 text-xl font-bold ">Veuillez rentrer un email et un mot de passe</p>
   </div>

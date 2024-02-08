@@ -1,5 +1,5 @@
 <script>
-import {computed} from 'vue';
+import {computed, reactive, watch} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
 import Cookies from "js-cookie";
@@ -18,17 +18,17 @@ export default {
      * Permet de vérifier si l'utilisateur est connecté
      * @returns {void} - return true si l'utilisateur est connecté, false sinon
      */
-    async checkAuthStatus() {
+    checkAuthStatus() {
       const token = Cookies.get('accessToken');
 
-        if (token === undefined) {
-          // Si le token est expiré, déconnecter l'utilisateur et supprimer le cookie
-          this.isConnected = false;
-          Cookies.remove('accessToken');
-          return;
-        }
-        this.isConnected = true;
+      if (token === undefined) {
+        // Si le token est expiré, déconnecter l'utilisateur et supprimer le cookie
+        this.isConnected = false;
+        Cookies.remove('accessToken');
+        return;
       }
+      this.isConnected = true;
+    }
   },
 
 
@@ -41,10 +41,39 @@ export default {
     const route = useRoute();
     const isHomeRoute = computed(() => route.path === '/');
 
-    return {isHomeRoute};
-  },
-  mounted() {
-    this.checkAuthStatus();
+    const state = reactive({
+      isConnected: false,
+    });
+
+    const checkAuthStatus = () => {
+      const token = Cookies.get('accessToken');
+      // Si le token existe, l'utilisateur est connecté, sinon il ne l'est pas
+      if (token !== undefined) {
+        console.log("connexion true 2")
+        state.isConnected = true;
+      } else {
+        console.log("connexion false 2")
+        state.isConnected = false;
+      }
+    };
+
+
+    const logout = () => {
+      Cookies.remove('accessToken');
+      console.log("connexion false 2")
+      state.isConnected = false;
+    };
+
+    // Watcher pour détecter les changements de isConnected
+    watch(() => state.isConnected, (newValue, oldValue) => {
+      console.log('Changement de statut de connexion:', newValue);
+      // Mettre à jour l'affichage du header ou d'autres composants en fonction du nouvel état de connexion
+    });
+
+    // Vérifier l'état d'authentification lors du chargement initial du composant
+    checkAuthStatus();
+
+    return { isHomeRoute, state, checkAuthStatus, logout };
   },
 
 };
@@ -57,7 +86,7 @@ export default {
         <!-- Logo à gauche -->
 
         <router-link to="/" class="logo">
-        <img class="w-28" src="@/components/icons/globe.png" alt="logo">
+          <img class="w-28" src="@/components/icons/globe.png" alt="logo">
         </router-link>
 
         <!-- Textes à gauche -->
@@ -82,41 +111,36 @@ export default {
           </RouterLink>
         </div>
         <div class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
-            <RouterLink to="/selectgame">
-              <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
+          <RouterLink to="/selectgame">
+            <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
 
-            </RouterLink>
+          </RouterLink>
         </div>
 
         <div class="notConnected flex flex-row items-center">
 
-          <div v-if="isConnected === false"
-              class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
-            <RouterLink to="/inscription">
-              <button class="h-full w-full max-sm:text-base">Inscription</button>
-            </RouterLink>
-          </div>
-          <div
-              v-else class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
-            <RouterLink to="/connexion">
-              <button class="h-full w-full max-sm:text-base">Déconnexion</button>
-            </RouterLink>
-          </div>
-          <div
-              v-if="isConnected === false" class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
-            <RouterLink to="/connexion">
-              <button class="h-full w-full max-sm:text-base">Connexion</button>
-            </RouterLink>
-          </div>
-          <div
-              v-else class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
-            <RouterLink to="/monCompte">
-              <img class="h-8 w-8" src="@/components/icons/user.png" alt="logoUser">
-            </RouterLink>
-          </div>
-        </div>
+          <div class="notConnected flex flex-row items-center">
+            <!-- Boutons de connexion et inscription -->
+            <div v-if="!state.isConnected">
+              <RouterLink to="/inscription">
+                <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Inscription</button>
+              </RouterLink>
+              <RouterLink to="/connexion">
+                <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Connexion</button>
+              </RouterLink>
+            </div>
 
-        <div class="connected flex flex-row items-center">
+            <!-- Bouton de déconnexion -->
+            <div v-else class="connected flex flex-row items-center">
+              <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105" @click="logout">Déconnexion</button>
+              <RouterLink to="/monCompte">
+                <img class="h-12 w-12 hover:transition duration-300 ease-in-out transform hover:scale-110" src="@/components/icons/user.png" alt="logoUser">
+              </RouterLink>
+
+            </div>
+          </div>
+          <div class="connected flex flex-row items-center">
+          </div>
         </div>
       </div>
     </div>
@@ -139,6 +163,6 @@ export default {
 
   <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between">
     <p>GeoQuizz - 2024</p>
-    <p>Copyrigtht IUT-Charlemagne</p>
+    <p>Copyright IUT-Charlemagne</p>
   </footer>
 </template>
