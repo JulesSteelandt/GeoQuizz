@@ -297,9 +297,9 @@ export default {
 
   <section v-else
       class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
-    <div class="flex flex-wrap">
+    <div class="flex flex-wrap  px-2">
       <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
-        <img :src="image" alt="image du lieu">
+        <img class="rounded-lg" :src="image" alt="image du lieu">
         <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
           <label class="text-white ml-2 ">
             Réponse : <label class="font-bold">{{ LieuReponse }}</label>
