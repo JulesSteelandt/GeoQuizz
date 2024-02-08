@@ -5,7 +5,7 @@ defineProps({})
 </script>
 
 <template>
-  <div class="playGeoQuizz w-1/2 rounded-xl flex flex-col overflow-hidden border-2 border-gray-100 mx-auto my-4">
+  <div class="playGeoQuizz w-1/2 rounded-xl flex flex-col overflow-hidden border-2 border-gray-100 mx-auto my-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)]">
 
     <!-- Contenu à gauche (image et texte) -->
     <div class="flex flex-col bg-stone-400 text-zinc-900">
