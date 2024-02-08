@@ -2,6 +2,8 @@
 import 'leaflet/dist/leaflet.css';
 import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
+import Cookies from "js-cookie";
+import {CREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
 
 export default {
   components: {
@@ -11,14 +13,13 @@ export default {
   },
   data() {
     return {
-      image: "",
       timerCount: 60,
-      timerEnable: true,
+      timerEnable: false,
       validate: false,
       osmURL: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      center: [48.69, 6.18],
+      center: null,
       //centre de la carte initial
-      initCenter: [48.69, 6.18],
+      initCenter: null,
       //niveau de zoom initial
       zoom: 13,
       //niveau de zoom maximal et minimal
@@ -37,27 +38,46 @@ export default {
 
       //objet pour le calcul des scores
       donneesScores: null,
-      numeroTour: 1,
+      numeroTour: 0,
       donneesSent: false,
 
 
-      //id_série récupérer grâce à l'url
-      idSerie: this.getIdSerie(),
+      //serie_id récupérer grâce à l'url
+      serie_id: null,
+      game_id: null,
+      token: null,
+      localisations: [],
+      initialisation: this.init(),
+      reponseMarker: null,
+      LieuReponse: null,
+      image: "",
+
+      //booléen pour afficher la fin de la partie
+      finDePartie: false,
 
 
 
+      /**
       //Jeu de données de test en attendant de récupérer les données de l'API
-      serie_id: 28,
       imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
       //Lieu à deviner
       LieuReponse: "Place Stanislas, Nancy, France",
       //marker de la réponse
       reponseMarker: [48.693522435993316, 6.183261126061553]
+      **/
     }
   },
 
 
   methods: {
+    /**
+     * Méthode qui permet d'initialiser le jeu
+     * @returns {boolean} - true si l'initialisation s'est bien passée, false sinon
+     */
+    init() {
+      this.initialisation = false;
+      this.fetchGame();
+    },
 
 
     /**
@@ -67,8 +87,68 @@ export default {
     getIdSerie() {
       let url = window.location.href;
       let id = url.substring(url.lastIndexOf('/') + 1);
-      return id;
+      this.serie_id = id;
     },
+
+    /**
+     * Méthode qui permet de fetch l'api afin d'avoir le jeu de données nécessaire pour le jeu
+     */
+    fetchGame() {
+      this.getIdSerie();
+      if(this.checkAuthStatus()){
+      //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
+        fetch(CREATE_GAME, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.token
+          },
+          body: JSON.stringify({
+            "serie_id": this.serie_id
+          })
+        })
+            .then(response => response.json())
+            .then(data => {
+              this.game_id = data.game_id;
+              this.localisations = data.localisations;
+              this.initCenter = [data.startmap[1], data.startmap[0]];
+              this.center = this.initCenter;
+              this.reponseMarker =[this.localisations[0].coordinate[1], this.localisations[0].coordinate[0]];
+              this.LieuReponse = this.localisations[0].nom;
+              this.image = this.localisations[0].url;
+              this.initialisation = true;
+              this.timerEnable = true;
+
+
+
+
+
+            })
+            .catch((error) => {
+              //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
+              this.$router.push('/selectgame');
+            });
+      }
+    },
+
+    /**
+     * Méthode qui permet de récupérer le cookie de l'utilisateur connecté et de renvoyer sur une page de connexion si
+     * l'utilisateur n'est pas connecté / token expiré
+     * @returns {boolean} - true si l'utilisateur est connecté, false sinon
+     */
+    checkAuthStatus() {
+      const token = Cookies.get('accessToken');
+      if (token === undefined || token === null) {
+        this.$router.push('/connexion');
+        return false;
+      } else {
+        this.token = token
+        console.log(this.token);
+        return true;
+      }
+    },
+
+
 
     /**
      * Méthode qui stop le chronomètre et permet de valider la position choisie par l'utilisateur
@@ -81,10 +161,9 @@ export default {
       this.calculerDistance();
       this.replaceMapView();
       this.donneesScores = {
-        serie_id: this.serie_id,
-        temps: 60 - this.timerCount,
-        distance: this.distance,
-        tours: this.numeroTour
+        "game_id": this.game_id,
+        "distance": this.distance,
+        "temps": 60 - this.timerCount,
       };
       this.envoyerScores();
     },
@@ -94,19 +173,32 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
-      fetch('routeApiIci', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(this.donneesScores)
+      console.log(this.donneesScores.game_id);
+      console.log(this.donneesScores.distance);
+      console.log(this.donneesScores.temps);
+
+
+      fetch(SCORE_PLAY, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + this.token
+            },
+            body: JSON.stringify({
+              "game_id": this.donneesScores.game_id,
+              "distance": this.donneesScores.distance,
+              "temps": this.donneesScores.temps
+            }
+        )
       })
           .then(response => response.json())
           .then(data => {
           })
           .catch((error) => {
+            console.error('Error:', error);
           })
           .finally(() => this.donneesSent = true);
+          console.log(this.game_id);
 
     },
 
@@ -134,18 +226,29 @@ export default {
      * @returns {void}
      */
     nextStep() {
-      this.timerCount = 60;
-      this.timerEnable = true;
-      this.validate = false;
-      this.userMarkerCoords = null;
-      this.userFinalGuess = null;
-      this.distance = null;
-      this.numeroTour++;
-      //Remet la carte dans la config intiale
-      //valeurs temporaires
-      this.center = [48.69, 6.18];
-      this.zoom = 13;
-      this.donneesSent = false;
+      if(this.numeroTour < this.localisations.length - 1) {
+        this.timerCount = 60;
+        this.timerEnable = true;
+        this.validate = false;
+        this.userMarkerCoords = null;
+        this.userFinalGuess = null;
+        this.distance = null;
+
+        //Remet la carte dans la config intiale
+        this.center = this.initCenter;
+        this.zoom = 13;
+        this.donneesSent = false;
+        //préparation des données pour la prochaine étape
+        this.numeroTour++;
+        this.reponseMarker = [this.localisations[this.numeroTour].coordinate[1], this.localisations[this.numeroTour].coordinate[0]];
+        this.LieuReponse = this.localisations[this.numeroTour].nom;
+        this.image = this.localisations[this.numeroTour].url;
+      }
+      else{
+        this.finDePartie = true;
+      }
+      console.log(this.numeroTour);
+      console.log(this.finDePartie);
 
 
     },
@@ -187,11 +290,16 @@ export default {
 </script>
 
 <template>
-  <section
+  <section v-if="!this.initialisation" class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+    <label class="text-4xl text-center font-bold text-white">Chargement de la partie...</label>
+  </section>
+
+
+  <section v-else
       class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
     <div class="flex flex-wrap">
       <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
-        <img :src="imageTest" alt="imageTest">
+        <img :src="image" alt="image du lieu">
         <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
           <label class="text-white ml-2 ">
             Réponse : <label class="font-bold">{{ LieuReponse }}</label>
