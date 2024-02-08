@@ -41,13 +41,11 @@ export default {
       donneesSent: false,
 
 
-      //id_série récupérer grâce à l'url
-      idSerie: this.getIdSerie(),
-
+      //serie_id récupérer grâce à l'url
+      serie_id: this.getIdSerie(),
 
 
       //Jeu de données de test en attendant de récupérer les données de l'API
-      serie_id: 28,
       imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
       //Lieu à deviner
       LieuReponse: "Place Stanislas, Nancy, France",
