@@ -28,10 +28,9 @@ class RecreatePartie extends AbstractAction
         $headers = $request->getHeaders();
         $encodeTokenRes = $client->request('GET', "http://auth_php/users/validate", ['headers' => $headers]);
         $tokenRes = json_decode($encodeTokenRes->getBody(), true);
-        $parsedBody = json_decode($request->getBody(), true);
         $id = $tokenRes['email'];
         $username = $tokenRes['username'];
-        $game_id = $parsedBody['game_id'];
+        $game_id = $args['id_partie'];
 
         $res = $this->partieService->reCreateParty($game_id, $id, $username);
         $response->getBody()->write(json_encode($res));

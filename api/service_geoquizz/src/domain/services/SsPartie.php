@@ -24,18 +24,18 @@ class SsPartie
         $games = Partie::all();
         $tab = [];
         foreach ($games as $p) {
-            $tab[] = new PartieDTO($p->id, $p->user_id, $p->score, $p->difficulte, $p->serie_id);
+            $tab[] = new PartieDTO($p->id, $p->user_email, $p->score, $p->difficulte, $p->serie_id);
         }
         return $tab;
     }
 
 
-    public function getHistory($user_id)
+    public function getHistory($user_email)
     {
-        $parties = Partie::where("user_id", $user_id)->get();
+        $parties = Partie::where("user_email", $user_email)->get();
         $tab = [];
         foreach ($parties as $p) {
-            $tab[] = new PartieDTO($p->id, $p->user_id, $p->score, $p->difficulte, $p->serie_id);
+            $tab[] = new PartieDTO($p->id, $p->user_email, $p->score, $p->difficulte, $p->serie_id);
         }
         return $tab;
     }
@@ -51,9 +51,11 @@ class SsPartie
         $partieCache->tours = 0;
         $partieCache->distance = 0;
         $partieCache->temps = 0;
+        $partieCache->save();
 
         $directus = gethostbyname('directus');
         $localisation = $this->SsSerie->getLocalisationBySerie($serie_id);
+        $serie = $this->SsSerie->getSerieById($serie_id);
 
         shuffle($localisation);
 
@@ -72,6 +74,7 @@ class SsPartie
 
         return [
             "game_id" => $game_id,
+            "startmap" => $serie->startmap,
             "localisations" => $localisation,
         ];
     }
@@ -179,6 +182,9 @@ class SsPartie
         $partieCache->tours = 0;
         $partieCache->distance = 0;
         $partieCache->temps = 0;
+        $partieCache->save();
+
+        $serie = $this->SsSerie->getSerieById($origin->serie_id);
 
         $schemaRecord = Partie_schema::where('partie_id', $id_game)->orderBy('tours', 'asc')->get();
         $serieA = [];
@@ -189,6 +195,7 @@ class SsPartie
 
         return [
             "game_id" => $game_id,
+            "startmap" => $serie->startmap,
             "localisations" => $serieA,
         ];
     }

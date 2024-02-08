@@ -41,18 +41,26 @@ class SsSerie
 
     public function getLocalisationBySerie(int $id_serie){
         $tab = [];
-            $encodeRes = $this->client->get('/items/serie/'.$id_serie);
-            $res = json_decode($encodeRes->getBody(), true);
+        $encodeRes = $this->client->get('/items/serie/'.$id_serie);
+        $res = json_decode($encodeRes->getBody(), true);
 
-            $tableau_id = $res['data']['localisation'];
-            $host = gethostbyname("directus");
+        $tableau_id = $res['data']['localisation'];
+        $host = gethostbyname("directus");
 
-            foreach ($tableau_id as $tdi){
-                $encodeResDeux = $this->client->get('/items/localisation/'.$tdi);
-                $resDeux = json_decode($encodeResDeux->getBody(), true);
+        foreach ($tableau_id as $tdi){
+            $encodeResDeux = $this->client->get('/items/localisation/'.$tdi);
+            $resDeux = json_decode($encodeResDeux->getBody(), true);
 
-                $tab[] = new LocalisationDTO($resDeux['data']['id'], $resDeux['data']['lieu'],"http://docketu.iutnc.univ-lorraine.fr:35200/".$resDeux['data']['photo'], $resDeux['data']['coordonnee']['coordinates']);
-            }
+            $tab[] = new LocalisationDTO($resDeux['data']['id'], $resDeux['data']['lieu'],"http://docketu.iutnc.univ-lorraine.fr:35200/assets/".$resDeux['data']['photo'], $resDeux['data']['coordonnee']['coordinates']);
+        }
         return $tab;
+    }
+
+    public function getLocalisationById(int $id){
+            $encodeResDeux = $this->client->get('/items/localisation/'.$id);
+            $resDeux = json_decode($encodeResDeux->getBody(), true);
+
+            $res = new LocalisationDTO($resDeux['data']['id'], $resDeux['data']['lieu'],"http://docketu.iutnc.univ-lorraine.fr:35200/assets/".$resDeux['data']['photo'], $resDeux['data']['coordonnee']['coordinates']);
+        return $res;
     }
 }
