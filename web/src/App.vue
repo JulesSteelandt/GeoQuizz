@@ -1,5 +1,5 @@
 <script>
-import {computed, reactive} from 'vue';
+import {computed, reactive, watch} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
 import Cookies from "js-cookie";
@@ -9,6 +9,7 @@ export default {
 
   /**
    * Vérifie si la route actuelle est la page d'accueil ou non et si l'utilisateur est connecté
+   * fonction setup() de Vue 3, qui permet de déclarer des propriétés réactives et des méthodes
    * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
    */
   setup() {
@@ -21,13 +22,28 @@ export default {
 
     const checkAuthStatus = () => {
       const token = Cookies.get('accessToken');
-      state.isConnected = !!token;
+      // Si le token existe, l'utilisateur est connecté, sinon il ne l'est pas
+      if (token !== undefined) {
+        console.log("connexion true 2")
+        state.isConnected = true;
+      } else {
+        console.log("connexion false 2")
+        state.isConnected = false;
+      }
     };
+
 
     const logout = () => {
       Cookies.remove('accessToken');
+      console.log("connexion false 2")
       state.isConnected = false;
     };
+
+    // Watcher pour détecter les changements de isConnected
+    watch(() => state.isConnected, (newValue, oldValue) => {
+      console.log('Changement de statut de connexion:', newValue);
+      // Mettre à jour l'affichage du header ou d'autres composants en fonction du nouvel état de connexion
+    });
 
     // Vérifier l'état d'authentification lors du chargement initial du composant
     checkAuthStatus();
