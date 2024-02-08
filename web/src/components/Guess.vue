@@ -47,7 +47,7 @@ export default {
       game_id: null,
       token: null,
       localisations: [],
-      intitialisation: this.init(),
+      initialisation: this.init(),
       reponseMarker: null,
       LieuReponse: null,
       image: "",
@@ -72,12 +72,8 @@ export default {
      * @returns {boolean} - true si l'initialisation s'est bien passée, false sinon
      */
     init() {
-      this.getIdSerie();
-      if (this.fetchGame()) {
-        return true;
-      } else {
-        return false;
-      }
+      this.initialisation = false;
+      this.fetchGame();
     },
 
 
@@ -95,6 +91,7 @@ export default {
      * Méthode qui permet de fetch l'api afin d'avoir le jeu de données nécessaire pour le jeu
      */
     fetchGame() {
+      this.getIdSerie();
       if(this.checkAuthStatus()){
       //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
         fetch(CREATE_GAME, {
@@ -111,8 +108,16 @@ export default {
             .then(data => {
               this.game_id = data.game_id;
               this.localisations = data.localisations;
-             console.log(data);
-             console.log(this.localisations);
+
+              this.reponseMarker =[this.localisations[0].coordinate[1], this.localisations[0].coordinate[0]];
+              //this.LieuReponse = this.localisations[0].name;
+              this.image = this.localisations[0].url;
+              this.initialisation = true;
+
+
+
+
+
             })
             .catch((error) => {
               //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
@@ -257,7 +262,12 @@ export default {
 </script>
 
 <template>
-  <section
+  <section v-if="!this.initialisation" class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+    <label class="text-4xl text-center font-bold text-white">Chargement de la partie...</label>
+  </section>
+
+
+  <section v-else
       class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
     <div class="flex flex-wrap">
       <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
