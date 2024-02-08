@@ -45,22 +45,22 @@ export default {
 </script>
 
 <template>
-  <div v-if="!inscriptionDone" class="bg-gray-700 flex flex-col justify-center p-8 rounded-2xl m-auto">
+  <div v-if="!inscriptionDone" class="bg-gray-700 flex flex-col justify-center p-8 rounded-2xl m-auto mb-8 mt-8">
     <div>
-      <p class="text-white">Votre e-mail :</p>
-      <input v-model="email" class="w-60 mb-2.5 p-1 border-4" type="text"
+      <p class="text-white mb-1">Votre e-mail :</p>
+      <input v-model="email" class="w-60 mb-2.5 p-1 border-4 rounded-lg" type="text"
              :class="{'border-red-700': verifEmail(this.email) === false}" placeholder="Votre e-mail ...">
       <p v-if="verifEmail(this.email) === false" class="text-red-700 font-bold mb-2">Email invalide</p>
     </div>
     <div>
-      <p class="text-white">Mot de passe :</p>
-      <input v-model="pwd" class="w-60 mb-2.5 p-1 border-4" type="password"
+      <p class="text-white mb-1">Mot de passe :</p>
+      <input v-model="pwd" class="w-60 mb-2.5 p-1 border-4 rounded-lg" type="password"
              :class="{'border-red-700': verifMdp(this.pwd, this.pwdverif) === false}"
              placeholder="Votre mot de passe ...">
     </div>
     <div>
-      <p class="text-white">Confirmation du mot de passe :</p>
-      <input v-model="pwdverif" class="w-60 mb-2.5 p-1 border-4" type="password"
+      <p class="text-white mb-1">Confirmation du mot de passe :</p>
+      <input v-model="pwdverif" class="w-60 mb-3 p-1 border-4 rounded-lg" type="password"
              :class="{'border-red-700': verifMdp(this.pwd, this.pwdverif) === false}"
              placeholder="Votre mot de passe ...">
       <p v-if="verifMdp(this.pwd, this.pwdverif) === false" class="text-red-700 font-bold">Mots de passe
@@ -72,7 +72,7 @@ export default {
   </div>
 
   <div v-else class="bg-gray-700 flex flex-col justify-center p-8 rounded-2xl m-auto">
-    <p class="text-white">Merci de votre inscription !</p>
+    <p class="text-white text-2xl">Merci de votre inscription !</p>
   </div>
 
 </template>
