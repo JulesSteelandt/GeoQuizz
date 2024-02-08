@@ -42,7 +42,7 @@ export default {
                 });
                 this.difficulteSerie.push({
                   id: serie.id,
-                  difficulty: ""
+                  difficulty: "easy",
                 });
               });
 
@@ -75,7 +75,6 @@ export default {
 
       }
     },
-
 
     /**
      * Méthode qui initialise le composant
@@ -128,20 +127,24 @@ export default {
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
           <img class="w-full h-48 object-cover object-center" :src="item.img"
                alt="Image de la série">
-          <div class="p-4">
-            <h3 class="text-gray-900 font-semibold text-lg">{{ item.nom }}</h3>
-            <router-link :to="/play/ + item.id + '/' + this.difficulteSerie[index].difficulty">
-              <button
-                  class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
-                Choisir
-              </button>
-            </router-link>
+          <div class="p-4 flex flex-row justify-between items-center">
+            <div>
+              <h3 class="text-gray-900 font-semibold text-lg">{{ item.nom }}</h3>
+              <router-link :to="/play/ + this.difficulteSerie[index].difficulty + '/' + item.id">
+                <button
+                    class="mt-2 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 focus:outline-none focus:bg-blue-600">
+                  Choisir
+                </button>
+              </router-link>
+            </div>
+            <select
+                class="h-12 w-28 bg-gray-200 border-2 border-gray-700 text-gray-700 font-bold align-middle text-center"
+                v-model="difficulteSerie[index].difficulty" name="difficulty">
+              <option value="easy" class="bg-green-500 text-white text-bold">Easy</option>
+              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Medium</option>
+              <option value="hard" class="bg-red-500 text-white text-bold">Hard</option>
+            </select>
           </div>
-          <select v-model="difficulteSerie[index].difficulty" name="difficulty">
-            <option value="easy" class="bg-green-500">Easy</option>
-            <option value="medium" class="bg-orange-500">Medium</option>
-            <option value="hard" class="bg-red-500">Hard</option>
-          </select>
         </div>
       </div>
     </div>
