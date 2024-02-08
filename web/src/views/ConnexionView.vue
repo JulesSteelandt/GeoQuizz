@@ -1,5 +1,6 @@
 <script>
 import Cookies from 'js-cookie';
+import {SERIES, SERIES_IMAGE, SIGNIN} from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
 
 
@@ -36,7 +37,7 @@ export default {
       }
 
       try {
-        const response = await fetch('http://docketu.iutnc.univ-lorraine.fr:35200/signin', {
+        const response = await fetch(SIGNIN, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
