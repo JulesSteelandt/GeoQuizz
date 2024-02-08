@@ -125,10 +125,12 @@ export default {
     </div>
     <div>
       <p class="text-white mb-1">Mot de passe :</p>
-      <input ref="passwordInput" v-model="password" class="w-60 mb-2.5 p-1 rounded-lg border-4" type="password"
-             placeholder="Votre mot de passe ..." @keyup.enter="login">
       <div>
-        <togglePassword :showPassword="showPassword" @toggle="togglePassword" />
+        <input v-if="!showPassword" ref="passwordInput" v-model="password" class="w-60 mb-2.5 p-1 rounded-lg border-4" type="password" placeholder="Votre mot de passe ..." @keyup.enter="login">
+        <input v-else ref="passwordInput" v-model="password" class="w-60 mb-2.5 p-1 rounded-lg border-4" type="text" placeholder="Votre mot de passe ..." @keyup.enter="login">
+        <div>
+          <togglePassword :showPassword="showPassword" @toggle="togglePassword" />
+        </div>
       </div>
       <p v-if="!verifEmail(email)" class="text-green-700 font-bold mb-2">L'email est invalide</p>
     </div>
