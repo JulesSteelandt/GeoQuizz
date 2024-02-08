@@ -2,6 +2,8 @@
 import 'leaflet/dist/leaflet.css';
 import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
+import Cookies from "js-cookie";
+import {CREATE_GAME} from "@/apiLiens.js";
 
 export default {
   components: {
@@ -11,7 +13,6 @@ export default {
   },
   data() {
     return {
-      image: "",
       timerCount: 60,
       timerEnable: true,
       validate: false,
@@ -42,20 +43,42 @@ export default {
 
 
       //serie_id récupérer grâce à l'url
-      serie_id: this.getIdSerie(),
+      serie_id: null,
+      game_id: null,
+      token: null,
+      localisations: [],
+      intitialisation: this.init(),
+      reponseMarker: null,
+      LieuReponse: null,
+      image: "",
 
 
+
+      /**
       //Jeu de données de test en attendant de récupérer les données de l'API
       imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
       //Lieu à deviner
       LieuReponse: "Place Stanislas, Nancy, France",
       //marker de la réponse
       reponseMarker: [48.693522435993316, 6.183261126061553]
+      **/
     }
   },
 
 
   methods: {
+    /**
+     * Méthode qui permet d'initialiser le jeu
+     * @returns {boolean} - true si l'initialisation s'est bien passée, false sinon
+     */
+    init() {
+      this.getIdSerie();
+      if (this.fetchGame()) {
+        return true;
+      } else {
+        return false;
+      }
+    },
 
 
     /**
@@ -65,8 +88,57 @@ export default {
     getIdSerie() {
       let url = window.location.href;
       let id = url.substring(url.lastIndexOf('/') + 1);
-      return id;
+      this.serie_id = id;
     },
+
+    /**
+     * Méthode qui permet de fetch l'api afin d'avoir le jeu de données nécessaire pour le jeu
+     */
+    fetchGame() {
+      if(this.checkAuthStatus()){
+      //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
+        fetch(CREATE_GAME, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + this.token
+          },
+          body: JSON.stringify({
+            "serie_id": this.serie_id
+          })
+        })
+            .then(response => response.json())
+            .then(data => {
+              this.game_id = data.game_id;
+              this.localisations = data.localisations;
+             console.log(data);
+             console.log(this.localisations);
+            })
+            .catch((error) => {
+              //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
+              this.$router.push('/selectgame');
+            });
+      }
+    },
+
+    /**
+     * Méthode qui permet de récupérer le cookie de l'utilisateur connecté et de renvoyer sur une page de connexion si
+     * l'utilisateur n'est pas connecté / token expiré
+     * @returns {boolean} - true si l'utilisateur est connecté, false sinon
+     */
+    checkAuthStatus() {
+      const token = Cookies.get('accessToken');
+      if (token === undefined || token === null) {
+        this.$router.push('/connexion');
+        return false;
+      } else {
+        this.token = token
+        console.log(this.token);
+        return true;
+      }
+    },
+
+
 
     /**
      * Méthode qui stop le chronomètre et permet de valider la position choisie par l'utilisateur
@@ -189,7 +261,7 @@ export default {
       class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
     <div class="flex flex-wrap">
       <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
-        <img :src="imageTest" alt="imageTest">
+        <img :src="image" alt="image du lieu">
         <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
           <label class="text-white ml-2 ">
             Réponse : <label class="font-bold">{{ LieuReponse }}</label>

@@ -14,3 +14,12 @@ export const REFRESH_USER = "http://docketu.iutnc.univ-lorraine.fr:35200/users/r
 
 export const VALIDATE_USER = "http://docketu.iutnc.univ-lorraine.fr:35200/users/validate"
 
+//concernant les parties
+
+export const CREATE_GAME = "http://docketu.iutnc.univ-lorraine.fr:35200/games/create"
+
+export const SCORE_PLAY = "http://docketu.iutnc.univ-lorraine.fr:35200/games/play"
+
+
+
+
