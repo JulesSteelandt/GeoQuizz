@@ -36,7 +36,7 @@ class SsSerie
     {
         $encodeRes = $this->client->get("/items/serie/".$id);
         $r = json_decode($encodeRes->getBody(), true);
-        return new SerieDTO($r['data']['id'], $r['data']['nom'], $r['data']['photo']);
+        return new SerieDTO($r['data']['id'], $r['data']['nom'], $r['data']['photo'], $r['data']['startmap']['coordinates']);
     }
 
     public function getLocalisationBySerie(int $id_serie){
@@ -48,10 +48,10 @@ class SsSerie
             $host = gethostbyname("directus");
 
             foreach ($tableau_id as $tdi){
-                $encodeResDeux = $encodeRes = $this->client->get('/items/localisation/'.$tdi);
+                $encodeResDeux = $this->client->get('/items/localisation/'.$tdi);
                 $resDeux = json_decode($encodeResDeux->getBody(), true);
 
-                $tab[] = new LocalisationDTO($resDeux['data']['id'], "http://docketu.iutnc.univ-lorraine.fr:35200/".$resDeux['data']['photo'], $resDeux['data']['coordonnee']['coordinates']);
+                $tab[] = new LocalisationDTO($resDeux['data']['id'], $resDeux['data']['lieu'],"http://docketu.iutnc.univ-lorraine.fr:35200/".$resDeux['data']['photo'], $resDeux['data']['coordonnee']['coordinates']);
             }
         return $tab;
     }
