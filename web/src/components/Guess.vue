@@ -55,16 +55,6 @@ export default {
       //booléen pour afficher la fin de la partie
       finDePartie: false,
 
-
-
-      /**
-      //Jeu de données de test en attendant de récupérer les données de l'API
-      imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
-      //Lieu à deviner
-      LieuReponse: "Place Stanislas, Nancy, France",
-      //marker de la réponse
-      reponseMarker: [48.693522435993316, 6.183261126061553]
-      **/
     }
   },
 
@@ -96,12 +86,11 @@ export default {
     fetchGame() {
       this.getIdSerie();
       if(this.checkAuthStatus()){
-      //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
         fetch(CREATE_GAME, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + this.token
+            'Authorization': 'Bearer ' + Cookies.get('accessToken')
           },
           body: JSON.stringify({
             "serie_id": this.serie_id
@@ -122,7 +111,6 @@ export default {
 
 
 
-
             })
             .catch((error) => {
               //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
@@ -137,13 +125,12 @@ export default {
      * @returns {boolean} - true si l'utilisateur est connecté, false sinon
      */
     checkAuthStatus() {
-      const token = Cookies.get('accessToken');
+      let token = Cookies.get('accessToken');
       if (token === undefined || token === null) {
         this.$router.push('/connexion');
         return false;
       } else {
         this.token = token
-        console.log(this.token);
         return true;
       }
     },
@@ -173,16 +160,12 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
-      console.log(this.donneesScores.game_id);
-      console.log(this.donneesScores.distance);
-      console.log(this.donneesScores.temps);
-
 
       fetch(SCORE_PLAY, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + this.token
+              'Authorization': 'Bearer ' + Cookies.get('accessToken')
             },
             body: JSON.stringify({
               "game_id": this.donneesScores.game_id,
@@ -195,10 +178,8 @@ export default {
           .then(data => {
           })
           .catch((error) => {
-            console.error('Error:', error);
           })
           .finally(() => this.donneesSent = true);
-          console.log(this.game_id);
 
     },
 
@@ -247,7 +228,6 @@ export default {
       else{
         this.finDePartie = true;
       }
-      console.log(this.numeroTour);
       console.log(this.finDePartie);
 
 
