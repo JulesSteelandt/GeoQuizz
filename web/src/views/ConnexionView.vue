@@ -2,6 +2,7 @@
 import Cookies from 'js-cookie';
 import { SIGNIN } from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
+import { checkAuthStatus } from "@/App.vue";
 
 
 export default {
@@ -11,7 +12,7 @@ export default {
 
   data() {
     return {
-      isConnected: false,
+
       showError: false,
       showPassword: false,
       email: '',
@@ -68,7 +69,7 @@ export default {
             Cookies.set('accessToken', accessToken, { expires: expiresIn });
 
             this.isConnected = true;
-            // Appeler checkAuthStatus de App.vue
+            checkAuthStatus();
             this.showError = false;
             this.resetFields();
           }
@@ -144,9 +145,7 @@ export default {
     <p class="text-red-700 text-xl font-bold ">La connexion a échoué, le nom d'utilisateur</p>
     <p class="text-red-700 text-xl font-bold ">ou le mot de passe sont erronés</p>
   </div>
-  <div v-else-if="isConnected" class="flex flex-col items-center p-8 rounded-2xl m-auto">
-    <p class="text-green-600 text-xl font-bold ">Connexion réussie</p>
-  </div>
+
   <div v-else-if="!isConnected && !isFill" class="flex flex-col items-center p-8 rounded-2xl m-auto">
     <p class="text-gray-400 text-xl font-bold ">Veuillez rentrer un email et un mot de passe</p>
   </div>

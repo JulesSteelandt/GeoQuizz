@@ -4,6 +4,10 @@ import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
 import Cookies from "js-cookie";
 
+export const checkAuthStatus = () => {
+  const token = Cookies.get('accessToken');
+  return token !== undefined;
+};
 export default {
   components: {PlayGeoQuizz},
   data() {
@@ -12,26 +16,6 @@ export default {
       isConnected: false,
     };
   },
-
-  methods: {
-    /**
-     * Permet de vérifier si l'utilisateur est connecté
-     * @returns {void} - return true si l'utilisateur est connecté, false sinon
-     */
-    checkAuthStatus() {
-      const token = Cookies.get('accessToken');
-
-        if (token === undefined) {
-          // Si le token est expiré, déconnecter l'utilisateur et supprimer le cookie
-          this.isConnected = false;
-          Cookies.remove('accessToken');
-          return;
-        }
-        this.isConnected = true;
-      }
-  },
-
-
 
   /**
    * Vérifie si la route actuelle est la page d'accueil ou non
@@ -42,26 +26,19 @@ export default {
     const isHomeRoute = computed(() => route.path === '/');
 
     const state = reactive({
-      isConnected: false,
+      isConnected: checkAuthStatus(),
     });
 
-    const checkAuthStatus = () => {
-      const token = Cookies.get('accessToken');
-      // Si le token existe, l'utilisateur est connecté, sinon il ne l'est pas
-      if (token !== undefined) {
-        console.log("connexion true 2")
-        state.isConnected = true;
-      } else {
-        console.log("connexion false 2")
-        state.isConnected = false;
-      }
-    };
 
+    const updateAuthStatus = () => {
+      state.isConnected = checkAuthStatus();
+    };
 
     const logout = () => {
       Cookies.remove('accessToken');
       console.log("connexion false 2")
       state.isConnected = false;
+      //rajouter user.pseudo = '' pour le déconnecter
     };
 
     // Watcher pour détecter les changements de isConnected
@@ -71,7 +48,8 @@ export default {
     });
 
     // Vérifier l'état d'authentification lors du chargement initial du composant
-    checkAuthStatus();
+
+    updateAuthStatus();
 
     return { isHomeRoute, state, checkAuthStatus, logout };
   },
@@ -156,9 +134,6 @@ export default {
     </RouterLink>
 
   </div>
-
-
-
   <RouterView/>
 
   <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between">
