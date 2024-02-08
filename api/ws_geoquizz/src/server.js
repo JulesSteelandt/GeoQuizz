@@ -1,39 +1,42 @@
-import { WebSocketServer } from 'ws';
+import {WebSocketServer} from 'ws';
 
-const server = new WebSocketServer({ port: 3000 , clientTracking: true});
+const server = new WebSocketServer({port: 3000, clientTracking: true});
 
-const notifyAll = (msg) =>{
-  server.clients.forEach((client_socket) => {
-    if (client_socket.readyState === WebSocket.OPEN)
-      client_socket.send(msg);
-  });
-}
+const sendNotificationToAll = (msg) => {
+    server.clients.forEach((client_socket) => {
+        if (client_socket.readyState === WebSocket.OPEN) {
+            client_socket.send(msg);
+        }
+    });
+};
 
 //const clients = [{clientSocket : ...., numCommande: ....} ]
-const clients = [ ]
-server.on('connection', (client_socket) => {
-  client_socket.addEventListener('message', (message) => {
-        clients.push({clientSocket: client_socket, numCommande : message.data})
-        client_socket.send('Vous êtes abonné au suivi de la commande numéro : ' + message.data );
-      }
-  )
+const clients = []
+
+server.on('connection', function connection(client_socket) {
+    console.log('Client connected');
+
+    client_socket.on('message', function incoming(message) {
+        console.log('Received: %s', message);
+
+        clients.push(client_socket)
+
+        client_socket.addEventListener('message', (message) => {
+            clients.push({clientSocket: client_socket, numCommande : message.data})
+            client_socket.send('Partie ok');
+        });
+
+        client_socket.on('close', function close() {
+            console.log('Client disconnected');
+            const index = clients.indexOf(client_socket);
+            if (index > -1) {
+                clients.splice(index, 1);
+            }
+        });
+    });
 });
 
-
-server.on('connection', function connection(ws) {
-  console.log('Client connected');
-
-  ws.on('message', function incoming(message) {
-    console.log('Received: %s', message);
-
-    server.clients.forEach(function each(client) {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send('Un autre client a envoyé un message : ' + message);
-      }
-    });
-  });
-
-  ws.on('close', function close() {
-    console.log('Client disconnected');
-  });
+server.on('message', function(message) {
+    console.log('message envoyer : ' + message);
+    sendNotificationToAll(message);
 });
