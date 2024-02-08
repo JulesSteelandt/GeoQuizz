@@ -1,4 +1,4 @@
-import {WebSocketServer} from 'ws';
+import {WebSocketServer, WebSocket} from 'ws';
 
 const server = new WebSocketServer({port: 3000, clientTracking: true});
 
@@ -6,37 +6,28 @@ const sendNotificationToAll = (msg) => {
     server.clients.forEach((client_socket) => {
         if (client_socket.readyState === WebSocket.OPEN) {
             client_socket.send(msg);
+            console.log("Notification envoyer à tous les joueurs")
         }
     });
 };
 
-//const clients = [{clientSocket : ...., numCommande: ....} ]
-const clients = []
+const receivedMessages = [];
 
 server.on('connection', function connection(client_socket) {
     console.log('Client connected');
 
     client_socket.on('message', function incoming(message) {
         console.log('Received: %s', message);
+        if (receivedMessages.length >= 10) {
+            receivedMessages.shift(); // Retirer le premier élément (le plus ancien message)
+        }
+        receivedMessages.push(message.toString());
+        console.log(receivedMessages);
+        sendNotificationToAll(message);
+    });
 
-        clients.push(client_socket)
-
-        client_socket.addEventListener('message', (message) => {
-            clients.push({clientSocket: client_socket, numCommande : message.data})
-            client_socket.send('Partie ok');
-        });
-
-        client_socket.on('close', function close() {
-            console.log('Client disconnected');
-            const index = clients.indexOf(client_socket);
-            if (index > -1) {
-                clients.splice(index, 1);
-            }
-        });
+    client_socket.on('close', function close() {
+        console.log('Client disconnected');
     });
 });
 
-server.on('message', function(message) {
-    console.log('message envoyer : ' + message);
-    sendNotificationToAll(message);
-});
