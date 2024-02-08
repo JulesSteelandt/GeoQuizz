@@ -2,7 +2,6 @@
 import Cookies from 'js-cookie';
 import { SIGNIN } from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
-import { checkAuthStatus } from "@/App.vue";
 
 
 export default {
