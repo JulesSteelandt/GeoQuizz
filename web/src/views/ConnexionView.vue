@@ -1,6 +1,6 @@
 <script>
 import Cookies from 'js-cookie';
-import {SERIES, SERIES_IMAGE, SIGNIN} from "@/apiLiens.js";
+import {SIGNIN} from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
 
 

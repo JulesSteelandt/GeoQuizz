@@ -1,52 +1,39 @@
 <script>
-import {computed} from 'vue';
+import {computed, reactive} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
 import Cookies from "js-cookie";
 
 export default {
   components: {PlayGeoQuizz},
-  data() {
-    return {
-      isHomeRoute: true,
-      isConnected: false,
-    };
-  },
-
-  methods: {
-    /**
-     * Permet de vérifier si l'utilisateur est connecté
-     * @returns {void} - return true si l'utilisateur est connecté, false sinon
-     */
-    async checkAuthStatus() {
-      const token = Cookies.get('accessToken');
-
-        if (token === undefined) {
-          // Si le token est expiré, déconnecter l'utilisateur et supprimer le cookie
-          this.isConnected = false;
-          Cookies.remove('accessToken');
-          return;
-        }
-        this.isConnected = true;
-      }
-  },
-
-
 
   /**
-   * Vérifie si la route actuelle est la page d'accueil ou non
+   * Vérifie si la route actuelle est la page d'accueil ou non et si l'utilisateur est connecté
    * @returns {{isHomeRoute: ComputedRef<boolean>}} - true si la route actuelle est la page d'accueil, false sinon
    */
   setup() {
     const route = useRoute();
     const isHomeRoute = computed(() => route.path === '/');
 
-    return {isHomeRoute};
-  },
-  mounted() {
-    this.checkAuthStatus();
-  },
+    const state = reactive({
+      isConnected: false,
+    });
 
+    const checkAuthStatus = () => {
+      const token = Cookies.get('accessToken');
+      state.isConnected = !!token;
+    };
+
+    const logout = () => {
+      Cookies.remove('accessToken');
+      state.isConnected = false;
+    };
+
+    // Vérifier l'état d'authentification lors du chargement initial du composant
+    checkAuthStatus();
+
+    return { isHomeRoute, state, checkAuthStatus, logout };
+  },
 };
 </script>
 
@@ -84,38 +71,29 @@ export default {
         <div class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
             <RouterLink to="/selectgame">
               <button class="h-full w-full max-sm:text-base max-sm:h-full">Jouer</button>
-
             </RouterLink>
         </div>
 
         <div class="notConnected flex flex-row items-center">
-
-          <div v-if="isConnected === false"
-              class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
+          <!-- Boutons de connexion et inscription -->
+          <div v-if="!state.isConnected">
             <RouterLink to="/inscription">
-              <button class="h-full w-full max-sm:text-base">Inscription</button>
+              <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Inscription</button>
             </RouterLink>
-          </div>
-          <div
-              v-else class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
             <RouterLink to="/connexion">
-              <button class="h-full w-full max-sm:text-base">Déconnexion</button>
+              <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Connexion</button>
             </RouterLink>
           </div>
-          <div
-              v-if="isConnected === false" class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
-            <RouterLink to="/connexion">
-              <button class="h-full w-full max-sm:text-base">Connexion</button>
-            </RouterLink>
-          </div>
-          <div
-              v-else class="bg-blue-500 text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">
+
+          <!-- Bouton de déconnexion -->
+          <div v-else class="connected flex flex-row items-center">
+            <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105" @click="logout">Déconnexion</button>
             <RouterLink to="/monCompte">
-              <img class="h-8 w-8" src="@/components/icons/user.png" alt="logoUser">
+              <img class="h-12 w-12 hover:transition duration-300 ease-in-out transform hover:scale-110" src="@/components/icons/user.png" alt="logoUser">
             </RouterLink>
+
           </div>
         </div>
-
         <div class="connected flex flex-row items-center">
         </div>
       </div>
@@ -139,6 +117,6 @@ export default {
 
   <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between">
     <p>GeoQuizz - 2024</p>
-    <p>Copyrigtht IUT-Charlemagne</p>
+    <p>Copyright IUT-Charlemagne</p>
   </footer>
 </template>
