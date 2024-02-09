@@ -137,10 +137,12 @@ export default {
 
             <!-- Bouton de déconnexion -->
             <div v-else class="connected flex flex-row items-center">
+              <RouterLink to="/">
               <button
                   class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105"
                   @click="logout">Déconnexion
               </button>
+              </RouterLink>
               <RouterLink to="/monCompte">
                 <img class="h-12 w-12 hover:transition duration-300 ease-in-out transform hover:scale-110"
                      src="@/components/icons/user.png" alt="logoUser">
