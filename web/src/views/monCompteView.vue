@@ -63,8 +63,6 @@ export default {
         const userData = await response.json();
         this.userNotConnected = false;
         this.user.pseudo = userData.username;
-        console.log("coucou" + this.user.pseudo);
-        console.log(userData);
       } catch (error) {
         console.error('Erreur:', error.message);
       }
@@ -110,8 +108,6 @@ export default {
      * @param {object} partie - Les informations de la partie jouée
      */
     calculMeilleurScore(partie) {
-      console.log(partie.score);
-      console.log("premier meilleur " + this.premierMeilleurScore.score);
       if (partie.score > this.premierMeilleurScore.score) {
         this.troisiemeMeilleurScore = this.secondMeilleurScore;
         this.secondMeilleurScore = this.premierMeilleurScore;
