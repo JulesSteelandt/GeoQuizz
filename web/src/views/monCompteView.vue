@@ -23,7 +23,9 @@ export default {
       // Vérifiez si le token est défini
       if (!token) {
         // L'utilisateur n'est pas connecté, donc le pseudo reste vide
-       this.userNotConnected = true;
+        this.userNotConnected = true;
+        this.$refs.connectedUserDiv.style.display = 'none';
+        this.$refs.disconnectedUserDiv.style.display = 'block';
         return;
       }
       try {
@@ -38,52 +40,33 @@ export default {
         }
         // Récupérez le pseudo de l'utilisateur depuis la réponse de l'API
         const userData = await response.json();
+        this.userNotConnected = false;
         this.user.pseudo = userData.username;
-        console.log(this.user.pseudo);
+        console.log("coucou" +this.user.pseudo);
         console.log(userData);
+        this.$refs.connectedUserDiv.style.display = 'block';
+        this.$refs.disconnectedUserDiv.style.display = 'none';
       } catch (error) {
         console.error('Erreur:', error.message);
       }
     },
   },
-  async fetchScoreUser() {
-    const token = Cookies.get('accessToken'); // Récupérez le token du cookie
 
-    // Vérifiez si le token est défini
-    if (!token) {
-      // L'utilisateur n'est pas connecté, donc le pseudo reste vide
-      this.userNotConnected = true;
-      return this.isConnected = false;
-    }
-    try {
-      const response = await fetch(SCORES, {
-        headers: {
-          Authorization: `Bearer ${token}`, // Ajoutez le token comme en-tête d'autorisation
-        },
-      });
+}
 
-      if (!response.ok) {
-        throw new Error('Erreur lors de la récupération des informations de l\'utilisateur');
-      }
-     //récupére les différents score des differentes parties ainsi que leur difficultés
 
-    } catch (error) {
-      console.error('Erreur:', error.message);
-    }
-  },
-};
 </script>
 
 <template>
   <div>
   <section class=" min-h-screen pt-6">
-    <div v-if="user.pseudo !== '' || !userNotConnected" class="drop-shadow-[0_8px_4px_rgba(34,0,4,6)] w-1/2 rounded-xl flex flex-col overflow-hidden border-2 border-gray-100 mx-auto my-4 bg-stone-400 text-zinc-900">
+    <div ref="connectedUserDiv" v-if="!userNotConnected" class="drop-shadow-[0_8px_4px_rgba(34,0,4,6)] w-1/2 rounded-xl flex flex-col overflow-hidden border-2 border-gray-100 mx-auto my-4 bg-stone-400 text-zinc-900">
       <div class="flex flex-row items-center m-2 justify-evenly ml-auto mr-auto">
         <p class="text-4xl font-bold m-1 mr-2">Compte de :</p>
         <p class="text-4xl font-bold">{{ user.pseudo }}</p>
       </div>
     </div>
-    <div v-else class="flex flex-col justify-center mt-4 items-center">
+    <div ref="disconnectedUserDiv" class="flex flex-col justify-center mt-4 items-center">
       <div class="justify-center">
       <p class="p-2 text-center font-bold w-1/2 rounded-xl overflow-hidden border-2 border-gray-100 mx-auto my-10 bg-stone-400 text-zinc-900"> Vous avez été déconnecté. Veuillez vous reconnecter pour accéder à votre compte.</p>
       </div>

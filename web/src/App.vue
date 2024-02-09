@@ -3,17 +3,23 @@ import {computed, reactive, watch} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
 import Cookies from "js-cookie";
+import Connexion from "@/views/ConnexionView.vue";
 
 export const checkAuthStatus = () => {
   const token = Cookies.get('accessToken');
   return token !== undefined;
 };
 export default {
+  Connexion,
   components: {PlayGeoQuizz},
   data() {
     return {
       isHomeRoute: true,
       isConnected: false,
+      state: {
+        // Définir les propriétés de l'état ici
+        isConnected: false,
+      }
     };
   },
 
@@ -39,6 +45,7 @@ export default {
       console.log("connexion false 2")
       state.isConnected = false;
       //rajouter user.pseudo = '' pour le déconnecter
+
     };
 
     // Watcher pour détecter les changements de isConnected
@@ -53,6 +60,17 @@ export default {
 
     return { isHomeRoute, state, checkAuthStatus, logout };
   },
+
+  methods: {
+    handleLoginSuccess() {
+      state.isConnected = true;
+    },
+  },
+
+  mounted() {
+    checkAuthStatus();
+    console.log("this.isConnected mounted", state.isConnected);
+  }
 
 };
 </script>
@@ -103,6 +121,8 @@ export default {
               </RouterLink>
               <RouterLink to="/connexion">
                 <button class="max-sm:text-xs max-sm:mr-1.5 sm:text-base text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105">Connexion</button>
+                <Connexion :is-connected="state.isConnected" />
+                <Connexion :is-connected="isConnected" @login-success="handleLoginSuccess" />
               </RouterLink>
             </div>
 

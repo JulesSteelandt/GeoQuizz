@@ -2,13 +2,11 @@
 import Cookies from 'js-cookie';
 import { SIGNIN } from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
-import App from "@/App.vue";
 
 
 export default {
   components: {
-    togglePassword,
-    App
+    togglePassword
   },
 
   data() {
@@ -25,8 +23,8 @@ export default {
   },
   methods: {
     /**
-     * Permet de se connecter à l'application fetch l'api d'autehntification
-     * @returns {void} - return true si connecté et false sinon
+     * Méthode qui permet de connecter l'utilisateur
+     * @returns {void} place l'acces token dans le cookie
      */
     async login() {
       const email = this.email;
@@ -54,13 +52,10 @@ export default {
           if (responseData && responseData.message === "401 Authentification failed") {
             console.error('Échec de la connexion');
             this.isConnected = false;
-            state.isConnected = false;
             console.log("connexion false 1")
             this.showError = true;
           } else {
-            // Récupérer l'expiration du cookie de la réponse si elle est disponible
-            const expiresIn = (((responseData.expiration)/3600)/24);//expire au bout de 12h
-            //const expiresIn = (((60)/3600)/24); //expire au bout de 2 min
+            const expiresIn = (((responseData.expiration) / 3600) / 24);//expire au bout de 12h
 
             const accessToken = responseData.access_token;
             if (!accessToken) {
@@ -71,12 +66,9 @@ export default {
             Cookies.set('accessToken', accessToken, { expires: expiresIn });
 
             this.isConnected = true;
-            state.isConnected = false;
+            // Appeler checkAuthStatus de App.vue
             this.showError = false;
             this.resetFields();
-            console.log("connexion true");
-            console.log(state.isConnected);
-            console.log(this.isConnected);
           }
 
         }
@@ -84,9 +76,10 @@ export default {
         console.error('Erreur lors de la connexion:', error);
       }
     },
+
     /**
      * Méthode qui permet de réinitialiser les champs email et mot de passe
-     * return {void}
+     * @returns {void}
      */
     resetFields() {
       this.email = '';
@@ -94,17 +87,17 @@ export default {
     },
 
     /**
-     * Permet de basculer entre l'affichage du mot de passe en clair et masqué
-     * @returns {void} - return true si le passeport est valide, false sinon
+     * Méthode qui permet de basculer l'affichage du mot de passe
+     * @returns {void}
      */
     togglePassword() {
       this.showPassword = !this.showPassword;
     },
 
     /**
-     * Méthode qui vérifie le format de l'email saisi par l'utilisateur
-     * @param email email saisi par l'utilisateur
-     * @return {boolean} vrai si email correspond au format tout en étant non null, faux sinon
+     * Méthode qui permet de vérifier si l'email est valide
+     * @param {string} email - l'email à vérifier
+     * @returns {boolean} - true si l'email est valide, false sinon
      */
     verifEmail(email) {
       if (this.emailTouched && email.trim() !== '') {
@@ -113,6 +106,7 @@ export default {
       }
       return true;
     },
+
 
   },
 
@@ -137,10 +131,10 @@ export default {
         <div>
           <togglePassword :showPassword="showPassword" @toggle="togglePassword" />
         </div>
+        <p v-if="!verifEmail(email)" class="text-green-700 font-bold mb-2">L'email est invalide</p>
       </div>
-      <p v-if="!verifEmail(email)" class="text-green-700 font-bold mb-2">L'email est invalide</p>
     </div>
-    <button :disabled="!verifEmail(email) || password === ''" @click="login" class="text-white text-2xl font-bold mt-4 py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 disabled:opacity-50 disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed">      Je me connecte
+    <button :disabled="!verifEmail(email) || password === ''" @click="login" class="text-white text-2xl font-bold mt-4 py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 disabled:opacity-50 disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed">      Je me connecte
     </button>
     <RouterLink to="/inscription">
       <button class="bg-stone-400 text-zinc-600 hover:bg-blue-500 hover:text-zinc-900  py-2 px-4 rounded-xl mt-10 ml-14">
