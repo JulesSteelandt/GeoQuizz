@@ -25,7 +25,7 @@ return function( \Slim\App $app):void {
 
     $app->get("/games[/]", GetPartie::class);
 
-    $app->post("/games/create",PostCreatePartie::class);
+    $app->post("/games/create",PostCreatePartie::class)->addMiddleware(new CheckToken());
 
     $app->post("/games/play",PostTourPartie::class);
 
