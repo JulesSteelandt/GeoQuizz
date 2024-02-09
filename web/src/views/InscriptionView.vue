@@ -3,6 +3,7 @@ export default {
   data() {
     return {
       email: null,
+      pseudo: null,
       pwd: null,
       pwdverif: null,
       inscriptionDone: false,
@@ -47,7 +48,13 @@ export default {
 <template>
   <div v-if="!inscriptionDone" class="bg-gray-700 flex flex-col justify-center p-8 rounded-2xl m-auto mb-8 mt-8">
     <div>
-      <p class="text-white mb-1">Votre e-mail :</p>
+      <p class="text-white mb-1">Votre e-mail</p>
+      <input v-model="email" class="w-full mb-2.5 p-1 border-4 rounded-lg" type="text"
+             :class="{'border-red-700': verifEmail(this.email) === false}" placeholder="nom.prenom@mail.fr">
+      <p v-if="verifEmail(this.email) === false" class="text-red-700 font-bold mb-2">Email invalide</p>
+    </div>
+    <div>
+      <p class="text-white mb-1">Votre pseudo</p>
       <input v-model="email" class="w-60 mb-2.5 p-1 border-4 rounded-lg" type="text"
              :class="{'border-red-700': verifEmail(this.email) === false}" placeholder="Votre e-mail ...">
       <p v-if="verifEmail(this.email) === false" class="text-red-700 font-bold mb-2">Email invalide</p>
