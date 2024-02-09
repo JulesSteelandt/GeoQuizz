@@ -154,7 +154,7 @@ export default {
   </div>
   <RouterView/>
 
-  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between">
+  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between fixed bottom-0 w-full">
     <p>GeoQuizz - 2024</p>
     <p>Copyright IUT-Charlemagne</p>
   </footer>
