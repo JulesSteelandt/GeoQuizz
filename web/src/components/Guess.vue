@@ -85,23 +85,20 @@ export default {
       if (indexPlay !== -1) {
         let subUrl = url.substring(indexPlay);
         let count = subUrl.split("/").length - 1;
-        console.log(subUrl);
         if (count === 3) {
           this.getIdSerie();
           this.getDifficulty();
-          console.log(this.serie_id)
-          console.log(this.difficulty)
-          console.log("3 trouvé")
         } else if (count === 2) {
           this.replayGame_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
-          console.log(this.replayGame_id);
-          console.log("2 trouvé")
         } else {
-          console.log("nombre de / trouvé non conforme : " + count)
+         //redirection vers l'acc car
+          this.$router.push('/');
         }
 
       } else {
-        console.log("erreur  /play introuvable")
+        //redirection vers l'acc
+        this.$router.push('/');
+
 
       }
 
@@ -143,7 +140,6 @@ export default {
       this.getValuUrl();
       let url = null;
       let bodyRequest = null;
-      console.log(this.replayGame_id)
       if (this.replayGame_id === null || this.replayGame_id === undefined) {
         url = CREATE_GAME;
         bodyRequest = JSON.stringify({
@@ -154,8 +150,6 @@ export default {
         url = RECREATE_GAME + this.replayGame_id
         bodyRequest = JSON.stringify({});
       }
-      console.log("fetch url :" + url);
-
 
       if (this.checkAuthStatus()) {
         //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
