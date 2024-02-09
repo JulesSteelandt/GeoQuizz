@@ -3,7 +3,6 @@ import Cookies from 'js-cookie';
 import {computed, reactive, watch} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
-import Cookies from "js-cookie";
 
 export default {
   components: {PlayGeoQuizz},
