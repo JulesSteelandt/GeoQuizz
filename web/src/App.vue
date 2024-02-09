@@ -1,5 +1,4 @@
 <script>
-import Cookies from 'js-cookie';
 import {computed, reactive, watch} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
@@ -160,11 +159,10 @@ export default {
   <div class="flex justify-center" v-if="isHomeRoute">
     <!-- Bouton à droite -->
     <RouterLink to="/selectgame">
-      <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
+      <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14">
         Choisir le Quiz !
       </button>
     </RouterLink>
-
   </div>
 
 
