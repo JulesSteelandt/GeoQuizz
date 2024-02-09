@@ -63,7 +63,7 @@ export default {
 </script>
 
 <template>
-  <header class="bg-neutral-700">
+  <header class="bg-zinc-900">
     <div class="header flex flex-wrap p-1 m-2 lg:flex-row lg:justify-between max-lg:flex-col max-lg:items-center">
       <div class="headerLogoText flex flex-row flex-wrap max-lg:mb-8 max-lg:mr-20">
         <!-- Logo à gauche -->
@@ -143,7 +143,7 @@ export default {
   </header>
 
   <playGeoQuizz v-if="isHomeRoute"/>
-  <div class="flex justify-center" v-if="isHomeRoute">
+  <div class="flex justify-center mb-2" v-if="isHomeRoute">
     <!-- Bouton à droite -->
     <RouterLink to="/selectgame">
       <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
@@ -153,7 +153,7 @@ export default {
   </div>
   <RouterView/>
 
-  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between fixed bottom-0 w-full">
+  <footer class="bg-zinc-900 text-zinc-500 text-center p-4 flex flex-row justify-between frelative bottom-0 w-full">
     <p>GeoQuizz - 2024</p>
     <p>Copyright IUT-Charlemagne</p>
   </footer>

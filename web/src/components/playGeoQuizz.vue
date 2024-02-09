@@ -1,12 +1,12 @@
 <script setup>
 
-
 defineProps({})
 </script>
 
 <template>
   <div ref="connectedUserDiv" class="w-fit drop-shadow-[0_8px_4px_rgba(34,0,4,6)] mx-10 justify-between rounded-xl flex flex-row overflow-hidden  my-4 ">
-    <div class="playGeoQuizz w-full mr-10 rounded-xl flex flex-col overflow-hidden border-2 border-gray-100  my-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)]">
+
+      <div class="playGeoQuizz w-full mr-10 rounded-xl flex flex-col overflow-hidden border-2 border-gray-100  my-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)]">
 
       <!-- Contenu à gauche (image et texte) -->
       <div class="flex flex-col h-full bg-stone-400 text-zinc-900">
