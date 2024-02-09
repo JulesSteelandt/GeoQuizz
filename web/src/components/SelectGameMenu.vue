@@ -15,7 +15,7 @@ export default {
     }
   },
   methods: {
-    /**x
+    /**
      * Méthode qui permet de récupérer les données des séries depuis l'API
      * @returns {void}
      */
