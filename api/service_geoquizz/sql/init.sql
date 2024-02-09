@@ -1,4 +1,4 @@
--- Adminer 4.8.1 PostgreSQL 15.4 (Debian 15.4-1.pgdg120+1) dump
+-- Adminer 4.8.1 PostgreSQL 16.1 (Debian 16.1-1.pgdg120+1) dump
 
 DROP TABLE IF EXISTS "partie";
 DROP SEQUENCE IF EXISTS partie_id_seq;
@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS "partie_cache";
 DROP SEQUENCE IF EXISTS partie_cache_id_seq;
 CREATE SEQUENCE partie_cache_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1;
 
+<<<<<<< HEAD
 CREATE TABLE "public"."partie_cache"
 (
     "id"            text DEFAULT 'nextval(''partie_cache_id_seq'')' NOT NULL,
@@ -29,6 +30,16 @@ CREATE TABLE "public"."partie_cache"
     "distance"      integer                                         NOT NULL,
     "user_username" text                                            NOT NULL,
     "tours"         integer                                         NOT NULL
+=======
+CREATE TABLE "public"."partie_cache" (
+                                         "id" text DEFAULT 'nextval(''partie_cache_id_seq'')' NOT NULL,
+                                         "user_email" text NOT NULL,
+                                         "serie_id" integer NOT NULL,
+                                         "temps" integer NOT NULL,
+                                         "distance" integer NOT NULL,
+                                         "user_username" text NOT NULL,
+                                         "tours" integer NOT NULL,
+                                         "difficulte" integer NOT NULL
 ) WITH (oids = false);
 
 
@@ -44,9 +55,6 @@ CREATE TABLE "public"."partie_schema"
     "localisation_id" integer                                         NOT NULL,
     CONSTRAINT "partie_schema_pkey" PRIMARY KEY ("id")
 ) WITH (oids = false);
-
-
--- 2024-02-07 23:39:37.000356+00
 
 INSERT INTO "partie" ("id", "user_email", "score", "difficulte", "serie_id", "user_username")
 VALUES ('4782d7be-b6df-4132-9f34-2a2be5e15a68',
@@ -83,5 +91,4 @@ VALUES (0, '4782d7be-b6df-4132-9f34-2a2be5e15a68', 1, 4),
        (21, 'ef671181-ec19-4239-8bbb-24a090e696b1', 10, 6),
        (22, 'ef671181-ec19-4239-8bbb-24a090e696b1', 11, 7),
        (23, 'ef671181-ec19-4239-8bbb-24a090e696b1', 12, 12);
-
 
