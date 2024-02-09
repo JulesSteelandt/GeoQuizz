@@ -69,6 +69,12 @@ export default {
             // Appeler checkAuthStatus de App.vue
             this.showError = false;
             this.resetFields();
+
+            this.$router.push('/');
+            window.location.reload();
+
+
+
           }
 
         }
