@@ -151,7 +151,6 @@ export default {
         Choisir le Quiz !
       </button>
     </RouterLink>
-
   </div>
   <RouterView/>
 

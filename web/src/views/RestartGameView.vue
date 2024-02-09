@@ -4,6 +4,20 @@ export default {
     return {
       initialisation: this.init(),
       games: [],
+      gameDifficulty: [
+        {
+          id: 1,
+          libelle: "Facile"
+        },
+        {
+          id: 2,
+          libelle: "Médium"
+        },
+        {
+          id: 3,
+          libelle: "Difficile"
+        }
+      ]
     }
   },
   methods: {
@@ -27,10 +41,18 @@ export default {
 </script>
 
 <template>
-  <div v-for="game in games" class="bg-white p-4">
-    <p>Score : {{ game.score }}, Difficulté {{ game.difficulte }}, Série n°{{ game.serie_id }}</p>
-    <RouterLink :to="/play/ + game.id">
-      <button>Rejouer</button>
-    </RouterLink>
+  <div class="mb-16">
+    <h2 class="my-8 text-center text-blue-500 text-3xl font-bold">Redémarrer une partie</h2>
+    <div v-for="game in games" class="bg-white p-4 m-1 bg-gray-500 flex flex-row justify-between items-center">
+      <div>
+        <p><strong>Série n°{{ game.serie_id }}</strong>, Difficulté {{ game.difficulte }} par <u>{{ game.user_email }}</u></p>
+        <RouterLink :to="/play/ + game.id">
+          <button class="mt-4 text-gray-300 hover:text-gray-400 border-2 border-gray-300 hover:border-gray-400 px-2 py-1">Rejouer</button>
+        </RouterLink>
+      </div>
+      <div>
+        <p class="text-3xl text-blue-200"><strong>{{ game.score }}</strong></p>
+      </div>
+    </div>
   </div>
 </template>
