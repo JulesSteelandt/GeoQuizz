@@ -93,21 +93,21 @@ export default {
 
   <section v-if="this.initialisation && !this.error" class=" h-screen py-8">
 
-    <div class="border border-gray-400 rounded-lg mx-28 bg-gray-50 justify-center">
+    <div class="border border-gray-400 rounded-lg mx-auto max-w-lg bg-gray-100 p-8">
       <div class="text-center">
-        <h1 class="text-4xl font-bold">Fin de la partie </h1>
-        <p class="text-2xl">{{ nomUser }}</p>
-        <p class="text-2xl">Votre score est de : {{ score }}</p>
-        <p class="text-2xl">Série : {{ nomSerie }}</p>
-        <p class="text-2xl">Difficulté : {{ difficulty }}</p>
-
+        <h1 class="text-4xl font-bold mb-4">Fin de la partie</h1>
+        <p class="text-xl">Joueur: {{ nomUser }}</p>
+        <p class="text-xl">Score: {{ score }}</p>
+        <p class="text-xl">Série: {{ nomSerie }}</p>
+        <p class="text-xl">Difficulté: {{ difficulty }}</p>
       </div>
-      <div>
+      <div class="mt-8 text-center">
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 @click="this.$router.push('/selectgame')">Rejouer
         </button>
       </div>
     </div>
+
   </section>
 
   <section v-if="this.error && this.initialisation" class="h-screen w-full py-8 flex flex-col items-center">
