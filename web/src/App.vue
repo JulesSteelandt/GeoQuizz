@@ -36,20 +36,9 @@ export default {
       isConnected: checkAuthStatus(),
     });
 
-    const checkAuthStatus = () => {
-      const token = Cookies.get('accessToken');
-      // Si le token existe, l'utilisateur est connecté, sinon il ne l'est pas
-      if (token !== undefined) {
-        console.log("connexion true 2")
-        state.isConnected = true;
-      } else {
-        console.log("connexion false 2")
-        state.isConnected = false;
-      }
-    };
 
     const updateAuthStatus = () => {
-      state.isConnected = checkAuthStatus();
+      state.isConnected = checkAuthStatus()
     };
 
     const logout = () => {
