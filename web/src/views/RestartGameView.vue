@@ -4,7 +4,6 @@ export default {
     return {
       initialisation: this.init(),
       games: [],
-      sameEmail: true
     }
   },
   methods: {
@@ -29,7 +28,9 @@ export default {
 
 <template>
   <div v-for="game in games" class="bg-white p-4">
-    <p v-if="sameEmail">Score : {{ game.score }}, Difficulté {{ game.difficulte }}, Série n°{{ game.serie_id }}</p>
-    <button>Rejouer</button>
+    <p>Score : {{ game.score }}, Difficulté {{ game.difficulte }}, Série n°{{ game.serie_id }}</p>
+    <RouterLink :to="/play/ + game.id">
+      <button>Rejouer</button>
+    </RouterLink>
   </div>
 </template>

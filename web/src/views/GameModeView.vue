@@ -8,11 +8,11 @@ export default {
 
 <template>
   <div class="h-screen flex flex-row justify-around">
-    <div class="bg-white w-2/5 m-4">
-      <RouterLink tag="div" to="/selectgame">Commencer une nouvelle partie</RouterLink>
-    </div>
-    <div class="bg-white w-2/5 m-4">
-      <RouterLink tag="div" to="/restartgame">Redémarrer une ancienne partie</RouterLink>
-    </div>
+    <router-link to="/selectgame" tag="button">
+      <button class="bg-red-700 p-20 mt-20 text-white">Commencer une nouvelle partie</button>
+    </router-link>
+    <router-link to="/restartgame" tag="button">
+      <button class="bg-red-700 p-20 mt-20 ">Redémarrer une ancienne partie</button>
+    </router-link>
   </div>
 </template>
