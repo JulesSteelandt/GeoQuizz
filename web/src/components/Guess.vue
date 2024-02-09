@@ -253,7 +253,7 @@ export default {
       } else {
         this.finDePartie = true;
         //route vers la page de fin de partie
-        this.$router.push('/endgame' + this.game_id);
+        this.$router.push('/endgame/' + this.game_id);
       }
 
 
