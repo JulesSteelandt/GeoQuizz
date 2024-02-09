@@ -6,6 +6,12 @@ defineProps({})
 
 <template>
   <div ref="connectedUserDiv" class="w-fit drop-shadow-[0_8px_4px_rgba(34,0,4,6)] mx-10 justify-between rounded-xl flex flex-row overflow-hidden  my-4 ">
+  <div class="flex flex-col h-full">
+  <div class="flex flex-row">
+    <h2> Bienvenue sur GeoQuizz ! </h2>
+    <h3 v-if="isConnected === true"> Vous êtes connecté ! </h3>
+  </div>
+
     <div class="playGeoQuizz w-full mr-10 rounded-xl flex flex-col overflow-hidden border-2 border-gray-100  my-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)]">
 
       <!-- Contenu à gauche (image et texte) -->
@@ -29,6 +35,7 @@ defineProps({})
         <p class="text-center py-5 xl:text-4xl lg:text-3xl md:text-2xl sm:text-xl font-extrabold">Tester vos connaissances !</p>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
