@@ -57,6 +57,11 @@ const router = createRouter({
 
     },
     {
+      path: '/play/:id_game',
+      name: 'replay',
+      component: Guess
+    },
+    {
       path: '/endgame/:id_game',
       name: 'endgame',
       component: EndGame
