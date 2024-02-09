@@ -132,7 +132,6 @@ export default {
         return false;
       } else {
         this.token = token
-        console.log(this.token);
         return true;
       }
     },
@@ -161,10 +160,6 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
-      console.log(this.donneesScores.game_id);
-      console.log(this.donneesScores.distance);
-      console.log(this.donneesScores.temps);
-
 
       fetch(SCORE_PLAY, {
         method: 'POST',
@@ -183,10 +178,10 @@ export default {
           .then(data => {
           })
           .catch((error) => {
+            //A modif peut etre plus tard
             console.error('Error:', error);
           })
           .finally(() => this.donneesSent = true);
-      console.log(this.game_id);
 
     },
 
@@ -236,8 +231,6 @@ export default {
         //route vers la page de fin de partie
         this.$router.push('/endgame' + this.game_id);
       }
-      console.log(this.numeroTour);
-      console.log(this.finDePartie);
 
 
     },
