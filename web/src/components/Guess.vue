@@ -4,12 +4,14 @@ import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
 import Cookies from "js-cookie";
 import {CREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
+import {VueSpinner} from 'vue3-spinners';
 
 export default {
   components: {
     LMap,
     LTileLayer,
     LMarker,
+    VueSpinner
   },
   data() {
     return {
@@ -41,9 +43,11 @@ export default {
       numeroTour: 0,
       donneesSent: false,
 
-
-      //serie_id récupérer grâce à l'url
       serie_id: null,
+      difficulty: null,
+      //serie_id récupérer grâce à l'url
+
+
       game_id: null,
       token: null,
       localisations: [],
@@ -51,6 +55,7 @@ export default {
       reponseMarker: null,
       LieuReponse: null,
       image: "",
+      nomSeries: null,
 
       //booléen pour afficher la fin de la partie
       finDePartie: false,
@@ -72,7 +77,7 @@ export default {
 
     /**
      * Méthode qui permet de récupérer l'id de la série dans l'url
-     * @returns {string} - l'id de la série ou "aleatoire" si serie choisie aléatoirement
+     *
      */
     getIdSerie() {
       let url = window.location.href;
@@ -81,20 +86,40 @@ export default {
     },
 
     /**
+     * Méthode qui permet de récupérer la difficulté de la série dans l'url
+     *
+     */
+    getDifficulty() {
+      let url = window.location.href;
+      let segments = url.split('/'); // Divise l'URL en segments en utilisant '/'
+      let diff = segments[segments.length - 2]; // La difficulté est l'avant-dernier segment de l'URL
+      this.difficulty = diff;
+      if(this.difficulty === "easy") {
+        this.difficulty = 1;
+      } else if(this.difficulty === "medium") {
+        this.difficulty = 2;
+      } else if(this.difficulty === "hard") {
+        this.difficulty = 3;
+      }
+    },
+
+    /**
      * Méthode qui permet de fetch l'api afin d'avoir le jeu de données nécessaire pour le jeu
      */
     fetchGame() {
       this.getIdSerie();
-      if(this.checkAuthStatus()){
-      //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
+      this.getDifficulty();
+      if (this.checkAuthStatus()) {
+        //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
         fetch(CREATE_GAME, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + this.token
+            'Authorization': 'Bearer ' + Cookies.get('accessToken')
           },
           body: JSON.stringify({
-            "serie_id": this.serie_id
+            "serie_id": this.serie_id,
+            "difficulte": this.difficulty
           })
         })
             .then(response => response.json())
@@ -103,14 +128,12 @@ export default {
               this.localisations = data.localisations;
               this.initCenter = [data.startmap[1], data.startmap[0]];
               this.center = this.initCenter;
-              this.reponseMarker =[this.localisations[0].coordinate[1], this.localisations[0].coordinate[0]];
+              this.reponseMarker = [this.localisations[0].coordinate[1], this.localisations[0].coordinate[0]];
               this.LieuReponse = this.localisations[0].nom;
               this.image = this.localisations[0].url;
               this.initialisation = true;
               this.timerEnable = true;
-
-
-
+              this.nomSeries = data.serie_nom;
 
 
             })
@@ -133,11 +156,9 @@ export default {
         return false;
       } else {
         this.token = token
-        console.log(this.token);
         return true;
       }
     },
-
 
 
     /**
@@ -163,18 +184,14 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
-      console.log(this.donneesScores.game_id);
-      console.log(this.donneesScores.distance);
-      console.log(this.donneesScores.temps);
-
 
       fetch(SCORE_PLAY, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + this.token
-            },
-            body: JSON.stringify({
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
+        },
+        body: JSON.stringify({
               "game_id": this.donneesScores.game_id,
               "distance": this.donneesScores.distance,
               "temps": this.donneesScores.temps
@@ -185,10 +202,10 @@ export default {
           .then(data => {
           })
           .catch((error) => {
+            //A modif peut etre plus tard
             console.error('Error:', error);
           })
           .finally(() => this.donneesSent = true);
-          console.log(this.game_id);
 
     },
 
@@ -216,7 +233,7 @@ export default {
      * @returns {void}
      */
     nextStep() {
-      if(this.numeroTour < this.localisations.length - 1) {
+      if (this.numeroTour < this.localisations.length - 1) {
         this.timerCount = 60;
         this.timerEnable = true;
         this.validate = false;
@@ -233,12 +250,11 @@ export default {
         this.reponseMarker = [this.localisations[this.numeroTour].coordinate[1], this.localisations[this.numeroTour].coordinate[0]];
         this.LieuReponse = this.localisations[this.numeroTour].nom;
         this.image = this.localisations[this.numeroTour].url;
-      }
-      else{
+      } else {
         this.finDePartie = true;
+        //route vers la page de fin de partie
+        this.$router.push('/endgame/' + this.game_id);
       }
-      console.log(this.numeroTour);
-      console.log(this.finDePartie);
 
 
     },
@@ -280,61 +296,74 @@ export default {
 </script>
 
 <template>
-  <section v-if="!this.initialisation" class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
-    <label class="text-4xl text-center font-bold text-white">Chargement de la partie...</label>
+  <section v-if="!this.initialisation"
+           class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+    <div class="flex flex-col justify-center items-center ">
+      <VueSpinner class="" size="100" color="Grey"/>
+      <label class="text-4xl text-center font-bold text-white pt-3">Chargement de la partie</label>
+    </div>
+
   </section>
 
 
   <section v-else
-      class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
-    <div class="flex flex-wrap  px-2">
-      <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
-        <img class="rounded-lg" :src="image" alt="image du lieu">
-        <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
-          <label class="text-white ml-2 ">
-            Réponse : <label class="font-bold">{{ LieuReponse }}</label>
-          </label>
-          <label class="text-white ml-2 ">
-            Distance : <label class="font-bold">{{ distanceMessage }}</label>
-          </label>
-        </div>
-      </div>
-      <div class="w-full md:w-2/5 flex justify-center items-center">
-        <div class="w-full max-w-md">
-          <div class="mapbox border border-gray-400 rounded-lg shadow-lg">
-            <l-map
-                ref="map"
-                class="map"
-                v-model:zoom="zoom"
-                v-model:center="center"
-                :max-zoom="maxZoom"
-                :min-zoom="minZoom"
-                :zoom-control="false"
-                :use-global-leaflet="false"
-                @click="placeMarker($event)"
-            >
-              <l-tile-layer :url="osmURL"></l-tile-layer>
+           class="h-screen w-screen justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+    <div class="flex justify-center pt-3">
+      <Label class="text-4xl font-bold font-mono text-gray-50">{{ nomSeries }} - TOUR NUMERO {{ this.numeroTour }}. </Label>
+    </div>
 
-              <!--marqueur placé par l'utilisateur-->
-              <l-marker v-if="userMarkerCoords" :lat-lng="userMarkerCoords"/>
-
-              <!--marqueur de la réponse-->
-              <l-marker v-if="validate" :lat-lng="reponseMarker"/>
-
-
-            </l-map>
+    <div
+        class="h-screen w-screen flex justify-center items-center">
+      <div class="flex flex-wrap  px-2">
+        <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
+          <img class="rounded-lg" :src="image" alt="image du lieu">
+          <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
+            <label class="text-white ml-2 ">
+              Réponse : <label class="font-bold">{{ LieuReponse }}</label>
+            </label>
+            <label class="text-white ml-2 ">
+              Distance : <label class="font-bold">{{ distanceMessage }}</label>
+            </label>
           </div>
-          <div class="bg-blue-600 text-white rounded-b-lg py-4 ">
-            <label class="m-8 text-xl w-1/2 font-mono ">Temps Restant : <span class="font-semibold">{{
-                timerCount
-              }}</span></label>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full "
-                    @click="valider" v-if="!validate">Valider
-            </button>
-            <label class="m-8  text-xl font-semibold py-2 " v-if="validate && !donneesSent">Chargement</label>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full "
-                    @click="nextStep" v-if="donneesSent">Suivant
-            </button>
+        </div>
+        <div class="w-full md:w-2/5 flex justify-center items-center">
+          <div class="w-full max-w-md">
+            <div class="mapbox border border-gray-400 rounded-lg shadow-lg">
+              <l-map
+                  ref="map"
+                  class="map"
+                  v-model:zoom="zoom"
+                  v-model:center="center"
+                  :max-zoom="maxZoom"
+                  :min-zoom="minZoom"
+                  :zoom-control="false"
+                  :use-global-leaflet="false"
+                  @click="placeMarker($event)"
+              >
+                <l-tile-layer :url="osmURL"></l-tile-layer>
+
+                <!--marqueur placé par l'utilisateur-->
+                <l-marker v-if="userMarkerCoords" :lat-lng="userMarkerCoords"/>
+
+                <!--marqueur de la réponse-->
+                <l-marker v-if="validate" :lat-lng="reponseMarker"/>
+
+
+              </l-map>
+            </div>
+            <div class="bg-blue-600 text-white rounded-b-lg py-4 relative">
+              <label class="m-8 text-xl w-1/2 font-mono">Temps Restant : <span class="font-semibold">{{
+                  timerCount
+                }}</span></label>
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
+                      @click="valider" v-if="!validate">Valider
+              </button>
+              <VueSpinner v-if="validate && !donneesSent" size="20" color="Black"
+                          class="absolute top-1/2 right-0 transform translate-y-1/2 mr-4"/>
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
+                      @click="nextStep" v-if="donneesSent">Suivant
+              </button>
+            </div>
           </div>
         </div>
       </div>
