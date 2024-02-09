@@ -19,6 +19,6 @@ export const GET_SCORES = "http://docketu.iutnc.univ-lorraine.fr:35200/games/" /
 
 export const SCORE_PLAY = "http://docketu.iutnc.univ-lorraine.fr:35200/games/play"
 
-
+export const SCORES = "http://docketu.iutnc.univ-lorraine.fr:35200/games"
 
 

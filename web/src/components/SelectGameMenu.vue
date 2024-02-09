@@ -8,7 +8,7 @@ export default {
       initialisation: this.init(),
       series: [],
       difficulteSerie: [],
-      difficulteRandom: "easy",
+      difficulteRandom: "medium",
       imageUrl: "",
       chargement: false,
       erreur: false,
@@ -43,7 +43,7 @@ export default {
                 });
                 this.difficulteSerie.push({
                   id: serie.id,
-                  difficulty: "easy",
+                  difficulty: "medium",
                 });
               });
 
@@ -101,7 +101,8 @@ export default {
 </script>
 
 <template>
-  <section class="h-full w-full min-h-screen pt-6">
+  <section class="h-full w-full min-h-screen">
+    <h2 class="my-8 text-center text-blue-500 text-3xl font-bold">Commencer une partie</h2>
     <div v-if="this.series.length > 0 " class="flex flex-wrap justify-center">
       <!-- Carte "Random" pour avoir un choix aléatoire -->
       <div class="max-w-xs mx-4 mb-4 w-[350px]">
@@ -123,9 +124,9 @@ export default {
             <select
                 class="h-12 w-28 bg-gray-200 border-2 border-gray-700 text-gray-700 font-bold align-middle text-center"
                 v-model="difficulteRandom" name="difficulty">
-              <option value="easy" class="bg-green-500 text-white text-bold">Easy</option>
-              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Medium</option>
-              <option value="hard" class="bg-red-500 text-white text-bold">Hard</option>
+              <option value="easy" class="bg-green-500 text-white text-bold">Facile</option>
+              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Médium</option>
+              <option value="hard" class="bg-red-500 text-white text-bold">Difficile</option>
             </select>
 
           </div>
@@ -150,9 +151,9 @@ export default {
             <select
                 class="h-12 w-28 bg-gray-200 border-2 border-gray-700 text-gray-700 font-bold align-middle text-center"
                 v-model="difficulteSerie[index].difficulty" name="difficulty">
-              <option value="easy" class="bg-green-500 text-white text-bold">Easy</option>
-              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Medium</option>
-              <option value="hard" class="bg-red-500 text-white text-bold">Hard</option>
+              <option value="easy" class="bg-green-500 text-white text-bold">Facile</option>
+              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Médium</option>
+              <option value="hard" class="bg-red-500 text-white text-bold">Difficile</option>
             </select>
           </div>
         </div>
