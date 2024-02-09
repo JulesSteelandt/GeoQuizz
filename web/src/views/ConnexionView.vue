@@ -133,7 +133,7 @@ export default {
         <div>
           <togglePassword :showPassword="showPassword" @toggle="togglePassword" />
         </div>
-        <p v-if="!verifEmail(email)" class="text-green-700 font-bold mb-2">L'email est invalide</p>
+        <p v-if="!verifEmail(email)" class="text-red-700 font-bold mb-2">Email invalide</p>
       </div>
     </div>
     <RouterLink to="/">
