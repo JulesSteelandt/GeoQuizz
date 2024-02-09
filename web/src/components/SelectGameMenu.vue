@@ -8,7 +8,7 @@ export default {
       initialisation: this.init(),
       series: [],
       difficulteSerie: [],
-      difficulteRandom: "easy",
+      difficulteRandom: "medium",
       imageUrl: "",
       chargement: false,
       erreur: false,
@@ -43,7 +43,7 @@ export default {
                 });
                 this.difficulteSerie.push({
                   id: serie.id,
-                  difficulty: "easy",
+                  difficulty: "medium",
                 });
               });
 
@@ -123,9 +123,9 @@ export default {
             <select
                 class="h-12 w-28 bg-gray-200 border-2 border-gray-700 text-gray-700 font-bold align-middle text-center"
                 v-model="difficulteRandom" name="difficulty">
-              <option value="easy" class="bg-green-500 text-white text-bold">Easy</option>
-              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Medium</option>
-              <option value="hard" class="bg-red-500 text-white text-bold">Hard</option>
+              <option value="easy" class="bg-green-500 text-white text-bold">Facile</option>
+              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Médium</option>
+              <option value="hard" class="bg-red-500 text-white text-bold">Difficile</option>
             </select>
 
           </div>
@@ -150,9 +150,9 @@ export default {
             <select
                 class="h-12 w-28 bg-gray-200 border-2 border-gray-700 text-gray-700 font-bold align-middle text-center"
                 v-model="difficulteSerie[index].difficulty" name="difficulty">
-              <option value="easy" class="bg-green-500 text-white text-bold">Easy</option>
-              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Medium</option>
-              <option value="hard" class="bg-red-500 text-white text-bold">Hard</option>
+              <option value="easy" class="bg-green-500 text-white text-bold">Facile</option>
+              <option value="medium" class="bg-orange-500 text-white text-bold align-middle">Médium</option>
+              <option value="hard" class="bg-red-500 text-white text-bold">Difficile</option>
             </select>
           </div>
         </div>
