@@ -2,23 +2,26 @@
 import 'leaflet/dist/leaflet.css';
 import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
+import Cookies from "js-cookie";
+import {CREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
+import {VueSpinner} from 'vue3-spinners';
 
 export default {
   components: {
     LMap,
     LTileLayer,
     LMarker,
+    VueSpinner
   },
   data() {
     return {
-      image: "",
       timerCount: 60,
-      timerEnable: true,
+      timerEnable: false,
       validate: false,
       osmURL: 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      center: [48.69, 6.18],
+      center: null,
       //centre de la carte initial
-      initCenter: [48.69, 6.18],
+      initCenter: null,
       //niveau de zoom initial
       zoom: 13,
       //niveau de zoom maximal et minimal
@@ -37,27 +40,36 @@ export default {
 
       //objet pour le calcul des scores
       donneesScores: null,
-      numeroTour: 1,
+      numeroTour: 0,
       donneesSent: false,
 
 
-      //id_série récupérer grâce à l'url
-      idSerie: this.getIdSerie(),
+      //serie_id récupérer grâce à l'url
+      serie_id: null,
+      game_id: null,
+      token: null,
+      localisations: [],
+      initialisation: this.init(),
+      reponseMarker: null,
+      LieuReponse: null,
+      image: "",
 
+      //booléen pour afficher la fin de la partie
+      finDePartie: false,
 
-
-      //Jeu de données de test en attendant de récupérer les données de l'API
-      serie_id: 28,
-      imageTest: "https://www.francebleu.fr/s3/cruiser-production/2021/09/b2c29454-b2be-4658-abb5-5e7695597631/1200x680_1000x563_photo_une_pool_demange_marchi_gettyimages-124066777.jpg",
-      //Lieu à deviner
-      LieuReponse: "Place Stanislas, Nancy, France",
-      //marker de la réponse
-      reponseMarker: [48.693522435993316, 6.183261126061553]
     }
   },
 
 
   methods: {
+    /**
+     * Méthode qui permet d'initialiser le jeu
+     * @returns {boolean} - true si l'initialisation s'est bien passée, false sinon
+     */
+    init() {
+      this.initialisation = false;
+      this.fetchGame();
+    },
 
 
     /**
@@ -67,8 +79,63 @@ export default {
     getIdSerie() {
       let url = window.location.href;
       let id = url.substring(url.lastIndexOf('/') + 1);
-      return id;
+      this.serie_id = id;
     },
+
+    /**
+     * Méthode qui permet de fetch l'api afin d'avoir le jeu de données nécessaire pour le jeu
+     */
+    fetchGame() {
+      this.getIdSerie();
+      if (this.checkAuthStatus()) {
+        //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
+        fetch(CREATE_GAME, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + Cookies.get('accessToken')
+          },
+          body: JSON.stringify({
+            "serie_id": this.serie_id
+          })
+        })
+            .then(response => response.json())
+            .then(data => {
+              this.game_id = data.game_id;
+              this.localisations = data.localisations;
+              this.initCenter = [data.startmap[1], data.startmap[0]];
+              this.center = this.initCenter;
+              this.reponseMarker = [this.localisations[0].coordinate[1], this.localisations[0].coordinate[0]];
+              this.LieuReponse = this.localisations[0].nom;
+              this.image = this.localisations[0].url;
+              this.initialisation = true;
+              this.timerEnable = true;
+
+
+            })
+            .catch((error) => {
+              //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
+              this.$router.push('/selectgame');
+            });
+      }
+    },
+
+    /**
+     * Méthode qui permet de récupérer le cookie de l'utilisateur connecté et de renvoyer sur une page de connexion si
+     * l'utilisateur n'est pas connecté / token expiré
+     * @returns {boolean} - true si l'utilisateur est connecté, false sinon
+     */
+    checkAuthStatus() {
+      const token = Cookies.get('accessToken');
+      if (token === undefined || token === null) {
+        this.$router.push('/connexion');
+        return false;
+      } else {
+        this.token = token
+        return true;
+      }
+    },
+
 
     /**
      * Méthode qui stop le chronomètre et permet de valider la position choisie par l'utilisateur
@@ -81,10 +148,9 @@ export default {
       this.calculerDistance();
       this.replaceMapView();
       this.donneesScores = {
-        serie_id: this.serie_id,
-        temps: 60 - this.timerCount,
-        distance: this.distance,
-        tours: this.numeroTour
+        "game_id": this.game_id,
+        "distance": this.distance,
+        "temps": 60 - this.timerCount,
       };
       this.envoyerScores();
     },
@@ -94,17 +160,26 @@ export default {
      * @returns {void}
      */
     envoyerScores() {
-      fetch('routeApiIci', {
+
+      fetch(SCORE_PLAY, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
         },
-        body: JSON.stringify(this.donneesScores)
+        body: JSON.stringify({
+              "game_id": this.donneesScores.game_id,
+              "distance": this.donneesScores.distance,
+              "temps": this.donneesScores.temps
+            }
+        )
       })
           .then(response => response.json())
           .then(data => {
           })
           .catch((error) => {
+            //A modif peut etre plus tard
+            console.error('Error:', error);
           })
           .finally(() => this.donneesSent = true);
 
@@ -134,18 +209,28 @@ export default {
      * @returns {void}
      */
     nextStep() {
-      this.timerCount = 60;
-      this.timerEnable = true;
-      this.validate = false;
-      this.userMarkerCoords = null;
-      this.userFinalGuess = null;
-      this.distance = null;
-      this.numeroTour++;
-      //Remet la carte dans la config intiale
-      //valeurs temporaires
-      this.center = [48.69, 6.18];
-      this.zoom = 13;
-      this.donneesSent = false;
+      if (this.numeroTour < this.localisations.length - 1) {
+        this.timerCount = 60;
+        this.timerEnable = true;
+        this.validate = false;
+        this.userMarkerCoords = null;
+        this.userFinalGuess = null;
+        this.distance = null;
+
+        //Remet la carte dans la config intiale
+        this.center = this.initCenter;
+        this.zoom = 13;
+        this.donneesSent = false;
+        //préparation des données pour la prochaine étape
+        this.numeroTour++;
+        this.reponseMarker = [this.localisations[this.numeroTour].coordinate[1], this.localisations[this.numeroTour].coordinate[0]];
+        this.LieuReponse = this.localisations[this.numeroTour].nom;
+        this.image = this.localisations[this.numeroTour].url;
+      } else {
+        this.finDePartie = true;
+        //route vers la page de fin de partie
+        this.$router.push('/endgame' + this.game_id);
+      }
 
 
     },
@@ -187,56 +272,74 @@ export default {
 </script>
 
 <template>
-  <section
-      class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
-    <div class="flex flex-wrap">
-      <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
-        <img :src="imageTest" alt="imageTest">
-        <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
-          <label class="text-white ml-2 ">
-            Réponse : <label class="font-bold">{{ LieuReponse }}</label>
-          </label>
-          <label class="text-white ml-2 ">
-            Distance : <label class="font-bold">{{ distanceMessage }}</label>
-          </label>
-        </div>
-      </div>
-      <div class="w-full md:w-2/5 flex justify-center items-center">
-        <div class="w-full max-w-md">
-          <div class="mapbox border border-gray-400 rounded-lg shadow-lg">
-            <l-map
-                ref="map"
-                class="map"
-                v-model:zoom="zoom"
-                v-model:center="center"
-                :max-zoom="maxZoom"
-                :min-zoom="minZoom"
-                :zoom-control="false"
-                :use-global-leaflet="false"
-                @click="placeMarker($event)"
-            >
-              <l-tile-layer :url="osmURL"></l-tile-layer>
+  <section v-if="!this.initialisation"
+           class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+    <div class="flex flex-col justify-center items-center ">
+      <VueSpinner class="" size="100" color="Grey"/>
+      <label class="text-4xl text-center font-bold text-white pt-3">Chargement de la partie</label>
+    </div>
 
-              <!--marqueur placé par l'utilisateur-->
-              <l-marker v-if="userMarkerCoords" :lat-lng="userMarkerCoords"/>
-
-              <!--marqueur de la réponse-->
-              <l-marker v-if="validate" :lat-lng="reponseMarker"/>
+  </section>
 
 
-            </l-map>
+  <section v-else
+           class="h-screen w-screen justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+    <div class="flex justify-center pt-3">
+      <Label class="text-4xl font-bold font-mono text-gray-50">ici - TOUR NUMERO {{ this.numeroTour }}. </Label>
+    </div>
+
+    <div
+        class="h-screen w-screen flex justify-center items-center">
+      <div class="flex flex-wrap  px-2">
+        <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
+          <img class="rounded-lg" :src="image" alt="image du lieu">
+          <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
+            <label class="text-white ml-2 ">
+              Réponse : <label class="font-bold">{{ LieuReponse }}</label>
+            </label>
+            <label class="text-white ml-2 ">
+              Distance : <label class="font-bold">{{ distanceMessage }}</label>
+            </label>
           </div>
-          <div class="bg-blue-600 text-white rounded-b-lg py-4 ">
-            <label class="m-8 text-xl w-1/2 font-mono ">Temps Restant : <span class="font-semibold">{{
-                timerCount
-              }}</span></label>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full "
-                    @click="valider" v-if="!validate">Valider
-            </button>
-            <label class="m-8  text-xl font-semibold py-2 " v-if="validate && !donneesSent">Chargement</label>
-            <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full "
-                    @click="nextStep" v-if="donneesSent">Suivant
-            </button>
+        </div>
+        <div class="w-full md:w-2/5 flex justify-center items-center">
+          <div class="w-full max-w-md">
+            <div class="mapbox border border-gray-400 rounded-lg shadow-lg">
+              <l-map
+                  ref="map"
+                  class="map"
+                  v-model:zoom="zoom"
+                  v-model:center="center"
+                  :max-zoom="maxZoom"
+                  :min-zoom="minZoom"
+                  :zoom-control="false"
+                  :use-global-leaflet="false"
+                  @click="placeMarker($event)"
+              >
+                <l-tile-layer :url="osmURL"></l-tile-layer>
+
+                <!--marqueur placé par l'utilisateur-->
+                <l-marker v-if="userMarkerCoords" :lat-lng="userMarkerCoords"/>
+
+                <!--marqueur de la réponse-->
+                <l-marker v-if="validate" :lat-lng="reponseMarker"/>
+
+
+              </l-map>
+            </div>
+            <div class="bg-blue-600 text-white rounded-b-lg py-4 relative">
+              <label class="m-8 text-xl w-1/2 font-mono">Temps Restant : <span class="font-semibold">{{
+                  timerCount
+                }}</span></label>
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
+                      @click="valider" v-if="!validate">Valider
+              </button>
+              <VueSpinner v-if="validate && !donneesSent" size="20" color="Black"
+                          class="absolute top-1/2 right-0 transform translate-y-1/2 mr-4"/>
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
+                      @click="nextStep" v-if="donneesSent">Suivant
+              </button>
+            </div>
           </div>
         </div>
       </div>

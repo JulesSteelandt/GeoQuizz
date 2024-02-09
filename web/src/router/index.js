@@ -9,6 +9,7 @@ import RestartGameView from '@/views/RestartGameView.vue'
 import Guess from "@/components/Guess.vue";
 import SelectGameMenu from "@/components/SelectGameMenu.vue";
 import monCompteView from "@/views/monCompteView.vue";
+import EndGame from "@/components/EndGame.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,10 +51,15 @@ const router = createRouter({
     },
 
     {
-      path: '/play/:id',
+      path: '/play/:difficulte/:id',
       name: 'play',
       component: Guess
 
+    },
+    {
+      path: '/endgame/:id_game',
+      name: 'endgame',
+      component: EndGame
     },
 
     {

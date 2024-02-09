@@ -3,6 +3,7 @@ import Cookies from 'js-cookie';
 import {computed, reactive, watch} from 'vue';
 import {useRoute, RouterView, RouterLink} from 'vue-router';
 import PlayGeoQuizz from "@/components/playGeoQuizz.vue";
+import Cookies from "js-cookie";
 
 export default {
   components: {PlayGeoQuizz},
@@ -169,10 +170,8 @@ export default {
 
   <RouterView/>
 
-  <div class="relative">
-    <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between">
-      <p>GeoQuizz - 2024</p>
-      <p>Copyright IUT-Charlemagne</p>
-    </footer>
-  </div>
+  <footer class="bg-stone-400 text-zinc-500 text-center p-4 flex flex-row justify-between fixed bottom-0 w-full">
+    <p>GeoQuizz - 2024</p>
+    <p>Copyright IUT-Charlemagne</p>
+  </footer>
 </template>
