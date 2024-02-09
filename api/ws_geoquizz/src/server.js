@@ -11,18 +11,11 @@ const sendNotificationToAll = (msg) => {
     });
 };
 
-const receivedMessages = [];
-
 server.on('connection', function connection(client_socket) {
     console.log('Client connected');
 
     client_socket.on('message', function incoming(message) {
         console.log('Received: %s', message);
-        if (receivedMessages.length >= 10) {
-            receivedMessages.shift(); // Retirer le premier élément (le plus ancien message)
-        }
-        receivedMessages.push(message.toString());
-        console.log(receivedMessages);
         sendNotificationToAll(message);
     });
 
