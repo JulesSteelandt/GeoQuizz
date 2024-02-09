@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
 import Cookies from "js-cookie";
-import {CREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
+import {CREATE_GAME, RECREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
 import {VueSpinner} from 'vue3-spinners';
 
 export default {
@@ -44,8 +44,12 @@ export default {
       donneesSent: false,
 
 
-      //serie_id récupérer grâce à l'url
       serie_id: null,
+      difficulty: null,
+      replayGame_id: null,
+      //serie_id récupérer grâce à l'url
+
+
       game_id: null,
       token: null,
       localisations: [],
@@ -53,6 +57,7 @@ export default {
       reponseMarker: null,
       LieuReponse: null,
       image: "",
+      nomSeries: null,
 
       //booléen pour afficher la fin de la partie
       finDePartie: false,
@@ -71,33 +76,90 @@ export default {
       this.fetchGame();
     },
 
+    /**
+     * Méthode qui permet gérer l'url afin de donner les bonnes valeures aux variables
+     */
+    getValuUrl() {
+      let url = window.location.href;
+      let indexPlay = url.indexOf("/play");
+      if (indexPlay !== -1) {
+        let subUrl = url.substring(indexPlay);
+        let count = subUrl.split("/").length - 1;
+        if (count === 3) {
+          this.getIdSerie();
+          this.getDifficulty();
+        } else if (count === 2) {
+          this.replayGame_id = window.location.href.substring(window.location.href.lastIndexOf('/') + 1)
+        } else {
+         //redirection vers l'acc car
+          this.$router.push('/');
+        }
+
+      } else {
+        //redirection vers l'acc
+        this.$router.push('/');
+
+
+      }
+
+    },
+
 
     /**
      * Méthode qui permet de récupérer l'id de la série dans l'url
-     * @returns {string} - l'id de la série ou "aleatoire" si serie choisie aléatoirement
+     *
      */
     getIdSerie() {
       let url = window.location.href;
       let id = url.substring(url.lastIndexOf('/') + 1);
-      this.serie_id = id;
+      this.serie_id = parseInt(id);
+    },
+
+    /**
+     * Méthode qui permet de récupérer la difficulté de la série dans l'url
+     *
+     */
+    getDifficulty() {
+      let url = window.location.href;
+      let segments = url.split('/'); // Divise l'URL en segments en utilisant '/'
+      let diff = segments[segments.length - 2]; // La difficulté est l'avant-dernier segment de l'URL
+      this.difficulty = diff;
+      if (this.difficulty === "easy") {
+        this.difficulty = 1;
+      } else if (this.difficulty === "medium") {
+        this.difficulty = 2;
+      } else if (this.difficulty === "hard") {
+        this.difficulty = 3;
+      }
     },
 
     /**
      * Méthode qui permet de fetch l'api afin d'avoir le jeu de données nécessaire pour le jeu
      */
     fetchGame() {
-      this.getIdSerie();
+      this.getValuUrl();
+      let url = null;
+      let bodyRequest = null;
+      if (this.replayGame_id === null || this.replayGame_id === undefined) {
+        url = CREATE_GAME;
+        bodyRequest = JSON.stringify({
+          "serie_id": this.serie_id,
+          "difficulte": this.difficulty
+        });
+      } else {
+        url = RECREATE_GAME + this.replayGame_id
+        bodyRequest = JSON.stringify({});
+      }
+
       if (this.checkAuthStatus()) {
         //FETCH API : POST avec un bearer token (this.token) et "serie_id" (this.serie_id) dans le body
-        fetch(CREATE_GAME, {
+        fetch(url, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + Cookies.get('accessToken')
           },
-          body: JSON.stringify({
-            "serie_id": this.serie_id
-          })
+          body: bodyRequest
         })
             .then(response => response.json())
             .then(data => {
@@ -110,6 +172,7 @@ export default {
               this.image = this.localisations[0].url;
               this.initialisation = true;
               this.timerEnable = true;
+              this.nomSeries = data.serie_nom;
 
 
             })
@@ -229,7 +292,7 @@ export default {
       } else {
         this.finDePartie = true;
         //route vers la page de fin de partie
-        this.$router.push('/endgame' + this.game_id);
+        this.$router.push('/endgame/' + this.game_id);
       }
 
 
@@ -285,7 +348,9 @@ export default {
   <section v-else
            class="h-screen w-screen justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
     <div class="flex justify-center pt-3">
-      <Label class="text-4xl font-bold font-mono text-gray-50">ici - TOUR NUMERO {{ this.numeroTour }}. </Label>
+      <Label class="text-4xl font-bold font-mono text-gray-50">{{ nomSeries }} - TOUR NUMERO {{
+          this.numeroTour
+        }}. </Label>
     </div>
 
     <div
