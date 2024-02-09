@@ -15,7 +15,7 @@ export const VALIDATE_USER = "http://docketu.iutnc.univ-lorraine.fr:35200/users/
 
 export const CREATE_GAME = "http://docketu.iutnc.univ-lorraine.fr:35200/games/create"
 
-export const GET_SCORES = "http://docketu.iutnc.univ-lorraine.fr:35200/games/score/" //+ id de la partie
+export const GET_SCORES = "http://docketu.iutnc.univ-lorraine.fr:35200/games/" //+ id de la partie
 
 export const SCORE_PLAY = "http://docketu.iutnc.univ-lorraine.fr:35200/games/play"
 
