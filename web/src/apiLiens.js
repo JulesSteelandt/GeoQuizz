@@ -17,6 +17,6 @@ export const CREATE_GAME = "http://docketu.iutnc.univ-lorraine.fr:35200/games/cr
 
 export const SCORE_PLAY = "http://docketu.iutnc.univ-lorraine.fr:35200/games/play"
 
-
+export const SCORES = "http://docketu.iutnc.univ-lorraine.fr:35200/games"
 
 

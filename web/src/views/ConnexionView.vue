@@ -2,11 +2,13 @@
 import Cookies from 'js-cookie';
 import { SIGNIN } from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
+import App from "@/App.vue";
 
 
 export default {
   components: {
-    togglePassword
+    togglePassword,
+    App
   },
 
   data() {
@@ -52,6 +54,7 @@ export default {
           if (responseData && responseData.message === "401 Authentification failed") {
             console.error('Échec de la connexion');
             this.isConnected = false;
+            state.isConnected = false;
             console.log("connexion false 1")
             this.showError = true;
           } else {
@@ -68,9 +71,12 @@ export default {
             Cookies.set('accessToken', accessToken, { expires: expiresIn });
 
             this.isConnected = true;
-            // Appeler checkAuthStatus de App.vue
+            state.isConnected = false;
             this.showError = false;
             this.resetFields();
+            console.log("connexion true");
+            console.log(state.isConnected);
+            console.log(this.isConnected);
           }
 
         }
