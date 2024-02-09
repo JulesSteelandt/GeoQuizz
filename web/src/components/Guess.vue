@@ -4,12 +4,14 @@ import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
 import Cookies from "js-cookie";
 import {CREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
+import {VueSpinner} from 'vue3-spinners';
 
 export default {
   components: {
     LMap,
     LTileLayer,
     LMarker,
+    VueSpinner
   },
   data() {
     return {
@@ -279,11 +281,16 @@ export default {
 <template>
   <section v-if="!this.initialisation"
            class="h-screen w-screen flex justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
-    <label class="text-4xl text-center font-bold text-white">Chargement de la partie...</label>
+    <div class="flex flex-col justify-center items-center ">
+      <VueSpinner class="" size="100" color="Grey"/>
+      <label class="text-4xl text-center font-bold text-white pt-3">Chargement de la partie</label>
+    </div>
+
   </section>
 
 
-  <section v-else class="h-screen w-screen justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
+  <section v-else
+           class="h-screen w-screen justify-center items-center bg-gradient-to-br from-blue-800 via-gray-700 to-lime-900 ">
     <div class="flex justify-center pt-3">
       <Label class="text-4xl font-bold font-mono text-gray-50">ici - TOUR NUMERO {{ this.numeroTour }}. </Label>
     </div>
