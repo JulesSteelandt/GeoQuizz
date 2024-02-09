@@ -5,6 +5,7 @@ import {getDistance} from "geolib";
 import Cookies from "js-cookie";
 import {CREATE_GAME, RECREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
 import {VueSpinner} from 'vue3-spinners';
+import {ws} from "@/main.js";
 
 export default {
   components: {
@@ -58,6 +59,7 @@ export default {
       LieuReponse: null,
       image: "",
       nomSeries: null,
+      username: null,
 
       //booléen pour afficher la fin de la partie
       finDePartie: false,
@@ -113,6 +115,28 @@ export default {
       let url = window.location.href;
       let id = url.substring(url.lastIndexOf('/') + 1);
       this.serie_id = parseInt(id);
+    },
+
+    /**
+     * Methode qui envoie une notif à tout le monde
+     */
+    notif(){
+      fetch("http://docketu.iutnc.univ-lorraine.fr:35200/users/validate", {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
+        },
+      })
+          .then(response => response.json())
+          .then(data => {
+            this.username = data.username;
+            ws.send(this.username+" a lancé une partie sur "+this.nomSeries)
+          })
+          .catch((error) => {
+            //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
+            this.$router.push('/selectgame');
+          });
     },
 
     /**
@@ -174,12 +198,13 @@ export default {
               this.timerEnable = true;
               this.nomSeries = data.serie_nom;
 
-
+              this.notif()
             })
             .catch((error) => {
               //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
               this.$router.push('/selectgame');
             });
+
       }
     },
 
