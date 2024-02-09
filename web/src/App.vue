@@ -143,10 +143,10 @@ export default {
   </header>
 
   <playGeoQuizz v-if="isHomeRoute"/>
-  <div class="flex justify-center" v-if="isHomeRoute">
+  <div class="flex flew-row justify-end" v-if="isHomeRoute">
     <!-- Bouton à droite -->
     <RouterLink to="/selectgame">
-      <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
+      <button class="mr-60 bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
         Choisir le Quiz !
       </button>
     </RouterLink>
