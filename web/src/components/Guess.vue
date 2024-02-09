@@ -334,15 +334,16 @@ export default {
 
               </l-map>
             </div>
-            <div class="bg-blue-600 text-white rounded-b-lg py-4 ">
-              <label class="m-8 text-xl w-1/2 font-mono ">Temps Restant : <span class="font-semibold">{{
+            <div class="bg-blue-600 text-white rounded-b-lg py-4 relative">
+              <label class="m-8 text-xl w-1/2 font-mono">Temps Restant : <span class="font-semibold">{{
                   timerCount
                 }}</span></label>
-              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full "
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
                       @click="valider" v-if="!validate">Valider
               </button>
-              <label class="m-8  text-xl font-semibold py-2 " v-if="validate && !donneesSent">Chargement</label>
-              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full "
+              <VueSpinner v-if="validate && !donneesSent" size="20" color="Black"
+                          class="absolute top-1/2 right-0 transform translate-y-1/2 mr-4"/>
+              <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full"
                       @click="nextStep" v-if="donneesSent">Suivant
               </button>
             </div>
