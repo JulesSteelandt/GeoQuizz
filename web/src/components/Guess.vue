@@ -93,7 +93,7 @@ export default {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + this.token
+            'Authorization': 'Bearer ' + Cookies.get('accessToken')
           },
           body: JSON.stringify({
             "serie_id": this.serie_id
@@ -170,7 +170,7 @@ export default {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.token
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
         },
         body: JSON.stringify({
               "game_id": this.donneesScores.game_id,
