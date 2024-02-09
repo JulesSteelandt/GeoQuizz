@@ -3,7 +3,6 @@ export default {
   data() {
     return {
       initialisation: this.init(),
-      gamesFound: false,
       games: [],
       gameDifficulty: [
         {
@@ -30,7 +29,6 @@ export default {
           .then(response => response.json())
           .then(data => {
             this.games = data;
-            console.log(this.games);
           })
           .catch(error => {
             throw error;
@@ -48,7 +46,7 @@ export default {
 <template>
   <div class="mb-16">
     <h2 class="my-8 text-center text-blue-500 text-3xl font-bold">Redémarrer une partie</h2>
-    <div v-for="game in games" v-if="gamesFound" class="p-4 m-1 bg-gray-700 flex flex-row justify-between items-center">
+    <div v-for="game in games" class="p-4 m-1 bg-gray-700 flex flex-row justify-between items-center">
       <div>
         <p class="text-white"><strong>Série n°{{ game.serie_id }}</strong>, Difficulté {{ game.difficulte }} par <u>{{ game.user_email }}</u></p>
         <RouterLink :to="/play/ + game.id">
@@ -59,8 +57,5 @@ export default {
         <p class="text-3xl text-blue-200"><strong>{{ game.score }}</strong></p>
       </div>
     </div>
-    <p v-else class="p-4 m-1 bg-gray-700 flex flex-row justify-between text-center text-white">
-      Pas de parties trouvées
-    </p>
   </div>
 </template>
