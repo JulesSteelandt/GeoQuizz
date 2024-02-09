@@ -101,7 +101,8 @@ export default {
 </script>
 
 <template>
-  <section class="h-full w-full min-h-screen pt-6">
+  <section class="h-full w-full min-h-screen">
+    <h2 class="my-8 text-center text-blue-500 text-3xl font-bold">Commencer une partie</h2>
     <div v-if="this.series.length > 0 " class="flex flex-wrap justify-center">
       <!-- Carte "Random" pour avoir un choix aléatoire -->
       <div class="max-w-xs mx-4 mb-4 w-[350px]">
