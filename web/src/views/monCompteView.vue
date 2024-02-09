@@ -165,9 +165,9 @@ export default {
           <div
               class="flex flex-col p-2 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] w-full rounded-xl overflow-hidden mx-auto my-4 bg-stone-400 text-zinc-900">
             <div class="flex justify-between" v-for="partie in history" :key="partie.nomSerie">
-              <p class="text-left font-bold text-neutral-500 text-base">{{ partie.nomSerie }}</p>
-              <p class="text-right font-bold text-neutral-500 text-base"> Difficulté :{{ partie.difficulte }}</p>
-              <p class="text-right text-xl font-bold">Score : {{ partie.score }}</p>
+              <p class="text-left w-1/3 font-bold text-gray-800 text-base">{{ partie.nomSerie }}</p>
+              <p class="text-center w-1/3 font-bold text-gray-800 text-base"> Difficulté :{{ partie.difficulte }}</p>
+              <p class="text-right w-1/3 text-xl font-bold">Score : {{ partie.score }}</p>
             </div>
           </div>
         </div>
@@ -183,23 +183,24 @@ export default {
               class="flex flex-col p-2 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] w-full rounded-xl overflow-hidden mx-auto my-4 bg-stone-400 text-zinc-900">
             <!-- Contenu supplémentaire ici -->
             <div class="flex flex-col justify-between" >
-              <div class="flex justify-between">
-                <p class="text-center font-bold text-neutral-500 text-base  "> {{ premierMeilleurScore.serie_nom }}</p>
-                <p class="text-center font-bold text-neutral-500 text-base">Score : {{ premierMeilleurScore.score }}</p>
-                <p class="text-center font-bold text-neutral-500 text-base">Difficulté : {{ premierMeilleurScore.difficulte }}</p>
+              <div class="flex justify-between ">
+                <p class="text-center font-bold text-yellow-600 text-base">#1</p>
+                <p class="text-center font-bold text-yellow-600 text-base"> {{ premierMeilleurScore.serie_nom }}</p>
+                <p class="text-center font-bold text-yellow-600 text-base">Score : {{ premierMeilleurScore.score }}</p>
+                <p class="text-center font-bold text-yellow-600 text-base">Difficulté : {{ premierMeilleurScore.difficulte }}</p>
               </div>
               <div class="flex justify-between">
-                <p class="text-center font-bold text-neutral-500 text-base  "> {{ secondMeilleurScore.serie_nom }}</p>
-                <p class="text-center font-bold text-neutral-500 text-base">Score : {{ secondMeilleurScore.score }}</p>
-                <p class="text-center font-bold text-neutral-500 text-base">Difficulté : {{ secondMeilleurScore.difficulte }}</p>
+                <p class="text-center font-bold text-neutral-600 text-base">#2</p>
+                <p class="text-center font-bold text-neutral-600 text-base  "> {{ secondMeilleurScore.serie_nom }}</p>
+                <p class="text-center font-bold text-neutral-600 text-base">Score : {{ secondMeilleurScore.score }}</p>
+                <p class="text-center font-bold text-neutral-600 text-base">Difficulté : {{ secondMeilleurScore.difficulte }}</p>
               </div>
               <div class="flex justify-between">
-                <p class="text-center font-bold text-neutral-500 text-base  "> {{ troisiemeMeilleurScore.serie_nom }}</p>
-                <p class="text-center font-bold text-neutral-500 text-base">Score : {{ troisiemeMeilleurScore.score }}</p>
-                <p class="text-center font-bold text-neutral-500 text-base">Difficulté : {{ troisiemeMeilleurScore.difficulte }}</p>
+                <p class=" text-yellow-700 text-center font-bold text-base">#3</p>
+                <p class="text-center font-bold text-yellow-700 text-base  "> {{ troisiemeMeilleurScore.serie_nom }}</p>
+                <p class="text-center font-bold text-yellow-700 text-base">Score : {{ troisiemeMeilleurScore.score }}</p>
+                <p class="text-center font-bold text-yellow-700 text-base">Difficulté : {{ troisiemeMeilleurScore.difficulte }}</p>
               </div>
-
-
             </div>
           </div>
         </div>
