@@ -24,8 +24,6 @@ export default {
       if (!token) {
         // L'utilisateur n'est pas connecté, donc le pseudo reste vide
         this.userNotConnected = true;
-        this.$refs.connectedUserDiv.style.display = 'none';
-        this.$refs.disconnectedUserDiv.style.display = 'block';
         return;
       }
       try {
@@ -44,8 +42,6 @@ export default {
         this.user.pseudo = userData.username;
         console.log("coucou" +this.user.pseudo);
         console.log(userData);
-        this.$refs.connectedUserDiv.style.display = 'block';
-        this.$refs.disconnectedUserDiv.style.display = 'none';
       } catch (error) {
         console.error('Erreur:', error.message);
       }
@@ -66,7 +62,7 @@ export default {
         <p class="text-4xl font-bold">{{ user.pseudo }}</p>
       </div>
     </div>
-    <div ref="disconnectedUserDiv" class="flex flex-col justify-center mt-4 items-center">
+    <div v-else ref="disconnectedUserDiv" class="flex flex-col justify-center mt-4 items-center">
       <div class="justify-center">
       <p class="p-2 text-center font-bold w-1/2 rounded-xl overflow-hidden border-2 border-gray-100 mx-auto my-10 bg-stone-400 text-zinc-900"> Vous avez été déconnecté. Veuillez vous reconnecter pour accéder à votre compte.</p>
       </div>

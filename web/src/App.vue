@@ -69,7 +69,7 @@ export default {
 
   mounted() {
     checkAuthStatus();
-    console.log("this.isConnected mounted", state.isConnected);
+    console.log("this.isConnected mounted", this.state);
   }
 
 };
