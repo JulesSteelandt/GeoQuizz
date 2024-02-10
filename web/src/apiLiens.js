@@ -23,4 +23,6 @@ export const SCORE_PLAY = "http://docketu.iutnc.univ-lorraine.fr:35200/games/pla
 
 export const SCORES = "http://docketu.iutnc.univ-lorraine.fr:35200/games"
 
+export const HISTORY = "http://docketu.iutnc.univ-lorraine.fr:35200/historique"
+
 

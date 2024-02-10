@@ -2,22 +2,24 @@
 
 namespace geoquizz\service\app\actions;
 
-use geoquizz\service\domain\services\SsSerie;
+use geoquizz\service\domain\services\SsPartie;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
-class GetSerieAction extends AbstractAction
+class GetPartie extends AbstractAction
 {
-    private SsSerie $serieService;
+    private SsPartie $partieService;
 
-    public function __construct(SsSerie $s)
+    public function __construct(SsPartie $s)
     {
-        $this->serieService = $s;
+        $this->partieService = $s;
     }
+
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response, array $args): ResponseInterface
     {
-        $series = $this->serieService->getSerie();
-        $response->getBody()->write(json_encode($series));
+        $res = $this->partieService->getGames();
+        $response->getBody()->write(json_encode($res));
 
         return $response->withStatus(200)->withHeader('Content-Type', 'application/json');
     }

@@ -3,7 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import {LMap, LTileLayer, LMarker} from '@vue-leaflet/vue-leaflet';
 import {getDistance} from "geolib";
 import Cookies from "js-cookie";
-import {CREATE_GAME, RECREATE_GAME, SCORE_PLAY} from "@/apiLiens.js";
+import {CREATE_GAME, RECREATE_GAME, SCORE_PLAY, VALIDATE_USER} from "@/apiLiens.js";
 import {VueSpinner} from 'vue3-spinners';
 import {ws} from "@/main.js";
 
@@ -48,6 +48,7 @@ export default {
       serie_id: null,
       difficulty: null,
       replayGame_id: null,
+      username:null,
       //serie_id récupérer grâce à l'url
 
 
@@ -59,7 +60,6 @@ export default {
       LieuReponse: null,
       image: "",
       nomSeries: null,
-      username: null,
 
       //booléen pour afficher la fin de la partie
       finDePartie: false,
@@ -115,28 +115,6 @@ export default {
       let url = window.location.href;
       let id = url.substring(url.lastIndexOf('/') + 1);
       this.serie_id = parseInt(id);
-    },
-
-    /**
-     * Methode qui envoie une notif à tout le monde
-     */
-    notif(){
-      fetch("http://docketu.iutnc.univ-lorraine.fr:35200/users/validate", {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + Cookies.get('accessToken')
-        },
-      })
-          .then(response => response.json())
-          .then(data => {
-            this.username = data.username;
-            ws.send(this.username+" a lancé une partie sur "+this.nomSeries)
-          })
-          .catch((error) => {
-            //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
-            this.$router.push('/selectgame');
-          });
     },
 
     /**
@@ -198,14 +176,38 @@ export default {
               this.timerEnable = true;
               this.nomSeries = data.serie_nom;
 
-              this.notif()
+              this.notif();
+
+
+
             })
             .catch((error) => {
               //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
               this.$router.push('/selectgame');
             });
-
       }
+    },
+
+    /**
+     * Envoie une notification à tous
+     */
+    notif() {
+      fetch(VALIDATE_USER, {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + Cookies.get('accessToken')
+        },
+      })
+          .then(response => response.json())
+          .then(data => {
+            this.username = data.username;
+            ws.send(this.username + " débute la série " + this.nomSeries);
+
+          })
+          .catch((error) => {
+            //si erreur lors de la récupération des données de jeu redirige vers la page de jeu
+            this.$router.push('/selectgame');
+          });
     },
 
     /**
@@ -381,7 +383,7 @@ export default {
     <div
         class="h-screen w-screen flex justify-center items-center">
       <div class="flex flex-wrap  px-2">
-        <div class="w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
+        <div class=" w-full h-full md:w-3/5 border border-gray-400 rounded-lg flex flex-col justify-between mb-2">
           <img class="rounded-lg" :src="image" alt="image du lieu">
           <div v-if="validate" class=" w-full rounded-b-lg h-max bg-blue-600 py-8 flex flex-col justify-center text-xl">
             <label class="text-white ml-2 ">

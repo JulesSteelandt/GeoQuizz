@@ -48,8 +48,7 @@ export default {
             this.idGame = data.id;
             this.nomUser = data.user_username;
             this.userEmail = data.user_email;
-
-            ws.send(this.nomUser + " a fini la série "+this.nomSerie+" avec un score de "+ this.score)
+            ws.send(this.nomUser+" a fini la série "+this.nomSerie+" avec un score de "+this.score);
           })
           .catch((error) => {
             this.error = true;
@@ -58,6 +57,7 @@ export default {
           .finally(() => {
             this.initialisation = true;
           });
+
     },
 
     /**
