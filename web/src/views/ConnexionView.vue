@@ -4,6 +4,7 @@ import {SIGNIN} from "@/apiLiens.js";
 import togglePassword from '@/components/togglePasseword.vue';
 
 
+
 export default {
   components: {
     togglePassword
@@ -67,9 +68,11 @@ export default {
             Cookies.set('accessToken', accessToken, {expires: expiresIn});
 
             this.isConnected = true;
+
             this.showError = false;
             this.resetFields();
-            window.location.reload()
+
+            this.$router.push('/');
           }
 
         }
@@ -117,8 +120,8 @@ export default {
   <div
       class="bg-gray-700 flex flex-col justify-center p-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] rounded-xl m-auto mb-8 mt-8">
     <div v-if="showError" class="flex flex-col items-center p-2 rounded-2xl mb-2">
-      <p class="text-[# #c92222]text-xl font-bold ">La connexion a échoué, le nom d'utilisateur</p>
-      <p class="text-red-700 text-xl font-bold ">ou le mot de passe sont erronés</p>
+      <p class="text-[#C60800] text-xl font-bold ">La connexion a échouée, le nom d'utilisateur</p>
+      <p class="text-[#ED0000] text-xl font-bold ">ou le mot de passe est erroné</p>
     </div>
     <div>
       <p class="text-white mb-1">Votre e-mail</p>
@@ -133,17 +136,17 @@ export default {
         <input v-else ref="passwordInput" v-model="password" class="w-full mb-2.5 p-1 rounded-lg border-4" type="text"
                placeholder="djul58sjuolpo" @keyup.enter="login">
         <div>
-          <togglePassword :showPassword="showPassword" @toggle="togglePassword"/>
+          <togglePassword :showPassword="showPassword" @toggle="togglePassword" />
         </div>
         <p v-if="!verifEmail(email)" class="text-green-700 font-bold mb-2">L'email est invalide</p>
       </div>
     </div>
-    <RouterLink to="/">
-      <button :disabled="!verifEmail(email) || password === ''" @click="login"
-              class="text-white text-2xl font-bold mt-4 py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 disabled:opacity-50 disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed">
-        Je me connecte
-      </button>
-    </RouterLink>
+
+    <button :disabled="!verifEmail(email) || password === ''" @click="login"
+            class="text-white text-2xl font-bold mt-4 py-2 px-4 rounded-xl bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 hover:bg-gradient-to-br shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 disabled:opacity-50 disabled:bg-gray-400 disabled:hover:bg-gray-400 disabled:cursor-not-allowed">
+      Je me connecte
+    </button>
+
     <RouterLink to="/inscription">
       <button
           class="bg-stone-400 text-zinc-600 hover:bg-blue-500 hover:text-zinc-900  py-2 px-4 rounded-xl mt-10 ml-14">
@@ -151,11 +154,8 @@ export default {
       </button>
     </RouterLink>
   </div>
-  <div v-if="showError" class="flex flex-col items-center p-2 rounded-2xl mb-2">
-    <p class="text-[# #c92222]text-xl font-bold ">La connexion a échoué, le nom d'utilisateur</p>
-    <p class="text-red-700 text-xl font-bold ">ou le mot de passe sont erronés</p>
-  </div>
-  <div v-else-if="isConnected" class="flex flex-col items-center p-8 rounded-2xl m-auto">
+
+  <div v-if="isConnected" class="flex flex-col items-center p-8 rounded-2xl m-auto">
     <p class="text-green-600 text-xl font-bold ">Connexion réussie</p>
   </div>
   <div v-else-if="!isConnected && !isFill" class="flex flex-col items-center p-8 rounded-2xl m-auto">
