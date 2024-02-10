@@ -79,6 +79,8 @@ export default {
             this.resetFields();
 
             this.$router.push('/');
+            window.location.reload();
+
           }
 
         }
