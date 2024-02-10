@@ -28,6 +28,10 @@ export default {
       isConnected: false,
     });
 
+    /**
+     * Vérifie si l'utilisateur est connecté ou non
+     * @returns {void} - return true si connecté et false sinon
+     */
     const checkAuthStatus = () => {
       const token = Cookies.get('accessToken');
       // Si le token existe, l'utilisateur est connecté, sinon il ne l'est pas
@@ -129,10 +133,10 @@ export default {
   </header>
 
   <playGeoQuizz v-if="isHomeRoute"/>
-  <div class="flex justify-center mb-2" v-if="isHomeRoute">
+  <div class="flex justify-center items-center mb-2" v-if="isHomeRoute">
     <!-- Bouton à droite -->
     <RouterLink to="/selectgame">
-      <button class="bg-blue-500 hover:bg-blue-900 text-white text-2xl font-bold py-2 px-4 rounded-xl mb-14 ">
+      <button class="text-white text-2xl font-bold py-2 px-4 rounded-xl bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 mr-3 hover:transition duration-300 ease-in-out transform hover:scale-105 mb-14 ">
         Choisir le Quiz !
       </button>
     </RouterLink>
