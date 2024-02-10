@@ -3,6 +3,7 @@ import { ref } from 'vue';
 
 const showRules = ref(false);
 
+//pour changer la valeur de showRules et donc afficher ou non les règles du jeu
 /**
  * Permet de basculer entre l'affichage des règles du jeu et le jeu lui-même
  * @returns {void} - return true si le passeport est valide, false sinon
@@ -15,6 +16,7 @@ defineProps({})
 </script>
 
 <template>
+
   <div ref="connectedUserDiv" class=" mx-20 justify-between rounded-xl flex flex-row overflow-hidden mt-5 ">
     <img src="@/components/icons/info.png" alt="Logo Regles" @click="toggleRules" class="min-h-10 min-w-10 h-12 w-12 cursor-pointer">
   </div>
