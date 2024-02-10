@@ -49,6 +49,8 @@ export default {
       Cookies.remove('accessToken');
       console.log("connexion false 2")
       state.isConnected = false;
+      //rajouter user.pseudo = '' pour le déconnecter
+
     };
 
     // Watcher pour détecter les changements de isConnected

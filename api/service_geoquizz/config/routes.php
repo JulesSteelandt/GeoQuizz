@@ -2,8 +2,9 @@
 declare(strict_types=1);
 
 use geoquizz\service\app\actions\GetHistoryAction;
-use geoquizz\service\app\actions\GetProfilAction;
-use geoquizz\service\app\actions\SetProfilAction;
+use geoquizz\service\app\actions\GetPartie;
+use geoquizz\service\app\actions\GetPartieById;
+use geoquizz\service\app\actions\RecreatePartie;
 use geoquizz\service\app\actions\GetSerieAction;
 use geoquizz\service\app\actions\GetSerieByIdAction;
 use geoquizz\service\app\actions\PostTourPartie;
@@ -22,10 +23,15 @@ return function( \Slim\App $app):void {
     $app->get('/historique[/]', GetHistoryAction::class)
         ->setName('historique');
 
-    $app->post("/games/create",PostCreatePartie::class)
-        ->addMiddleware(new CheckToken());
+    $app->get("/games[/]", GetPartie::class);
 
-    $app->post("/games/play",PostTourPartie::class)
+    $app->post("/games/create",PostCreatePartie::class)->addMiddleware(new CheckToken());
+
+    $app->post("/games/play",PostTourPartie::class);
+
+    $app->get("/games/{id_partie}", GetPartieById::class);
+
+    $app->post("/games/recreate/{id_partie}[/]", RecreatePartie::class)
         ->addMiddleware(new CheckToken());
 
     $app->options('/{routes:.+}', function ($request, $response, $args) {

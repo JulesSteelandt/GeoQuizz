@@ -21,16 +21,19 @@ export default {
     }
   },
   methods: {
+    /**
+     * Méthode qui charge et permet de rejouer les anciennes parties
+     */
     fetchOldGames() {
       fetch('http://docketu.iutnc.univ-lorraine.fr:35200/games')
           .then(response => response.json())
           .then(data => {
             this.games = data;
-            console.log(data);
           })
           .catch(error => {
             throw error;
           })
+
     },
     init() {
       this.fetchOldGames();
