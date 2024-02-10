@@ -31,7 +31,7 @@ defineProps({})
           <!-- Texte des règles du jeu -->
 
           <div class="flex flex-col py-5 ">
-          <h1 class="text-center xl:text-4xl lg:text-3xl md:text-2xl sm:text-xl text-blue-400 font-extrabold drop-shadow-[0_2px_4px_rgba(36,29,0,65)]"> Bienvenue sur GéoQuizz !</h1>
+          <h1 class="text-center xl:text-4xl lg:text-3xl md:text-2xl sm:text-xl text-blue-400 font-extrabold drop-shadow-[0_2px_4px_rgba(36,29,0,65)]"> Bienvenu sur GéoQuizz !</h1>
           <h1 class="text-center  xl:text-4xl lg:text-3xl md:text-2xl sm:text-xl font-extrabold"> Le jeu qui test des connaissances sur différentes villes</h1>
           </div>
           <h1 class="text-left pt-2 ml-5 xl:text-4xl lg:text-3xl md:text-2xl sm:text-xl font-extrabold w-full bg"> Règles du jeu : </h1>
