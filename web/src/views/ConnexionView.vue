@@ -78,8 +78,9 @@ export default {
 
             this.resetFields();
 
-            this.$router.push('/');
-            window.location.reload();
+            this.$router.push('/').then(() => {
+              this.$router.go();
+            });
 
           }
 
