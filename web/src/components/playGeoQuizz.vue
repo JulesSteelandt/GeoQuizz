@@ -31,6 +31,7 @@ defineProps({})
           <h3 class="p-4">Le jeu se déroule autour de la localisation de divers lieux emblématiques au sein de différentes villes, le tout sur une carte virtuelle.
             Chaque lieu est accompagné d'une photo, le défi est alors pour le joueur de placer avec le plus de précision possible un marqueur sur la carte, indiquant l'endroit où il estime que ce lieu spécifique se trouve dans la ville sélectionnée. Cela demande à la fois une connaissance géographique et une capacité à interpréter les indices visuels pour réussir à identifier correctement l'emplacement de chaque lieu sur la carte.</h3>
         </div>
+
       </div>
 
       <div v-else class="playGeoQuizz w-fit max-h-[600px]  max-w-[600px]  rounded-xl flex flex-col overflow-hidden border-2 border-gray-100 my-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] flip-transition  ">
