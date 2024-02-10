@@ -72,9 +72,9 @@ export default {
             },
             body: formData.toString(),
           });
-          console.log("C1"+response);
+          console.log("C1" + response);
           if (response.ok) {
-            console.log("C2"+response.status)
+            console.log("C2" + response.status)
             // Inscription réussie
             this.inscriptionDone = true;
             // Réinitialiser les champs
@@ -117,10 +117,10 @@ export default {
              :class="{'border-red-700': verifMdp(this.pwd, this.pwdverif) === false}"
              placeholder="zmz25e12fkik">
       <div>
-        <togglePassword :showPassword="showPassword" @toggle="togglePassword" />
+        <togglePassword :showPassword="showPassword" @toggle="togglePassword"/>
       </div>
     </div>
-    <div class ="mb-4">
+    <div class="mb-4">
       <p class="text-white mb-1">Confirmation du mot de passe</p>
       <input v-model="pwdverif" class="w-full mb-3 p-1 border-4 rounded-lg" type="password"
              :class="{'border-red-500': verifMdp(this.pwd, this.pwdverif) === false}"
