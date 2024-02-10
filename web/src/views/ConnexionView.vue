@@ -48,12 +48,17 @@ export default {
         const responseData = await response.json();
         if (response.status !== 200) {
           this.showError = true;
+        } else if (response.status === 401 || response.status === 500) {
+          console.error('Échec de la connexion suite à une erreur serveur ou une erreur d\'authentification');
+          this.isConnected = false;
+          this.showError = true;
         } else {
 
           if (responseData && responseData.message === "401 Authentification failed") {
             console.error('Échec de la connexion');
             this.isConnected = false;
             this.showError = true;
+            console.log('showError', this.showError);
           } else {
             // Récupérer l'expiration du cookie de la réponse si elle est disponible
             const expiresIn = (((responseData.expiration) / 3600) / 24);//expire au bout de 12h
@@ -70,12 +75,14 @@ export default {
             this.isConnected = true;
 
             this.showError = false;
+
             this.resetFields();
 
             this.$router.push('/');
           }
 
         }
+
       } catch (error) {
         console.error('Erreur lors de la connexion:', error);
       }
