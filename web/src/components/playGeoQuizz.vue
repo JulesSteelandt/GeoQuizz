@@ -33,7 +33,7 @@ defineProps({})
         </div>
       </div>
 
-      <div v-else class="playGeoQuizz w-fit max-h-[600px]  max-w-[600px]  rounded-xl flex flex-col overflow-hidden border-2 border-gray-100 my-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] flip-transition flip-back ">
+      <div v-else class="playGeoQuizz w-fit max-h-[600px]  max-w-[600px]  rounded-xl flex flex-col overflow-hidden border-2 border-gray-100 my-8 drop-shadow-[0_8px_4px_rgba(34,0,4,6)] flip-transition  ">
         <!-- Contenu du jeu -->
         <div class="flex flex-col bg-stone-400 text-zinc-900">
           <!-- Image -->
